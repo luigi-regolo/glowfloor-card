@@ -99,3 +99,34 @@ test('RGB light spill colors are sanitized before insertion in CSS',()=>{
 test('title color is explicitly set to the GlowFloor theme ink',()=>{
   assert.match(source,/\.title\{color:var\(--gf-ink\);/);
 });
+
+test('native Home Assistant selectors filter the correct entity domains',()=>{
+  registry.set('ha-selector',class {});
+  const Editor=registry.get('glowfloor-card-editor');
+  const editor=Object.create(Editor.prototype);
+  editor._hass={states:{}};
+  const light={_glowfloor:{domain:'light',value:'light.cucina',label:'Entità luce'}};
+  editor._setNativeSelector(light);
+  assert.equal(light.selector.entity.filter.domain,'light');
+  assert.equal(light.value,'light.cucina');
+  assert.equal(light.label,'Entità luce');
+  const scene={_glowfloor:{domain:'scene',value:'scene.relax',label:'Entità scena'}};
+  editor._setNativeSelector(scene);
+  assert.equal(scene.selector.entity.filter.domain,'scene');
+  const image={_glowfloor:{domain:'image',value:'/api/image/serve/example/original',label:'Immagine'}};
+  editor._setNativeSelector(image);
+  assert.ok(Object.hasOwn(image.selector,'image'));
+  assert.equal(image.value,'/api/image/serve/example/original');
+});
+
+test('image selection accepts Home Assistant image-serving URL and blocks javascript URLs',()=>{
+  assert.equal(validImage('/api/image/serve/example/original'),true);
+  assert.equal(normalizeConfig({image:'/api/image/serve/example/original'}).image,'/api/image/serve/example/original');
+  assert.equal(normalizeConfig({image:'javascript:alert(1)'}).image,null);
+});
+
+test('editor separates configuration tabs from their content panels',()=>{
+  assert.match(source,/\.section\[data-tab=/);
+  assert.match(source,/querySelectorAll\('\.nav button'\)/);
+  assert.match(source,/\.section\[hidden\]\{display:none\}/);
+});

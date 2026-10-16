@@ -17,7 +17,7 @@ GlowFloor è una card personalizzata per le dashboard di Home Assistant. Può mo
 - **Fino a tre scene facoltative:** l'utente sceglie le entità `scene.*` e il testo dei rispettivi pulsanti. Non esistono nomi obbligatori.
 - **Intestazione facoltativa:** testo superiore, titolo e sottotitolo possono essere modificati singolarmente o lasciati vuoti. Se tutti sono vuoti, rimangono soltanto i comandi in alto.
 - **Tema automatico, chiaro o scuro:** modalità `auto`, `light` e `dark`.
-- **Editor visuale:** aggiunta delle luci e posizionamento dei punti direttamente sulla piantina, senza bisogno di scrivere YAML per la configurazione ordinaria.
+- **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile o selezionabile dalla UI e posizionamento dei marker con un tocco, senza YAML.
 - **Layout adattivo:** utilizzabile su dashboard desktop e mobili.
 - **Nessun servizio esterno necessario:** la card non richiede account cloud, librerie caricate da CDN o servizi di analisi.
 
@@ -43,8 +43,6 @@ GlowFloor Card si installa direttamente da **HACS**, aggiungendo l'indirizzo del
 5. Cercare **GlowFloor Card** in HACS, aprirla e premere **Scarica**.
 6. Aprire una dashboard in modalità modifica e aggiungere **GlowFloor Card**. Configurare la piantina e le luci attraverso l'editor visuale.
 
-> **Nota:** HACS può scaricare soltanto repository pubblici. Il link sarà utilizzabile per questa procedura quando il repository sarà pubblico.
-
 ### Se la card non compare dopo l'installazione
 
 Ricaricare la pagina di Home Assistant. Se la risorsa non è stata aggiunta automaticamente, nelle **Risorse** della dashboard aggiungere manualmente il seguente percorso come **modulo JavaScript**:
@@ -55,28 +53,31 @@ Ricaricare la pagina di Home Assistant. Se la risorsa non è stata aggiunta auto
 
 Per chi non utilizza HACS, è possibile copiare `dist/glowfloor-card.js` nella cartella `/config/www/` e registrare `/local/glowfloor-card.js` come risorsa **modulo JavaScript** della dashboard. Quindi ricaricare la pagina e aggiungere la card.
 
-## Collegare le luci e le scene tramite l'editor (senza YAML)
+## Collegare la piantina, le luci e le scene (senza YAML)
 
-1. In Home Assistant aprire **Impostazioni → Dispositivi e servizi → Entità** e cercare la luce da utilizzare. Controllare l'**ID entità**, ad esempio `light.soggiorno`. È possibile individuarlo anche in **Impostazioni → Strumenti per sviluppatori → Stati**, filtrando per `light.`. Usare sempre l'ID effettivo presente nel proprio Home Assistant, non quello degli esempi.
-2. Aprire la dashboard e scegliere **Modifica dashboard → Aggiungi card → GlowFloor Card** (la voce è disponibile dopo aver installato e registrato la risorsa della card).
-3. Nell'editor, nel campo **Piantina**, inserire il percorso dell'immagine oppure lasciare vuoto per usare la piantina dimostrativa.
-4. Nella sezione **Light markers**, premere **Add light**, inserire l'**ID entità** `light.*` e il **nome** da visualizzare sul pulsante. Ripetere per tutte le luci desiderate.
-5. In **Position markers**, selezionare il marker nell'elenco e poi toccare il punto della piantina in cui posizionarlo. Le coordinate percentuali vengono compilate automaticamente. Il campo **Area luce %** permette di scegliere l'ampiezza dell'effetto luminoso per quella luce; l'opzione **Illuminazione diffusa sulla piantina** permette di disattivarlo per l'intera card.
-6. Facoltativo: in **Optional scenes** aggiungere fino a tre scene. Ogni scena richiede un'**entità `scene.*` realmente esistente** e il nome che si vuole mostrare sul pulsante. Per creare scene in Home Assistant: **Impostazioni → Automazioni e scene → Scene → Crea scena**. Il nome scelto nella card non cambia l'ID né il nome della scena originale.
-7. Salvare la card e verificare che il tocco su una lampadina accenda soltanto l'entità assegnata. **Turn all off** spegne unicamente le luci configurate nella card.
+1. Installare GlowFloor da HACS, quindi aprire una dashboard in modalità modifica e scegliere **Aggiungi card → GlowFloor Card**.
+2. Nella sezione **Piantina**, utilizzare **Scegli o carica immagine**. Il selettore immagini di Home Assistant permette di scegliere o caricare un'immagine nell'istanza; in alternativa, usare la piantina dimostrativa. Le immagini personali **non vanno caricate su GitHub**. Il comportamento di caricamento dipende dalle funzionalità disponibili nella versione di Home Assistant in uso.
+3. Nella sezione **Luci**, premere **Aggiungi luce**. Nel campo **Entità luce** cercare e selezionare una luce dalla propria installazione Home Assistant (`light.*`); quindi impostare il nome mostrato sul pulsante. Ripetere per le altre luci. Se il selettore nativo non è disponibile, è previsto un campo manuale per inserire l'ID effettivo.
+4. Tornare in **Piantina**, scegliere dall'elenco la luce da posizionare e **toccare il punto desiderato**. Le coordinate vengono salvate automaticamente in percentuale.
+5. Nella sezione **Scene**, se desiderato, aggiungere fino a tre scene (`scene.*`). Selezionare l'entità dal selettore e cambiare il testo del pulsante. Non è obbligatorio configurare scene.
+6. In **Aspetto**, modificare o eliminare titolo, testo superiore e sottotitolo; scegliere il tema e attivare/disattivare l'effetto di illuminazione diffusa. Le coordinate e l'ampiezza dell'effetto per ciascuna luce sono in **Avanzate**.
+7. Salvare la card e verificare che ogni lampadina comandi soltanto la luce associata. **Turn all off** spegne soltanto le luci configurate nella card.
 
-**Nota:** la card non scopre o crea automaticamente luci o scene; collega entità già presenti in Home Assistant. Se la stessa entità luce viene configurata su più marker, il contatore la considera una sola volta.
+La card utilizza le entità già presenti in Home Assistant, non crea nuove luci o scene. Per controllare manualmente un ID, aprire **Impostazioni → Dispositivi e servizi → Entità**, per esempio `light.soggiorno`. I nomi e gli ID nel README sono soltanto esempi. Se un'entità è associata a più marker, il contatore la considera una sola volta.
 
 ## Configurazione
 
-Nell'editor della card si possono impostare:
+L'editor visuale è organizzato in cinque sezioni:
 
-1. **Testo superiore, titolo e sottotitolo**: ciascun campo è facoltativo. Per non visualizzare alcuna scritta nell'intestazione, svuotare tutti e tre i campi.
-2. **Piantina**: percorso di un'immagine, ad esempio `/local/floorplans/casa.png`. Se il campo è vuoto viene mostrata l'illustrazione dimostrativa.
-3. **Luci**: entità `light.*`, nome del pulsante, posizione e ampiezza della zona luminosa. Selezionare una luce e fare clic sulla piantina per spostarne il marker.
-4. **Scene rapide**: da zero a tre entità `scene.*`. Per ognuna è possibile scrivere liberamente il nome visualizzato sul pulsante (ad esempio *Relax*, *Cinema*, *Buonanotte*). Modificare il nome nella card **non rinomina** la scena in Home Assistant.
-5. **Illuminazione diffusa**: attiva/disattiva l’effetto sulla piantina senza modificare i dispositivi.
-6. **Tema**: automatico, scuro o chiaro.
+| Sezione | Opzioni |
+| --- | --- |
+| **Piantina** | Caricamento/scelta immagine, piantina di esempio e posizionamento dei marker con un tocco |
+| **Luci** | Selettore Home Assistant filtrato alle `light.*`, nome personalizzato e aggiunta/rimozione luci |
+| **Scene** | Da 0 a 3 scene `scene.*` con nomi dei pulsanti personalizzabili |
+| **Aspetto** | Titolo, testo superiore, sottotitolo, tema automatico/chiaro/scuro e illuminazione diffusa |
+| **Avanzate** | Coordinate percentuali, ampiezza delle aree illuminate e inserimento manuale del percorso immagine |
+
+Tutti i testi dell'intestazione sono facoltativi. Lasciandoli vuoti, il contatore e i comandi rimangono visibili.
 
 ### Esempio YAML (facoltativo)
 
@@ -112,7 +113,7 @@ Le entità sono esempi: è necessario sostituirle con quelle effettivamente disp
 
 ### Utilizzare una piantina personale
 
-Salvare l'immagine, per esempio, in `/config/www/floorplans/casa.png` e indicare `/local/floorplans/casa.png` nella configurazione. Evitare di pubblicare piantine reali, identificativi dei dispositivi o altri dati privati nei repository e nelle segnalazioni di problemi.
+Il metodo consigliato è **Scegli o carica immagine** nella sezione Piantina dell’editor (tramite Home Assistant). In alternativa, chi possiede già un file in `/config/www/floorplans/casa.png` può inserire `/local/floorplans/casa.png` nella sezione Avanzate. Evitare di pubblicare piantine reali, identificativi dei dispositivi o altri dati privati nei repository e nelle segnalazioni di problemi.
 
 ## Comandi
 
@@ -129,15 +130,13 @@ Salvare l'immagine, per esempio, in `/config/www/floorplans/casa.png` e indicare
 - I marker controllano entità `light.*`; non sono ancora supportati altri tipi di dispositivi.
 - Le scene rapide sono facoltative e possono essere al massimo tre.
 - L’illuminazione diffusa è un effetto radiale grafico: non interpreta le pareti e non cambia le impostazioni della lampadina.
-- Non sono ancora disponibili slider della luminosità, raggruppamenti per stanza o trascinamento dei punti nell'editor. Il posizionamento funziona selezionando una luce e cliccando sulla piantina.
+- Non sono ancora disponibili slider della luminosità, raggruppamenti per stanza o trascinamento dei punti. Il posizionamento funziona selezionando una luce e toccando la piantina.
 - Il cambio del tema dall'intestazione della card è temporaneo; per salvarne la scelta si utilizza l'editor.
-- Non è garantita la compatibilità con ogni versione di Home Assistant o con ogni dispositivo.
+- La disponibilità dei selettori nativi, incluso il caricamento immagini, dipende dalla versione di Home Assistant. Se non disponibili, restano i campi manuali per le entità e i percorsi locali per le immagini.
 
 ## Privacy e sicurezza
 
 GlowFloor utilizza le API della dashboard Home Assistant e opera con i permessi dell'utente autenticato. Non contiene telemetria, strumenti di analisi né richieste a un server del progetto. Se viene configurato un URL esterno per la piantina, il browser potrà contattare il relativo servizio: per questo si consiglia di usare immagini servite localmente da Home Assistant.
-
-La demo inclusa simula gli stati delle luci e non si collega a un'installazione Home Assistant.
 
 
 ## Licenza

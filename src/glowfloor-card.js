@@ -38,7 +38,32 @@ const STYLE = `
 @media(prefers-reduced-motion:reduce){.orb,.spill{transition:none!important}}
 `;
 
-const EDITOR_STYLE = `:host{display:block;font-family:inherit;color:var(--primary-text-color,#222)}*{box-sizing:border-box}.editor{display:grid;gap:14px;padding:12px 2px}.row{display:flex;gap:10px;flex-wrap:wrap}.field{display:grid;gap:5px;flex:1;min-width:130px;font-size:12px;font-weight:650}input,select{font:inherit;color:inherit;min-height:35px;padding:8px;border:1px solid var(--divider-color,#aaa);border-radius:9px;background:var(--card-background-color,#fff);width:100%}button{cursor:pointer;border:1px solid var(--divider-color,#aaa);color:inherit;background:var(--card-background-color,#fff);border-radius:9px;padding:8px 11px;font:inherit;font-size:12px}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--primary-color,#3891ee)}.items{display:grid;gap:9px}.item{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px solid var(--divider-color,#ddd);border-radius:11px;padding:10px}.item.selected{border-color:var(--primary-color,#3891ee)}.item-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:6px}.item .field{min-width:0}.map{border:1px solid var(--divider-color,#ddd);border-radius:12px;position:relative;cursor:crosshair;overflow:hidden;background:var(--secondary-background-color,#e8ecec);line-height:0}.map svg,.map img{width:100%;height:auto;display:block}.map svg .room{fill:#e7e9e8}.map svg .room-alt{fill:#dce3e1}.map svg .wall{stroke:#93a3a7;stroke-width:8;fill:none}.map svg .furn{stroke:#93a3a7;stroke-width:2;fill:#d6dddd}.map svg .thin,.map svg .door{stroke:#93a3a7;stroke-width:2;fill:none}.map svg .room-label,.map svg .micro{fill:#56656a;font-size:14px;text-anchor:middle}.map svg .tile{stroke:#bac7c7}.pin{position:absolute;display:grid;place-items:center;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#41535b;color:white;border:2px solid white;box-shadow:0 2px 6px #0004;font-size:10px;line-height:1}.pin.selected{background:#e9a34f;outline:3px solid #e9a34f55}.hint{font-size:11px;color:var(--secondary-text-color,#666);line-height:1.45}.scenes{display:grid;gap:7px}.sceneitem{display:flex;gap:7px}.sceneitem input{min-width:0}.delete{color:#c34b45}.section-title{font-size:13px;font-weight:750;margin:3px 0 0}`;
+const EDITOR_STYLE = `
+:host{display:block;color:var(--primary-text-color,#203039);font:inherit;font-family:var(--paper-font-body1_-_font-family,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif)}
+*{box-sizing:border-box} .editor{display:grid;gap:16px;padding:8px 2px 16px}
+.nav{display:flex;gap:4px;overflow-x:auto;padding:0 0 9px;border-bottom:1px solid var(--divider-color,#d8e0df);scrollbar-width:thin}
+.nav button{flex:0 0 auto;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:var(--secondary-text-color,#65747a);font:inherit;font-weight:650;font-size:12px;cursor:pointer}
+.nav button[aria-selected="true"]{background:var(--secondary-background-color,#e5f0ed);color:var(--primary-text-color,#16342d);box-shadow:inset 0 -2px var(--primary-color,#24866f)}
+.section{display:grid;gap:15px;min-width:0}.section[hidden]{display:none}
+.section-title{font-size:15px;font-weight:750;margin:3px 0 0}.heading-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.field{display:grid;gap:6px;flex:1;min-width:150px;font-size:12px;font-weight:600}
+input,select{color:var(--primary-text-color,#203039);font:inherit;font-size:13px;min-height:41px;padding:10px 12px;border:1px solid var(--divider-color,#a4afae);border-radius:10px;background:var(--card-background-color,#fff);width:100%;max-width:100%}
+ha-selector{display:block;width:100%;min-width:0;--mdc-theme-primary:var(--primary-color,#218575)}
+button{cursor:pointer;color:var(--primary-text-color,#203039);border:1px solid var(--divider-color,#ced8d8);background:var(--card-background-color,#fff);border-radius:11px;padding:10px 13px;font:inherit;font-size:12px;min-height:39px}
+button:focus-visible,input:focus-visible,select:focus-visible,.map:focus-visible{outline:2px solid var(--primary-color,#218575);outline-offset:2px}
+.primary{background:var(--primary-color,#247e6b);color:var(--text-primary-color,#fff);border-color:transparent;font-weight:650}.delete{color:var(--error-color,#bd4c40)}
+.hint{font-size:12px;color:var(--secondary-text-color,#667a7b);line-height:1.55}
+.items{display:grid;gap:10px}.item{border:1px solid var(--divider-color,#d6ddda);background:var(--card-background-color,#fff);padding:13px;border-radius:13px;display:grid;gap:10px}.item.selected{border-color:var(--primary-color,#318573)}
+.item-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.item-head strong{font-size:13px}.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}.item-grid .wide{grid-column:1/-1}
+.selector-fallback{display:none}.native-missing .selector-fallback{display:block}.native-missing ha-selector{display:none}
+.map{border:1px solid var(--divider-color,#d6ddda);border-radius:13px;position:relative;cursor:crosshair;overflow:hidden;background:var(--secondary-background-color,#e8ecec);line-height:0;isolation:isolate}
+.map svg,.map img{width:100%;height:auto;display:block}.map svg .room{fill:#e7e9e8}.map svg .room-alt{fill:#dce3e1}.map svg .wall{stroke:#93a3a7;stroke-width:8;fill:none}.map svg .furn{stroke:#93a3a7;stroke-width:2;fill:#d6dddd}.map svg .thin,.map svg .door{stroke:#93a3a7;stroke-width:2;fill:none}.map svg .room-label,.map svg .micro{fill:#56656a;font-size:14px;text-anchor:middle}.map svg .tile{stroke:#bac7c7}
+.pin{position:absolute;display:grid;place-items:center;transform:translate(-50%,-50%);width:27px;height:27px;border-radius:50%;background:#41535b;color:#fff;border:2px solid #fff;box-shadow:0 2px 6px #0004;font-size:11px;line-height:1;pointer-events:none}.pin.selected{background:#f1ac54;outline:3px solid #e9a34f66}
+.image-empty{border:1px dashed var(--divider-color,#bacac7);border-radius:11px;padding:24px 12px;text-align:center;color:var(--secondary-text-color,#65777a);font-size:12px}
+.scenes{display:grid;gap:9px}.sceneitem{border:1px solid var(--divider-color,#d6ddda);padding:12px;border-radius:11px;display:grid;gap:10px}.scene-head{display:flex;align-items:center;justify-content:space-between}
+.advanced{border:1px solid var(--divider-color,#d6ddda);border-radius:11px;padding:12px;display:grid;gap:9px}
+@media(max-width:480px){.nav button{padding:9px 8px;font-size:11px}.item-grid{grid-template-columns:1fr}.field{min-width:0}}
+`;
 
 const isValidEntity = (id, domain) => typeof id === 'string' && new RegExp(`^${domain}\\.[a-z0-9_]+$`).test(id);
 const coordinate = (v, defaultValue = 50) => Number.isFinite(Number(v)) ? Math.max(0, Math.min(100, Number(v))) : defaultValue;
@@ -177,50 +202,183 @@ class GlowFloorCard extends HTMLElement {
 }
 
 class GlowFloorCardEditor extends HTMLElement {
-  constructor(){super();this.attachShadow({mode:'open'});this._config=defaultConfig();this._selected=0;this._hass=null;}
-  set hass(value){this._hass=value;}
-  setConfig(raw){this._config=normalizeConfig(raw);this._render();}
+  constructor(){
+    super();this.attachShadow({mode:'open'});this._config=defaultConfig();
+    this._selected=0;this._tab='piantina';this._hass=null;this._helperRequested=false;
+  }
+  set hass(value){this._hass=value;this._syncNativeSelectors();}
+  setConfig(raw){this._config=normalizeConfig(raw);this._selected=Math.max(0,Math.min(this._selected,this._config.lights.length-1));this._render();}
+  connectedCallback(){this._ensureNativeSelectors();}
+  async _ensureNativeSelectors(){
+    if(this._helperRequested)return;
+    this._helperRequested=true;
+    try {
+      if(!customElements.get('ha-selector')){
+        const helpers=await window.loadCardHelpers?.();
+        await helpers?.importSelector?.();
+      }
+    } catch(error){console.debug('[GlowFloor] Home Assistant selector non disponibile:',error);}
+    this._syncNativeSelectors();
+  }
   _emit(){this.dispatchEvent(new CustomEvent('config-changed',{detail:{config:{...this._config}},bubbles:true,composed:true}));}
   _update(prop,value){this._config[prop]=value;this._emit();}
-  _editLight(index,prop,value){const lights=this._config.lights.map(x=>({...x}));lights[index][prop]=['x','y'].includes(prop)?coordinate(value):prop==='spread'?spillSize(value):value;this._config.lights=lights;this._emit();}
+  _editLight(index,prop,value){
+    const lights=this._config.lights.map(x=>({...x}));if(!lights[index])return;
+    lights[index][prop]=['x','y'].includes(prop)?coordinate(value):prop==='spread'?spillSize(value):value;
+    if(prop==='entity' && lights[index].name==='Nuova luce'){
+      lights[index].name=String(this._hass?.states?.[value]?.attributes?.friendly_name||value||'Nuova luce').slice(0,60);
+    }
+    this._config.lights=lights;this._emit();
+  }
+  _editScene(index,prop,value){
+    const scenes=this._config.scenes.map(x=>({...x}));if(!scenes[index])return;
+    scenes[index][prop]=value;
+    if(prop==='entity' && scenes[index].name==='Nuova scena')scenes[index].name=String(this._hass?.states?.[value]?.attributes?.friendly_name||value||'Nuova scena').slice(0,40);
+    this._config.scenes=scenes;this._emit();
+  }
+  _field(label,value,onChange,opts={}){
+    const wrap=document.createElement('label');wrap.className='field';
+    const text=document.createElement('span');text.textContent=label;wrap.append(text);
+    const input=document.createElement(opts.options?'select':'input');
+    if(opts.options){for(const [val,name] of opts.options){const opt=document.createElement('option');opt.value=val;opt.textContent=name;input.append(opt);}}
+    else{input.type=opts.type||'text';if(opts.placeholder)input.placeholder=opts.placeholder;if(opts.min!==undefined)input.min=opts.min;if(opts.max!==undefined)input.max=opts.max;if(opts.maxlength)input.maxLength=opts.maxlength;}
+    input.value=value??'';input.addEventListener('change',()=>onChange(input.value,input));wrap.append(input);return wrap;
+  }
+  _hint(text){const item=document.createElement('div');item.className='hint';item.textContent=text;return item;}
+  _selector(domain,value,label,onChange){
+    const wrap=document.createElement('div');wrap.className='field entity-select';
+    const native=document.createElement('ha-selector');native.setAttribute('aria-label',label);
+    native._glowfloor={domain,value,label};
+    native.addEventListener('value-changed',event=>{
+      if(!event.detail || !Object.hasOwn(event.detail,'value'))return;
+      const next=event.detail.value;
+      if(typeof next==='string' && next!==value)onChange(next);
+      else if((next===null || next==='') && value)onChange('');
+    });
+    wrap.append(native);
+    const fallback=this._field(label,value,(text)=>onChange(text),{placeholder:domain==='image'?'/local/floorplans/casa.png':`${domain}.nome`});
+    fallback.classList.add('selector-fallback');wrap.append(fallback);
+    if(!customElements.get('ha-selector'))wrap.classList.add('native-missing');
+    this._setNativeSelector(native);return wrap;
+  }
+  _setNativeSelector(el){
+    const data=el._glowfloor;if(!data || !customElements.get('ha-selector'))return;
+    const {domain,value,label}=data;
+    el.hass=this._hass;el.selector=domain==='image'?{image:{}}:{entity:{filter:{domain}}};
+    el.label=label;el.value=value || '';
+  }
+  _syncNativeSelectors(){
+    if(!this.shadowRoot)return;
+    this.shadowRoot.querySelectorAll('ha-selector').forEach(el=>{
+      this._setNativeSelector(el);
+      if(customElements.get('ha-selector'))el.parentElement?.classList.remove('native-missing');
+    });
+  }
   _render(){
     const root=this.shadowRoot;
-    root.innerHTML=`<style>${EDITOR_STYLE}</style><div class="editor"><div class="section-title">Card settings</div><div class="row"><label class="field">Titolo (facoltativo)<input data-prop="title" maxlength="120" placeholder="Lascia vuoto per nasconderlo"></label><label class="field">Theme<select data-prop="theme_mode"><option value="auto">Follow Home Assistant</option><option value="dark">Dark</option><option value="light">Light</option></select></label></div><label class="field">Testo superiore (facoltativo)<input data-prop="eyebrow" maxlength="100" placeholder="Lascia vuoto per nasconderlo"></label><label class="field">Sottotitolo (facoltativo)<input data-prop="subtitle" maxlength="200" placeholder="Lascia vuoto per nasconderlo"></label><span class="hint">Svuota tutti e tre i campi per nascondere le scritte in alto. Contatore luci e comandi rimangono visibili.</span><label class="field"><span>Illuminazione diffusa sulla piantina</span><select data-prop="spill_enabled"><option value="true">Attiva</option><option value="false">Disattiva</option></select></label><label class="field">Floorplan image path (optional)<input data-prop="image" placeholder="/local/floorplans/home.png"></label><span class="hint">Use an image stored in Home Assistant's /config/www directory. Empty = sample floorplan. For privacy, prefer /local/... over external URLs.</span><div class="section-title">Light markers</div><div class="items"></div><button type="button" class="add-light">+ Add light</button><div class="section-title">Position markers</div><div class="map" role="group" aria-label="Click floorplan to position selected light"></div><div class="hint">Select a light above, then click or tap the floorplan to move it. Positions are saved as percentages.</div><div class="section-title">Optional scenes (up to 3)</div><div class="scenes"></div><button type="button" class="add-scene">+ Add scene</button></div>`;
-    root.querySelectorAll('[data-prop]').forEach(input=>{const key=input.dataset.prop;input.value=key==='spill_enabled'?String(this._config.spill_enabled):(this._config[key]||'');input.addEventListener('change',()=>{if(key==='image' && input.value && !validImage(input.value)){input.setCustomValidity('Use /local/... or https://...');input.reportValidity();return;}input.setCustomValidity('');this._update(key,key==='spill_enabled'?input.value==='true':input.value);if(key==='image')this._renderMap();});});
-    root.querySelector('.add-light').addEventListener('click',()=>{this._config.lights=[...this._config.lights,{entity:'',name:'New light',x:50,y:50,spread:32}];this._selected=this._config.lights.length-1;this._emit();this._renderItems();this._renderMap();});
-    root.querySelector('.add-scene').addEventListener('click',()=>{if(this._config.scenes.length>=MAX_SCENES)return;this._config.scenes=[...this._config.scenes,{entity:'',name:'New scene'}];this._emit();this._renderScenes();});
-    this._renderItems();this._renderMap();this._renderScenes();
+    root.innerHTML=`<style>${EDITOR_STYLE}</style><div class="editor"><nav class="nav" aria-label="Sezioni GlowFloor"></nav><div class="section" data-tab="piantina"></div><div class="section" data-tab="luci"></div><div class="section" data-tab="scene"></div><div class="section" data-tab="aspetto"></div><div class="section" data-tab="avanzate"></div></div>`;
+    const nav=root.querySelector('.nav');
+    for(const [tab,label] of [['piantina','Piantina'],['luci','Luci'],['scene','Scene'],['aspetto','Aspetto'],['avanzate','Avanzate']]){
+      const button=document.createElement('button');button.type='button';button.textContent=label;button.dataset.tab=tab;button.addEventListener('click',()=>this._setTab(tab));nav.append(button);
+    }
+    this._renderImage();this._renderLights();this._renderScenes();this._renderAppearance();this._renderAdvanced();this._setTab(this._tab);this._syncNativeSelectors();this._ensureNativeSelectors();
   }
-  _renderItems(){
-    const wrap=this.shadowRoot.querySelector('.items');wrap.replaceChildren();
-    this._config.lights.forEach((l,index)=>{
-      const box=document.createElement('div');box.className=`item ${this._selected===index?'selected':''}`;
-      const head=document.createElement('div');head.className='item-head';
-      const choose=document.createElement('button');choose.type='button';choose.textContent=`${this._selected===index?'● ':'○ '}Marker ${index+1}`;choose.addEventListener('click',()=>{this._selected=index;this._renderItems();this._renderMap();});
-      const del=document.createElement('button');del.type='button';del.className='delete';del.textContent='Remove';del.addEventListener('click',()=>{this._config.lights=this._config.lights.filter((_,i)=>i!==index);this._selected=Math.min(this._selected,Math.max(0,this._config.lights.length-1));this._emit();this._renderItems();this._renderMap();});
-      head.append(choose,del);box.append(head);
-      for(const [label,key,type] of [['Light entity','entity','text'],['Label','name','text'],['X %','x','number'],['Y %','y','number'],['Area luce %','spread','number']]){
-        const outer=document.createElement('label');outer.className='field';outer.textContent=label;const inp=document.createElement('input');inp.type=type;inp.value=l[key];if(type==='number'){inp.min=key==='spread'?'12':'0';inp.max=key==='spread'?'75':'100';inp.step='0.1';}else if(key==='entity')inp.placeholder='light.living_room';
-        inp.addEventListener('change',()=>{this._editLight(index,key,inp.value);if(['x','y'].includes(key))this._renderMap();});outer.append(inp);box.append(outer);
-      }wrap.append(box);
-    });
+  _setTab(tab){
+    this._tab=tab;
+    this.shadowRoot.querySelectorAll('.nav button').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.tab===tab)));
+    this.shadowRoot.querySelectorAll('.section').forEach(section=>section.hidden=section.dataset.tab!==tab);
+  }
+  _renderImage(){
+    const section=this.shadowRoot.querySelector('.section[data-tab="piantina"]');section.replaceChildren();
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Immagine della piantina';section.append(heading);
+    section.append(this._hint('Seleziona o carica un’immagine con Home Assistant. Le immagini caricate sono conservate nella tua istanza, non su GitHub.'));
+    section.append(this._selector('image',this._config.image||'','Scegli o carica immagine',value=>{
+      if(value && !validImage(value))return;
+      this._update('image',value||null);this._renderMap();
+    }));
+    const reset=document.createElement('button');reset.type='button';reset.textContent='Usa piantina di esempio';reset.addEventListener('click',()=>{this._update('image',null);this._renderImage();});section.append(reset);
+    const title=document.createElement('div');title.className='section-title';title.textContent='Posiziona le luci';section.append(title);
+    section.append(this._hint('Prima aggiungi una luce nella sezione Luci; poi selezionala sotto e tocca la piantina per posizionare il punto luminoso.'));
+    const chooser=document.createElement('div');chooser.className='field';const select=document.createElement('select');select.setAttribute('aria-label','Luce da posizionare');
+    if(!this._config.lights.length){const option=document.createElement('option');option.textContent='Aggiungi prima una luce';select.append(option);select.disabled=true;}
+    this._config.lights.forEach((light,index)=>{const opt=document.createElement('option');opt.value=String(index);opt.textContent=light.name||light.entity||`Luce ${index+1}`;select.append(opt);});
+    select.value=String(this._selected);select.addEventListener('change',()=>{this._selected=Number(select.value);this._renderMap();});chooser.append(select);section.append(chooser);
+    const map=document.createElement('div');map.className='map';map.tabIndex=0;map.setAttribute('role','group');map.setAttribute('aria-label','Piantina: tocca per posizionare la luce');section.append(map);
+    this._renderMap();
   }
   _renderMap(){
-    const box=this.shadowRoot.querySelector('.map');box.replaceChildren();
-    if(this._config.image){const img=document.createElement('img');img.src=this._config.image;img.alt='Floorplan';img.referrerPolicy='no-referrer';box.append(img);}else box.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);
-    this._config.lights.forEach((l,index)=>{const p=document.createElement('span');p.className=`pin ${index===this._selected?'selected':''}`;p.style.left=`${l.x}%`;p.style.top=`${l.y}%`;p.textContent=String(index+1);p.title=l.name;box.append(p);});
-    box.onclick=ev=>{if(!this._config.lights.length)return;const rect=box.getBoundingClientRect();if(!rect.width||!rect.height)return;this._editLight(this._selected,'x',Math.round(((ev.clientX-rect.left)/rect.width)*1000)/10);this._editLight(this._selected,'y',Math.round(((ev.clientY-rect.top)/rect.height)*1000)/10);this._renderItems();this._renderMap();};
+    const box=this.shadowRoot.querySelector('.map');if(!box)return;
+    box.replaceChildren();
+    if(this._config.image){const img=document.createElement('img');img.src=this._config.image;img.alt='Piantina';img.referrerPolicy='no-referrer';img.onerror=()=>{box.dataset.imageError='true';};box.append(img);}else box.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);
+    this._config.lights.forEach((light,index)=>{const p=document.createElement('span');p.className=`pin ${index===this._selected?'selected':''}`;p.style.left=`${light.x}%`;p.style.top=`${light.y}%`;p.textContent=String(index+1);p.title=light.name;box.append(p);});
+    box.onclick=event=>{
+      if(!this._config.lights[this._selected])return;
+      const rect=box.getBoundingClientRect();if(!rect.width||!rect.height)return;
+      const x=coordinate(Math.round(((event.clientX-rect.left)/rect.width)*1000)/10);
+      const y=coordinate(Math.round(((event.clientY-rect.top)/rect.height)*1000)/10);
+      const lights=this._config.lights.map(light=>({...light}));lights[this._selected]={...lights[this._selected],x,y};this._config.lights=lights;this._emit();this._renderMap();
+    };
+  }
+  _renderLights(){
+    const section=this.shadowRoot.querySelector('.section[data-tab="luci"]');section.replaceChildren();
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Luci della piantina';section.append(heading);
+    section.append(this._hint('Cerca una luce nell’elenco di Home Assistant e scegli l’entità corretta. Il nome visualizzato può essere personalizzato.'));
+    const wrap=document.createElement('div');wrap.className='items';section.append(wrap);
+    this._config.lights.forEach((light,index)=>{
+      const box=document.createElement('div');box.className=`item ${this._selected===index?'selected':''}`;
+      const head=document.createElement('div');head.className='item-head';
+      const choose=document.createElement('button');choose.type='button';choose.textContent=`${this._selected===index?'● ':'○ '}Luce ${index+1}`;choose.addEventListener('click',()=>{this._selected=index;this._renderLights();this._renderImage();});
+      const del=document.createElement('button');del.type='button';del.className='delete';del.textContent='Rimuovi';del.addEventListener('click',()=>{this._config.lights=this._config.lights.filter((_,i)=>i!==index);this._selected=Math.min(this._selected,Math.max(0,this._config.lights.length-1));this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});head.append(choose,del);box.append(head);
+      const grid=document.createElement('div');grid.className='item-grid';
+      const ent=this._selector('light',light.entity,'Entità luce',value=>{this._editLight(index,'entity',value);this._renderLights();this._renderImage();});ent.classList.add('wide');grid.append(ent);
+      const name=this._field('Nome del pulsante',light.name,value=>{this._editLight(index,'name',value);this._renderImage();},{maxlength:60});name.classList.add('wide');grid.append(name);box.append(grid);wrap.append(box);
+    });
+    if(!this._config.lights.length)section.append(this._hint('Nessuna luce aggiunta. Inizia con “Aggiungi luce”.'));
+    const add=document.createElement('button');add.type='button';add.className='primary';add.textContent='+ Aggiungi luce';add.disabled=this._config.lights.length>=60;add.addEventListener('click',()=>{if(this._config.lights.length>=60)return;this._config.lights=[...this._config.lights,{entity:'',name:'Nuova luce',x:50,y:50,spread:32}];this._selected=this._config.lights.length-1;this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});section.append(add);
   }
   _renderScenes(){
-    const wrap=this.shadowRoot.querySelector('.scenes');wrap.replaceChildren();
+    const section=this.shadowRoot.querySelector('.section[data-tab="scene"]');section.replaceChildren();
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Scene rapide';section.append(heading);
+    section.append(this._hint('Facoltative: fino a tre scene Home Assistant. Scegli l’entità e personalizza il testo del pulsante.'));
+    const wrap=document.createElement('div');wrap.className='scenes';section.append(wrap);
     this._config.scenes.forEach((scene,index)=>{
-      const row=document.createElement('div');row.className='sceneitem';
-      for(const key of ['entity','name']){const input=document.createElement('input');input.value=scene[key];input.placeholder=key==='entity'?'scene.movie':'Nome pulsante (es. Cinema)';input.setAttribute('aria-label',key==='name'?`Scene ${index+1} label`:`Scene ${index+1} entity`);input.addEventListener('change',()=>{this._config.scenes=this._config.scenes.map((s,i)=>i===index?{...s,[key]:input.value}:s);this._emit();});row.append(input);}
-      const del=document.createElement('button');del.type='button';del.className='delete';del.textContent='×';del.title='Remove scene';del.addEventListener('click',()=>{this._config.scenes=this._config.scenes.filter((_,i)=>i!==index);this._emit();this._renderScenes();});row.append(del);wrap.append(row);
+      const box=document.createElement('div');box.className='sceneitem';
+      const head=document.createElement('div');head.className='scene-head';const bold=document.createElement('strong');bold.textContent=`Scena ${index+1}`;
+      const remove=document.createElement('button');remove.type='button';remove.className='delete';remove.textContent='Rimuovi';remove.addEventListener('click',()=>{this._config.scenes=this._config.scenes.filter((_,i)=>i!==index);this._emit();this._renderScenes();});head.append(bold,remove);box.append(head);
+      box.append(this._selector('scene',scene.entity,'Entità scena',value=>{this._editScene(index,'entity',value);this._renderScenes();}));
+      box.append(this._field('Nome del pulsante',scene.name,value=>this._editScene(index,'name',value),{maxlength:40}));wrap.append(box);
     });
-    const add=this.shadowRoot.querySelector('.add-scene');
-    add.disabled=this._config.scenes.length>=MAX_SCENES;
-    add.title=add.disabled?'Maximum 3 scenes per card':'';
+    const add=document.createElement('button');add.type='button';add.className='primary';add.textContent='+ Aggiungi scena';add.disabled=this._config.scenes.length>=MAX_SCENES;
+    add.addEventListener('click',()=>{if(this._config.scenes.length>=MAX_SCENES)return;this._config.scenes=[...this._config.scenes,{entity:'',name:'Nuova scena'}];this._emit();this._renderScenes();});section.append(add);
+  }
+  _renderAppearance(){
+    const section=this.shadowRoot.querySelector('.section[data-tab="aspetto"]');section.replaceChildren();
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Aspetto della card';section.append(heading);
+    section.append(this._field('Titolo (facoltativo)',this._config.title,value=>this._update('title',value),{maxlength:120}));
+    section.append(this._field('Testo superiore (facoltativo)',this._config.eyebrow,value=>this._update('eyebrow',value),{maxlength:100}));
+    section.append(this._field('Sottotitolo (facoltativo)',this._config.subtitle,value=>this._update('subtitle',value),{maxlength:200}));
+    section.append(this._hint('Lascia vuoti tutti e tre i campi per nascondere le scritte superiori. Contatore e pulsanti restano visibili.'));
+    section.append(this._field('Modalità colore',this._config.theme_mode,value=>this._update('theme_mode',value),{options:[['auto','Automatica (Home Assistant)'],['dark','Scura'],['light','Chiara']]}));
+    section.append(this._field('Illuminazione diffusa',String(this._config.spill_enabled),value=>this._update('spill_enabled',value==='true'),{options:[['true','Attivata'],['false','Disattivata']]}));
+  }
+  _renderAdvanced(){
+    const section=this.shadowRoot.querySelector('.section[data-tab="avanzate"]');section.replaceChildren();
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Impostazioni avanzate';section.append(heading);
+    section.append(this._hint('Le coordinate si impostano più facilmente dalla sezione Piantina. Modificale qui soltanto se necessario.'));
+    this._config.lights.forEach((light,index)=>{
+      const group=document.createElement('div');group.className='advanced';
+      const title=document.createElement('strong');title.textContent=light.name||`Luce ${index+1}`;group.append(title);
+      const row=document.createElement('div');row.className='item-grid';
+      for(const [label,key,min,max] of [['Posizione X %','x',0,100],['Posizione Y %','y',0,100],['Raggio luce %','spread',12,75]]){
+        row.append(this._field(label,light[key],value=>{this._editLight(index,key,value);this._renderMap();},{type:'number',min,max}));
+      }
+      group.append(row);section.append(group);
+    });
+    section.append(this._hint('Percorso immagine facoltativo, per chi usa file in /config/www (URL /local/...). Evita URL esterni per planimetrie private.'));
+    section.append(this._field('Percorso o URL immagine',this._config.image||'',(value,input)=>{
+      if(value && !validImage(value)){input.setCustomValidity('Usa /local/... oppure un URL https valido.');input.reportValidity();return;}
+      input.setCustomValidity('');this._update('image',value||null);this._renderImage();
+    },{placeholder:'/local/floorplans/casa.png'}));
   }
 }
 
