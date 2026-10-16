@@ -270,3 +270,19 @@ test('areas and marker sizes remain independent and existing values persist',()=
   assert.equal(normalizeConfig(cfg).lights[0].spread,70);
   assert.match(source,/if\(!sameOverlays\)this\._rebuildOverlays\(\)/);
 });
+
+
+test('light label visibility defaults to interaction and supports explicit modes',()=>{
+  assert.equal(normalizeConfig({}).label_mode,'interaction');
+  assert.equal(normalizeConfig({label_mode:'always'}).label_mode,'always');
+  assert.equal(normalizeConfig({label_mode:'never'}).label_mode,'never');
+  assert.equal(normalizeConfig({label_mode:'bad'}).label_mode,'interaction');
+});
+
+test('name labels are positioned outside the marker layout and remain accessible',()=>{
+  assert.match(source,/\.marker-name\{position:absolute/);
+  assert.match(source,/data-label-mode="always"/);
+  assert.match(source,/data-label-mode="never"/);
+  assert.match(source,/button\.setAttribute\('aria-label'/);
+  assert.match(source,/Solo durante l’interazione/);
+});

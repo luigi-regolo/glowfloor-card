@@ -18,6 +18,7 @@ GlowFloor è una card personalizzata per le dashboard di Home Assistant. Può mo
 - **Intestazione facoltativa:** testo superiore, titolo e sottotitolo possono essere modificati singolarmente o lasciati vuoti. Se tutti sono vuoti, rimangono soltanto i comandi in alto.
 - **Tema automatico, chiaro o scuro:** modalità `auto`, `light` e `dark`.
 - **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile oppure selezionabile dalla libreria multimediale di Home Assistant e posizionamento dei marker con un tocco, senza YAML.
+- **Etichette discrete:** i nomi delle luci appaiono soltanto durante l’interazione (impostazione predefinita). Nell'editor Aspetto si può scegliere di mostrarli sempre o nasconderli. Su dispositivi touch, il nome appare brevemente dopo il tocco; i pulsanti restano accessibili anche senza etichetta visibile.
 - **Dimensione dei marker personalizzabile:** controllo generale da 32 a 76 px nella sezione Aspetto e dimensione facoltativa per ogni luce in Luci → Altre opzioni. Anche i marker piccoli mantengono un’area di interazione ampia almeno 44 px.
 - **Layout adattivo:** utilizzabile su dashboard desktop e mobili.
 - **Nessun servizio esterno necessario:** la card non richiede account cloud, librerie caricate da CDN o servizi di analisi.

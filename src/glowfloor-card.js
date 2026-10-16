@@ -32,9 +32,14 @@ const STYLE = `
 :host([data-theme="dark"]) .spill{mix-blend-mode:screen}
 :host([data-theme="light"]) .spill{filter:blur(4px)}
 .plan::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 48%,#00000012 100%)}.floor,.floor-image{width:100%;height:auto;display:block}.floor .room{fill:var(--gf-room)}.floor .room-alt{fill:var(--gf-room2)}.floor .wall{stroke:var(--gf-wall);stroke-width:8;fill:none}.floor .furn{stroke:var(--gf-furn);stroke-width:2.2;fill:var(--gf-furn-fill)}.floor .thin,.floor .door{stroke:var(--gf-furn);stroke-width:2;fill:none}.floor .door{stroke-dasharray:4 4}.floor .room-label,.floor .micro{font-size:15px;letter-spacing:3px;fill:var(--gf-muted);font-weight:700;text-anchor:middle}.floor .micro{font-size:10px;letter-spacing:2px}.floor .tile{stroke:var(--gf-furn);stroke-width:1;opacity:.24}
-.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;min-width:44px;color:var(--gf-ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;line-height:1.15;max-width:130px;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px);border-radius:50%;background:var(--gf-off);border:1.5px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 4px 16px #02070848,inset 0 1px 1px #ffffff18;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:"";position:absolute;inset:-5px;border:1px solid var(--gf-off-line);opacity:.35;border-radius:50%;pointer-events:none}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4);display:block}.marker.on .orb{background:linear-gradient(145deg,#ffe4ad,#f4ad55);border-color:#fff0cb;color:#583713;box-shadow:0 0 0 5px #efb8711e,0 0 25px 9px #f5ad6270,0 7px 24px #02090a35}.marker.on .orb::before{border-color:#ffd499;opacity:.85;box-shadow:0 0 16px #f9b46e88}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible,.theme button:focus-visible{outline:3px solid #74b1ff;outline-offset:4px}.marker-name{border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(10px);border-radius:999px;padding:5px 8px;display:flex;align-items:center;gap:6px;max-width:120px;font-size:10px;font-weight:700;line-height:1.1;box-shadow:0 3px 12px #00000023}.marker-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.marker-name::before{content:"";flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--gf-off-line)}.marker.on .marker-name::before{background:#ffb867;box-shadow:0 0 7px #ffb867}
+.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,32px));height:max(44px,var(--gf-marker-size,32px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px);border-radius:50%;background:var(--gf-off);border:1.5px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 4px 16px #02070848,inset 0 1px 1px #ffffff18;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:"";position:absolute;inset:-5px;border:1px solid var(--gf-off-line);opacity:.35;border-radius:50%;pointer-events:none}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4);display:block}.marker.on .orb{background:linear-gradient(145deg,#ffe4ad,#f4ad55);border-color:#fff0cb;color:#583713;box-shadow:0 0 0 5px #efb8711e,0 0 25px 9px #f5ad6270,0 7px 24px #02090a35}.marker.on .orb::before{border-color:#ffd499;opacity:.85;box-shadow:0 0 16px #f9b46e88}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible,.theme button:focus-visible{outline:3px solid #74b1ff;outline-offset:4px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.marker-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.marker.label-visible{z-index:5}
+.marker.label-visible .marker-name,:host([data-label-mode="always"]) .marker-name{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .14s ease,transform .14s ease}
+:host([data-label-mode="never"]) .marker-name{display:none}
+
 .scene-dock[hidden]{display:none}.scene-dock{border-top:1px solid var(--gf-line);margin-top:16px;padding-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.dock-label{font-size:10px;letter-spacing:1.5px;font-weight:750;color:var(--gf-muted);margin-right:6px;text-transform:uppercase}.scene{border:1px solid var(--gf-chip-border);background:var(--gf-chip);border-radius:999px;color:var(--gf-ink);font:inherit;font-size:11px;padding:10px 13px;cursor:pointer;white-space:nowrap}.error{margin-top:12px;font-size:12px;color:#d56b59}
-@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.theme button{font-size:10px;padding:6px 8px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:8px;padding:4px 5px;max-width:74px}.orb{width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px)}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
+@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.theme button{font-size:10px;padding:6px 8px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px)}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.orb,.spill{transition:none!important}}
 `;
 
@@ -124,7 +129,7 @@ const resolveFloorplanImage = async (hass,value,cache={}) => {
   cache.pendingId=id;cache.pending=pending;
   try{return await pending;}finally{if(cache.pending===pending){delete cache.pending;delete cache.pendingId;}}
 };
-const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 32, lights: [] });
+const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 32, label_mode: 'interaction', lights: [] });
 const normalizeConfig = (raw) => {
   if (!raw || typeof raw !== 'object') throw new Error('GlowFloor: invalid configuration.');
   return {
@@ -135,6 +140,7 @@ const normalizeConfig = (raw) => {
     theme_mode: ['auto', 'dark', 'light'].includes(raw.theme_mode) ? raw.theme_mode : 'auto',
     spill_enabled: raw.spill_enabled !== false,
     marker_size: markerSize(raw.marker_size),
+    label_mode: ['interaction','always','never'].includes(raw.label_mode) ? raw.label_mode : 'interaction',
     image: normalizeImage(raw.image),
     lights: (Array.isArray(raw.lights) ? raw.lights : []).slice(0, 60).filter(item => item && typeof item === 'object').map(item => ({
       entity: typeof item.entity === 'string' ? item.entity.trim() : '',
@@ -159,12 +165,12 @@ class GlowFloorCard extends HTMLElement {
     this._hass = null;
     this._markerElements = [];
     this._spillElements = [];
-    this._imageCache={};this._imageRequest=0;
+    this._imageCache={};this._imageRequest=0;this._labelTimer=null;this._lastPointerType=null;
     this._media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     this._onMedia = () => this._updateTheme();
     this._media?.addEventListener?.('change',this._onMedia);
   }
-  disconnectedCallback(){ this._media?.removeEventListener?.('change',this._onMedia); }
+  disconnectedCallback(){ this._media?.removeEventListener?.('change',this._onMedia);this._clearLabels(); }
   setConfig(raw){
     const next=normalizeConfig(raw);
     const prev=this._config;
@@ -181,6 +187,7 @@ class GlowFloorCard extends HTMLElement {
     }else this._render();
   }
   _rebuildOverlays(){
+    this._clearLabels();
     const c=this._config,plan=this.shadowRoot.querySelector('.plan');
     if(!plan)return;
     plan.querySelectorAll('.marker,.spill').forEach(el=>el.remove());
@@ -191,16 +198,22 @@ class GlowFloorCard extends HTMLElement {
       spill.setAttribute('aria-hidden','true');plan.append(spill);return spill;
     });
     this._markerElements=c.lights.map((light,index)=>{
-      const button=document.createElement('button');button.type='button';button.className='marker';button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;button.title=light.name;
+      const button=document.createElement('button');button.type='button';button.className='marker';button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;
       button.innerHTML=`<span class="orb">${BULB_SVG}</span><span class="marker-name"><span></span></span>`;
       button.querySelector('.marker-name span').textContent=light.name;
-      button.addEventListener('click',()=>{
+      button.addEventListener('click',event=>{
         if(button.dataset.suppressClick==='true'){button.dataset.suppressClick='false';return;}
+        this._showLabel(index,this._lastPointerType==='touch'||event.detail===0);
         this._toggle(light.entity);
       });
+      button.addEventListener('pointerenter',ev=>{if(ev.pointerType!=='touch')this._showLabel(index);});
+      button.addEventListener('pointerleave',ev=>{if(ev.pointerType!=='touch')this._clearLabels();});
+      button.addEventListener('focus',()=>this._showLabel(index));
+      button.addEventListener('blur',()=>this._clearLabels());
       button.addEventListener('contextmenu',event=>{event.preventDefault();this._moreInfo(light.entity);});
       let holdTimer=null;
       button.addEventListener('pointerdown',ev=>{
+        this._lastPointerType=ev.pointerType;
         if(ev.button!==0)return;
         holdTimer=setTimeout(()=>{holdTimer=null;button.dataset.suppressClick='true';this._moreInfo(light.entity);},600);
       });
@@ -208,6 +221,17 @@ class GlowFloorCard extends HTMLElement {
       for(const evt of ['pointerup','pointercancel','pointerleave'])button.addEventListener(evt,clearHold);
       plan.append(button);return button;
     });
+  }
+  _clearLabels(){
+    if(this._labelTimer!=null){clearTimeout(this._labelTimer);this._labelTimer=null;}
+    for(const button of this._markerElements)button.classList.remove('label-visible');
+  }
+  _showLabel(index,temporary=false){
+    if(this._config?.label_mode!=='interaction')return;
+    this._clearLabels();
+    const button=this._markerElements[index];if(!button)return;
+    button.classList.add('label-visible');
+    if(temporary)this._labelTimer=setTimeout(()=>{button.classList.remove('label-visible');this._labelTimer=null;},1800);
   }
   _refreshScenes(){
     const c=this._config,root=this.shadowRoot;
@@ -220,6 +244,8 @@ class GlowFloorCard extends HTMLElement {
   }
   _refreshCardConfig(){
     const c=this._config, root=this.shadowRoot;
+    this.dataset.labelMode=c.label_mode;
+    if(c.label_mode!=='interaction')this._clearLabels();
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
     if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
@@ -230,7 +256,7 @@ class GlowFloorCard extends HTMLElement {
       if(button){
         button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;
         button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);
-        button.querySelector('.marker-name span').textContent=light.name;button.title=light.name;
+        button.querySelector('.marker-name span').textContent=light.name;
       }
       if(spill){spill.style.left=`${light.x}%`;spill.style.top=`${light.y}%`;spill.style.width=`${light.spread}%`;}
     });
@@ -250,6 +276,7 @@ class GlowFloorCard extends HTMLElement {
     const c=this._config;
     if(!c)return;
     const root=this.shadowRoot;
+    this.dataset.labelMode=c.label_mode;
     root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 lights on</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Turn all off</span></button><div class="theme" role="group" aria-label="Theme mode"><button type="button" data-mode="auto">Auto</button><button type="button" data-mode="dark">Dark</button><button type="button" data-mode="light">Light</button></div></div></div><div class="plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
@@ -305,7 +332,7 @@ class GlowFloorCard extends HTMLElement {
         spill.style.setProperty('--gf-light-strength',String(intensity));
       }
       button.setAttribute('aria-label',`${light.name}: ${!available?'unavailable':active?'on':'off'}`);
-      button.title=`${light.name} · ${!available?'unavailable':active?'on':'off'}`;
+      // The accessible label is sufficient; avoid duplicate native browser tooltips.
     });
     this.shadowRoot.querySelector('.count').textContent=`${on} ${on===1?'light':'lights'} on`;
     this.shadowRoot.querySelector('.all-off').disabled=on===0;
@@ -541,6 +568,7 @@ class GlowFloorCardEditor extends HTMLElement {
     const limits=document.createElement('div');limits.className='size-limits';limits.innerHTML='<span>Piccoli · 32 px</span><span>Grandi · 76 px</span>';sizeBox.append(limits);
     section.append(sizeBox);
     section.append(this._hint('La dimensione si applica a tutte le luci. In Avanzate puoi scegliere una dimensione differente per ciascun marker.'));
+    section.append(this._field('Nomi delle luci',this._config.label_mode,value=>this._update('label_mode',value),{options:[['interaction','Solo durante l’interazione'],['always','Sempre visibili'],['never','Sempre nascosti']]}));
     section.append(this._field('Illuminazione diffusa',String(this._config.spill_enabled),value=>this._update('spill_enabled',value==='true'),{options:[['true','Attivata'],['false','Disattivata']]}));
   }
   _renderAdvanced(){
