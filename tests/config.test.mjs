@@ -95,3 +95,7 @@ test('RGB light spill colors are sanitized before insertion in CSS',()=>{
   assert.equal(spillRgb(['1; background:red',0,0]),'255,194,116');
   assert.equal(spillRgb(undefined),'255,194,116');
 });
+
+test('title color is explicitly set to the GlowFloor theme ink',()=>{
+  assert.match(source,/\.title\{color:var\(--gf-ink\);/);
+});
