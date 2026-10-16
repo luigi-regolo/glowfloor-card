@@ -17,7 +17,8 @@ GlowFloor è una card personalizzata per le dashboard di Home Assistant. Può mo
 - **Fino a tre scene facoltative:** l'utente sceglie le entità `scene.*` e il testo dei rispettivi pulsanti. Non esistono nomi obbligatori.
 - **Intestazione facoltativa:** testo superiore, titolo e sottotitolo possono essere modificati singolarmente o lasciati vuoti. Se tutti sono vuoti, rimangono soltanto i comandi in alto.
 - **Tema automatico, chiaro o scuro:** modalità `auto`, `light` e `dark`.
-- **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile o selezionabile dalla UI e posizionamento dei marker con un tocco, senza YAML.
+- **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile oppure selezionabile dalla libreria multimediale di Home Assistant e posizionamento dei marker con un tocco, senza YAML.
+- **Dimensione dei marker personalizzabile:** controllo generale da 32 a 76 px nella sezione Aspetto e dimensione facoltativa per ogni luce in Avanzate. Anche i marker piccoli mantengono un’area di interazione ampia almeno 44 px.
 - **Layout adattivo:** utilizzabile su dashboard desktop e mobili.
 - **Nessun servizio esterno necessario:** la card non richiede account cloud, librerie caricate da CDN o servizi di analisi.
 
@@ -32,6 +33,10 @@ Le immagini mostrano una piantina dimostrativa. È possibile utilizzare una prop
 ## Installazione con HACS (consigliata)
 
 GlowFloor Card si installa direttamente da **HACS**, aggiungendo l'indirizzo del repository GitHub come archivio personalizzato. Non è necessario scaricare file o compilare il codice.
+
+[![Apri GlowFloor in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
+
+Il pulsante apre GlowFloor in HACS attraverso My Home Assistant: **l’aggiunta dell’archivio e l’installazione richiedono comunque la conferma dell’utente**. Se il collegamento non è disponibile, utilizzare la procedura manuale riportata sotto.
 
 1. Aprire **HACS** in Home Assistant.
 2. Aprire il menu **⋮** in alto a destra e selezionare **Archivi personalizzati** (*Custom repositories*).
@@ -56,7 +61,7 @@ Per chi non utilizza HACS, è possibile copiare `dist/glowfloor-card.js` nella c
 ## Collegare la piantina, le luci e le scene (senza YAML)
 
 1. Installare GlowFloor da HACS, quindi aprire una dashboard in modalità modifica e scegliere **Aggiungi card → GlowFloor Card**.
-2. Nella sezione **Piantina**, utilizzare **Scegli o carica immagine**. Il selettore immagini di Home Assistant permette di scegliere o caricare un'immagine nell'istanza; in alternativa, usare la piantina dimostrativa. Le immagini personali **non vanno caricate su GitHub**. Il comportamento di caricamento dipende dalle funzionalità disponibili nella versione di Home Assistant in uso.
+2. Nella sezione **Piantina**, scegliere **Carica immagine dal dispositivo** per importare una nuova piantina oppure **Scegli immagine esistente** per usare un file già disponibile nei media di Home Assistant. In alternativa, usare la piantina dimostrativa. Le immagini personali **non vanno caricate su GitHub**. Il caricamento richiede che la libreria multimediale e la funzione di upload siano disponibili nella versione e configurazione di Home Assistant. Le immagini restano archiviate nell’istanza e non vengono pubblicate nel repository.
 3. Nella sezione **Luci**, premere **Aggiungi luce**. Nel campo **Entità luce** cercare e selezionare una luce dalla propria installazione Home Assistant (`light.*`); quindi impostare il nome mostrato sul pulsante. Ripetere per le altre luci. Se il selettore nativo non è disponibile, è previsto un campo manuale per inserire l'ID effettivo.
 4. Tornare in **Piantina**, scegliere dall'elenco la luce da posizionare e **toccare il punto desiderato**. Le coordinate vengono salvate automaticamente in percentuale.
 5. Nella sezione **Scene**, se desiderato, aggiungere fino a tre scene (`scene.*`). Selezionare l'entità dal selettore e cambiare il testo del pulsante. Non è obbligatorio configurare scene.
@@ -71,11 +76,11 @@ L'editor visuale è organizzato in cinque sezioni:
 
 | Sezione | Opzioni |
 | --- | --- |
-| **Piantina** | Caricamento/scelta immagine, piantina di esempio e posizionamento dei marker con un tocco |
+| **Piantina** | Caricamento dal dispositivo o scelta nei media di Home Assistant, piantina di esempio e posizionamento dei marker con un tocco |
 | **Luci** | Selettore Home Assistant filtrato alle `light.*`, nome personalizzato e aggiunta/rimozione luci |
 | **Scene** | Da 0 a 3 scene `scene.*` con nomi dei pulsanti personalizzabili |
-| **Aspetto** | Titolo, testo superiore, sottotitolo, tema automatico/chiaro/scuro e illuminazione diffusa |
-| **Avanzate** | Coordinate percentuali, ampiezza delle aree illuminate e inserimento manuale del percorso immagine |
+| **Aspetto** | Titolo, testo superiore, sottotitolo, tema automatico/chiaro/scuro, illuminazione diffusa e dimensione generale dei pulsanti (32–76 px) |
+| **Avanzate** | Coordinate percentuali, ampiezza delle aree illuminate, dimensione individuale facoltativa dei marker e inserimento manuale del percorso immagine |
 
 Tutti i testi dell'intestazione sono facoltativi. Lasciandoli vuoti, il contatore e i comandi rimangono visibili.
 
@@ -89,12 +94,14 @@ subtitle: ""
 image: /local/floorplans/casa.png
 theme_mode: auto
 spill_enabled: true
+marker_size: 52
 lights:
   - entity: light.soggiorno
     name: Soggiorno
     x: 27
     y: 44
     spread: 34
+    size: 62
   - entity: light.cucina
     name: Cucina
     x: 75
@@ -109,11 +116,11 @@ scenes:
     name: Buonanotte
 ```
 
-Le entità sono esempi: è necessario sostituirle con quelle effettivamente disponibili nella propria installazione. `x` e `y` rappresentano percentuali da 0 a 100 riferite alla piantina. `spread` regola l’area illuminata (12–75%, valore standard 32). `spill_enabled: false` disattiva tutte le illuminazioni diffuse mantenendo i marker.
+Le entità sono esempi: è necessario sostituirle con quelle effettivamente disponibili nella propria installazione. `x` e `y` rappresentano percentuali da 0 a 100 riferite alla piantina. `spread` regola l’area illuminata (12–75%, valore standard 32). `spill_enabled: false` disattiva tutte le illuminazioni diffuse mantenendo i marker. `marker_size` imposta la dimensione generale (32–76 px, predefinita 52). `size` è facoltativo per ogni luce e prevale sulla dimensione generale; omettendolo viene usata quella della card.
 
 ### Utilizzare una piantina personale
 
-Il metodo consigliato è **Scegli o carica immagine** nella sezione Piantina dell’editor (tramite Home Assistant). In alternativa, chi possiede già un file in `/config/www/floorplans/casa.png` può inserire `/local/floorplans/casa.png` nella sezione Avanzate. Evitare di pubblicare piantine reali, identificativi dei dispositivi o altri dati privati nei repository e nelle segnalazioni di problemi.
+Il metodo consigliato è **Carica immagine dal dispositivo** oppure **Scegli immagine esistente**, nella sezione Piantina dell’editor. GlowFloor usa il selettore media ufficiale e risolve il percorso dell’immagine tramite Home Assistant, senza caricare immagini su server esterni. In alternativa, chi possiede già un file in `/config/www/floorplans/casa.png` può inserire `/local/floorplans/casa.png` nella sezione Avanzate. Evitare di pubblicare piantine reali, identificativi dei dispositivi o altri dati privati nei repository e nelle segnalazioni di problemi.
 
 ## Comandi
 

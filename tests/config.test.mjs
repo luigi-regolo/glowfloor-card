@@ -11,8 +11,8 @@ const ctx={
   window:{customCards:[]},
   console,
 };
-runInNewContext(`${source}\nglobalThis.__test={normalizeConfig,isValidEntity,coordinate,validImage,spillRgb};`,ctx);
-const {normalizeConfig,isValidEntity,coordinate,validImage,spillRgb}=ctx.__test;
+runInNewContext(`${source}\nglobalThis.__test={normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage};`,ctx);
+const {normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage}=ctx.__test;
 
 test('registers the card and the UI editor',()=>{
   assert.ok(registry.has('glowfloor-card'));
@@ -113,10 +113,15 @@ test('native Home Assistant selectors filter the correct entity domains',()=>{
   const scene={_glowfloor:{domain:'scene',value:'scene.relax',label:'Entità scena'}};
   editor._setNativeSelector(scene);
   assert.equal(scene.selector.entity.filter.domain,'scene');
-  const image={_glowfloor:{domain:'image',value:'/api/image/serve/example/original',label:'Immagine'}};
-  editor._setNativeSelector(image);
-  assert.ok(Object.hasOwn(image.selector,'image'));
-  assert.equal(image.value,'/api/image/serve/example/original');
+  const upload={_glowfloor:{domain:'media-upload',value:null,label:'Carica immagine'}};
+  editor._setNativeSelector(upload);
+  assert.equal(upload.selector.media.image_upload,true);
+  assert.equal(upload.selector.media.accept[0],'image/*');
+  assert.equal(upload.required,false);
+  const existing={_glowfloor:{domain:'media-browse',value:{media_content_id:'media-source://image_upload/example'},label:'Scegli immagine'}};
+  editor._setNativeSelector(existing);
+  assert.equal(existing.selector.media.image_upload,false);
+  assert.equal(existing.value.media_content_id,'media-source://image_upload/example');
 });
 
 test('image selection accepts Home Assistant image-serving URL and blocks javascript URLs',()=>{
@@ -129,4 +134,70 @@ test('editor separates configuration tabs from their content panels',()=>{
   assert.match(source,/\.section\[data-tab=/);
   assert.match(source,/querySelectorAll\('\.nav button'\)/);
   assert.match(source,/\.section\[hidden\]\{display:none\}/);
+});
+
+
+test('Home Assistant media selectors support upload and existing images',()=>{
+  const value={media_content_id:'media-source://image_upload/abcdef',media_content_type:'image/png'};
+  const c=normalizeConfig({image:value});
+  assert.equal(c.image.media_content_id,value.media_content_id);
+  assert.equal(c.image.media_content_type,value.media_content_type);
+  assert.equal(imageContentId(c.image),value.media_content_id);
+  assert.equal(mediaPickerValue('/local/plan.png').media_content_id,'/local/plan.png');
+  assert.equal(normalizeImage({media_content_id:'javascript:alert(1)'}),null);
+  assert.equal(normalizeImage({media_content_id:'media-source://media_source/local/plan.jpg'}).media_content_type,'image/*');
+});
+
+test('uploaded media is resolved via Home Assistant WS and signed URL is cached',async()=>{
+  let calls=0;
+  const hass={callWS:async args=>{calls++;assert.equal(args.type,'media_source/resolve_media');assert.equal(args.media_content_id,'media-source://image_upload/example');return {url:'/api/media_proxy/test?authSig=token'};},hassUrl:path=>'https://ha.example'+path};
+  const config={media_content_id:'media-source://image_upload/example'};
+  const cache={};
+  const a=await resolveFloorplanImage(hass,config,cache);
+  const b=await resolveFloorplanImage(hass,config,cache);
+  assert.equal(a,'https://ha.example/api/media_proxy/test?authSig=token');
+  assert.equal(b,a);
+  assert.equal(calls,1);
+  assert.equal(await resolveFloorplanImage(hass,'/local/plan.png'), 'https://ha.example/local/plan.png');
+});
+
+test('editor typography inherits Home Assistant font tokens',()=>{
+  assert.match(source,/--ha-font-family-body/);
+  assert.match(source,/--ha-font-size-m/);
+  assert.match(source,/\.media-selectors\{display:grid/);
+  assert.doesNotMatch(source,/el\.selector=domain==='image'/);
+});
+
+
+test('simultaneous requests for the same image share one Home Assistant media resolution',async()=>{
+  let calls=0;
+  const hass={callWS:async()=>{calls++;await new Promise(resolve=>setTimeout(resolve,5));return {url:'/api/media_proxy/sample'};},hassUrl:x=>x};
+  const cache={};
+  const [url1,url2]=await Promise.all([resolveFloorplanImage(hass,'media-source://media_source/local/plan.jpg',cache),resolveFloorplanImage(hass,'media-source://media_source/local/plan.jpg',cache)]);
+  assert.equal(url1,url2);assert.equal(calls,1);
+});
+
+
+test('marker size defaults to 52px and clamps to 32–76px',()=>{
+  assert.equal(normalizeConfig({}).marker_size,52);
+  assert.equal(normalizeConfig({marker_size:500}).marker_size,76);
+  assert.equal(normalizeConfig({marker_size:2}).marker_size,32);
+  assert.equal(markerSize('bad'),52);
+  assert.equal(markerSize('',null),null);
+  assert.equal(markerSize(null,null),null);
+  assert.equal(markerSize(undefined,null),null);
+});
+
+test('individual marker size overrides global setting only when set',()=>{
+  const config=normalizeConfig({marker_size:64,lights:[{entity:'light.a',size:36},{entity:'light.b'},{entity:'light.c',size:95}]});
+  assert.deepEqual(Array.from(config.lights,light=>light.size),[36,null,76]);
+  assert.match(source,/light\.size \?\? c\.marker_size/);
+  assert.equal(normalizeConfig(config).lights[1].size,null);
+});
+
+test('readme includes official HACS deep link and does not enable Pages',async()=>{
+  const md=await readFile(new URL('../README.md',import.meta.url),'utf8');
+  assert.match(md,/my\.home-assistant\.io\/badges\/hacs_repository\.svg/);
+  assert.match(md,/category=plugin/);
+  assert.ok(!md.includes('GitHub Pages'));
 });
