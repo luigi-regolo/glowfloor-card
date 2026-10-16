@@ -94,7 +94,7 @@ subtitle: ""
 image: /local/floorplans/casa.png
 theme_mode: auto
 spill_enabled: true
-marker_size: 52
+marker_size: 32
 lights:
   - entity: light.soggiorno
     name: Soggiorno
@@ -116,7 +116,7 @@ scenes:
     name: Buonanotte
 ```
 
-Le entità sono esempi: è necessario sostituirle con quelle effettivamente disponibili nella propria installazione. `x` e `y` rappresentano percentuali da 0 a 100 riferite alla piantina. `spread` regola l’area illuminata (12–75%, valore standard 32). `spill_enabled: false` disattiva tutte le illuminazioni diffuse mantenendo i marker. `marker_size` imposta la dimensione generale (32–76 px, predefinita 52). `size` è facoltativo per ogni luce e prevale sulla dimensione generale; omettendolo viene usata quella della card.
+Le entità sono esempi: è necessario sostituirle con quelle effettivamente disponibili nella propria installazione. `x` e `y` rappresentano percentuali da 0 a 100 riferite alla piantina. `spread` regola l’area illuminata (12–75%, valore standard 32). `spill_enabled: false` disattiva tutte le illuminazioni diffuse mantenendo i marker. `marker_size` imposta la dimensione generale (32–76 px, predefinita 32). `size` è facoltativo per ogni luce e prevale sulla dimensione generale; omettendolo viene usata quella della card.
 
 ### Utilizzare una piantina personale
 

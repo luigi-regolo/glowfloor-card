@@ -178,11 +178,11 @@ test('simultaneous requests for the same image share one Home Assistant media re
 });
 
 
-test('marker size defaults to 52px and clamps to 32–76px',()=>{
-  assert.equal(normalizeConfig({}).marker_size,52);
+test('marker size defaults to 32px and clamps to 32–76px',()=>{
+  assert.equal(normalizeConfig({}).marker_size,32);
   assert.equal(normalizeConfig({marker_size:500}).marker_size,76);
   assert.equal(normalizeConfig({marker_size:2}).marker_size,32);
-  assert.equal(markerSize('bad'),52);
+  assert.equal(markerSize('bad'),32);
   assert.equal(markerSize('',null),null);
   assert.equal(markerSize(null,null),null);
   assert.equal(markerSize(undefined,null),null);
@@ -203,7 +203,7 @@ test('readme includes official HACS deep link and does not enable Pages',async()
 });
 
 test('editor navigation uses a neutral selected tab without an underline',()=>{
-  assert.match(source,/\.nav button\[aria-selected="true"\]\{background:rgba\(111,119,128,\.22\);[^}]+box-shadow:none;border:0\}/);
+  assert.match(source,/\.nav button\[aria-selected="true"\]\{background:rgba\(111,119,128,\.28\);[^}]+border-bottom:0!important;outline:none\}/);
   assert.match(source,/\.nav\{[^}]+border:0;/);
 });
 
@@ -220,4 +220,36 @@ test('editing markers preserves existing floorplan DOM instead of reloading it',
   assert.match(source,/box\.querySelectorAll\('\.pin'\)\.forEach\(pin=>pin\.remove\(\)\)/);
   assert.match(source,/if\(this\.shadowRoot\.querySelector\('\.editor'\) && JSON\.stringify\(next\)===JSON\.stringify\(this\._config\)\)return;/);
   assert.match(source,/if\(img\.src!==url\)img\.src=url/);
+});
+
+
+test('adding or removing light markers does not replace the preview floorplan image',()=>{
+  assert.match(source,/JSON\.stringify\(prev\.image\)===JSON\.stringify\(next\.image\)/);
+  assert.match(source,/if\(!sameOverlays\)this\._rebuildOverlays\(\)/);
+  assert.match(source,/plan\.querySelectorAll\('\.marker,\.spill'\)\.forEach\(el=>el\.remove\(\)\)/);
+  assert.match(source,/if\(JSON\.stringify\(prev\.scenes\)!==JSON\.stringify\(next\.scenes\)\)this\._refreshScenes\(\)/);
+});
+
+
+test('GlowFloor tabs do not render a selected green underline or edge',()=>{
+  assert.match(source,/\.nav button\{[^}]*appearance:none;[^}]*border-bottom:0!important;[^}]*box-shadow:none!important;/);
+  assert.match(source,/\.nav button::before,\.nav button::after\{content:none!important;display:none!important\}/);
+  assert.match(source,/\.nav button:focus-visible\{outline-color:var\(--secondary-text-color/);
+});
+
+test('new cards use 32px while intentionally saved user sizes remain unchanged',()=>{
+  assert.equal(normalizeConfig({}).marker_size,32);
+  assert.equal(normalizeConfig({marker_size:52}).marker_size,52);
+  assert.deepEqual(Array.from(normalizeConfig({lights:[{entity:'light.a'},{entity:'light.b',size:64}]}).lights,l=>l.size),[null,64]);
+  assert.match(source,/--gf-marker-size,32px/);
+});
+
+test('card and editor use native Home Assistant typography without changing GlowFloor visual colors',()=>{
+  assert.match(source,/:host\{display:block;font-family:var\(--ha-font-family-body/);
+  assert.match(source,/\.section-title\{font-size:var\(--ha-font-size-xl,22px\);font-weight:var\(--ha-font-weight-normal,400\)/);
+  assert.match(source,/\.section\{display:grid;gap:16px;min-width:0;background:var\(--ha-card-background/);
+  assert.match(source,/input:not\(\[type="range"\]\),select\{[^}]+background:var\(--secondary-background-color/);
+  assert.match(source,/\.item\{[^}]+background:var\(--secondary-background-color/);
+  assert.match(source,/\.nav button\[aria-selected="true"\]\{[^}]*border-bottom:0!important;/);
+  assert.match(source,/:host\(\[data-theme="dark"\]\)\{--gf-frame:#141e26;/);
 });
