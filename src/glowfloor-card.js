@@ -41,9 +41,9 @@ const STYLE = `
 const EDITOR_STYLE = `
 :host{display:block;color:var(--primary-text-color);font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif));font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400);line-height:var(--ha-line-height-normal,1.5)}
 *{box-sizing:border-box} .editor{display:grid;gap:16px;padding:8px 2px 16px}
-.nav{display:flex;gap:4px;overflow-x:auto;padding:0 0 9px;border-bottom:1px solid var(--divider-color,#d8e0df);scrollbar-width:thin}
+.nav{display:flex;gap:4px;overflow-x:auto;padding:0;border:0;scrollbar-width:thin}
 .nav button{flex:0 0 auto;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:var(--secondary-text-color,#65747a);font:inherit;font-weight:var(--ha-font-weight-medium,500);font-size:var(--ha-font-size-m,14px);cursor:pointer}
-.nav button[aria-selected="true"]{background:var(--secondary-background-color,#e5f0ed);color:var(--primary-text-color,#16342d);box-shadow:inset 0 -2px var(--primary-color,#24866f)}
+.nav button[aria-selected="true"]{background:rgba(111,119,128,.22);color:var(--primary-text-color,#16342d);box-shadow:none;border:0}
 .section{display:grid;gap:15px;min-width:0}.section[hidden]{display:none}
 .section-title{font-size:var(--ha-font-size-l,16px);font-weight:var(--ha-font-weight-semibold,600);margin:3px 0 0}.heading-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .row{display:flex;gap:10px;flex-wrap:wrap}.field{display:grid;gap:6px;flex:1;min-width:150px;font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-medium,500)}
@@ -144,7 +144,37 @@ class GlowFloorCard extends HTMLElement {
     this._media?.addEventListener?.('change',this._onMedia);
   }
   disconnectedCallback(){ this._media?.removeEventListener?.('change',this._onMedia); }
-  setConfig(raw){ this._config=normalizeConfig(raw); this._render(); }
+  setConfig(raw){
+    const next=normalizeConfig(raw);
+    const prev=this._config;
+    this._config=next;
+    // Keep the existing floorplan and light overlays when their structure is unchanged.
+    if(prev && this.shadowRoot.querySelector('.shell')
+      && JSON.stringify(prev.image)===JSON.stringify(next.image)
+      && prev.lights.length===next.lights.length
+      && prev.lights.every((light,index)=>light.entity===next.lights[index].entity)
+      && JSON.stringify(prev.scenes)===JSON.stringify(next.scenes)){
+      this._refreshCardConfig();
+    }else this._render();
+  }
+  _refreshCardConfig(){
+    const c=this._config, root=this.shadowRoot;
+    const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
+    const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
+    if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
+    const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
+    root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
+    c.lights.forEach((light,index)=>{
+      const button=this._markerElements[index],spill=this._spillElements[index];
+      if(button){
+        button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;
+        button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);
+        button.querySelector('.marker-name span').textContent=light.name;
+      }
+      if(spill){spill.style.left=`${light.x}%`;spill.style.top=`${light.y}%`;spill.style.width=`${light.spread}%`;}
+    });
+    this._updateTheme();this._refreshStates();
+  }
   set hass(value){ this._hass=value; this._updateTheme(); this._refreshStates(); this._loadCardImage(); }
   get hass(){return this._hass;}
   getCardSize(){return 5;}
@@ -206,7 +236,7 @@ class GlowFloorCard extends HTMLElement {
     try{
       const url=await resolveFloorplanImage(this._hass,this._config.image,this._imageCache);
       if(request!==this._imageRequest || !img.isConnected)return;
-      img.src=url;this._showError('');
+      if(img.src!==url)img.src=url;this._showError('');
     }catch(error){if(request===this._imageRequest && this._hass)this._showError('Non riesco a leggere la piantina da Home Assistant. Riprova a selezionarla.');}
   }
   _showError(message){const el=this.shadowRoot.querySelector('.error');if(el){el.textContent=message;el.hidden=!message;}}
@@ -253,7 +283,13 @@ class GlowFloorCardEditor extends HTMLElement {
     this._selected=0;this._tab='piantina';this._hass=null;this._helperRequested=false;this._imageCache={};this._editorImageRequest=0;
   }
   set hass(value){this._hass=value;this._syncNativeSelectors();this._loadEditorImage();}
-  setConfig(raw){this._config=normalizeConfig(raw);this._selected=Math.max(0,Math.min(this._selected,this._config.lights.length-1));this._render();}
+  setConfig(raw){
+    const next=normalizeConfig(raw);
+    if(this.shadowRoot.querySelector('.editor') && JSON.stringify(next)===JSON.stringify(this._config))return;
+    this._config=next;
+    this._selected=Math.max(0,Math.min(this._selected,this._config.lights.length-1));
+    this._render();
+  }
   connectedCallback(){this._ensureNativeSelectors();}
   async _ensureNativeSelectors(){
     if(this._helperRequested)return;
@@ -352,10 +388,10 @@ class GlowFloorCardEditor extends HTMLElement {
     section.append(this._hint('Seleziona o carica un’immagine con Home Assistant. Le immagini caricate sono conservate nella tua istanza, non su GitHub.'));
     const mediaSelectors=document.createElement('div');mediaSelectors.className='media-selectors';
     const selectImage=value=>{this._update('image',normalizeImage(value));this._renderImage();};
-    mediaSelectors.append(this._selector('media-upload',this._config.image,'Carica immagine dal dispositivo',selectImage));
-    mediaSelectors.append(this._selector('media-browse',this._config.image,'Scegli immagine esistente',selectImage));
+    mediaSelectors.append(this._selector('media-upload',this._config.image,'Carica piantina',selectImage));
+    mediaSelectors.append(this._selector('media-browse',this._config.image,'Scegli piantina esistente',selectImage));
     section.append(mediaSelectors);
-    const reset=document.createElement('button');reset.type='button';reset.textContent='Usa piantina di esempio';reset.addEventListener('click',()=>{this._update('image',null);this._renderImage();});section.append(reset);
+    const reset=document.createElement('button');reset.type='button';reset.textContent='Ripristina piantina predefinita';reset.addEventListener('click',()=>{this._update('image',null);this._renderImage();});section.append(reset);
     const title=document.createElement('div');title.className='section-title';title.textContent='Posiziona le luci';section.append(title);
     section.append(this._hint('Prima aggiungi una luce nella sezione Luci; poi selezionala sotto e tocca la piantina per posizionare il punto luminoso.'));
     const chooser=document.createElement('div');chooser.className='field';const select=document.createElement('select');select.setAttribute('aria-label','Luce da posizionare');
@@ -367,8 +403,14 @@ class GlowFloorCardEditor extends HTMLElement {
   }
   _renderMap(){
     const box=this.shadowRoot.querySelector('.map');if(!box)return;
-    box.replaceChildren();
-    if(this._config.image){const img=document.createElement('img');img.alt='Piantina';img.referrerPolicy='no-referrer';img.onerror=()=>{box.dataset.imageError='true';};box.append(img);this._loadEditorImage();}else box.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);
+    const imageKey=JSON.stringify(this._config.image);
+    const hasFloorplan=Boolean(box.querySelector('.floor, .floor-image'));
+    if(box.dataset.imageKey!==imageKey || !hasFloorplan){
+      box.replaceChildren();box.dataset.imageKey=imageKey;
+      if(this._config.image){
+        const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.referrerPolicy='no-referrer';img.onerror=()=>{box.dataset.imageError='true';};box.append(img);this._loadEditorImage();
+      }else box.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);
+    }else box.querySelectorAll('.pin').forEach(pin=>pin.remove());
     this._config.lights.forEach((light,index)=>{const p=document.createElement('span');p.className=`pin ${index===this._selected?'selected':''}`;p.style.left=`${light.x}%`;p.style.top=`${light.y}%`;p.textContent=String(index+1);p.title=light.name;box.append(p);});
     box.onclick=event=>{
       if(!this._config.lights[this._selected])return;
@@ -402,7 +444,7 @@ class GlowFloorCardEditor extends HTMLElement {
     try{
       const url=await resolveFloorplanImage(this._hass,this._config.image,this._imageCache);
       if(request!==this._editorImageRequest || !img.isConnected)return;
-      img.src=url;
+      if(img.src!==url)img.src=url;
     }catch(error){if(request===this._editorImageRequest && this._hass){
       const errorEl=document.createElement('div');errorEl.className='image-message';errorEl.textContent='Impossibile aprire questa immagine. Scegline un’altra dalla libreria Home Assistant.';
       img.replaceWith(errorEl);

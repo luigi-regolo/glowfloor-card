@@ -201,3 +201,23 @@ test('readme includes official HACS deep link and does not enable Pages',async()
   assert.match(md,/category=plugin/);
   assert.ok(!md.includes('GitHub Pages'));
 });
+
+test('editor navigation uses a neutral selected tab without an underline',()=>{
+  assert.match(source,/\.nav button\[aria-selected="true"\]\{background:rgba\(111,119,128,\.22\);[^}]+box-shadow:none;border:0\}/);
+  assert.match(source,/\.nav\{[^}]+border:0;/);
+});
+
+test('floorplan buttons have clear Italian labels',()=>{
+  assert.match(source,/'Carica piantina'/);
+  assert.match(source,/'Scegli piantina esistente'/);
+  assert.match(source,/'Ripristina piantina predefinita'/);
+  assert.doesNotMatch(source,/'Usa piantina di esempio'/);
+});
+
+test('editing markers preserves existing floorplan DOM instead of reloading it',()=>{
+  assert.match(source,/this\._refreshCardConfig\(\)/);
+  assert.match(source,/const hasFloorplan=Boolean\(box\.querySelector\('\.floor, \.floor-image'\)\)/);
+  assert.match(source,/box\.querySelectorAll\('\.pin'\)\.forEach\(pin=>pin\.remove\(\)\)/);
+  assert.match(source,/if\(this\.shadowRoot\.querySelector\('\.editor'\) && JSON\.stringify\(next\)===JSON\.stringify\(this\._config\)\)return;/);
+  assert.match(source,/if\(img\.src!==url\)img\.src=url/);
+});
