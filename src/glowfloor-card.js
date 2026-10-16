@@ -39,40 +39,59 @@ const STYLE = `
 `;
 
 const EDITOR_STYLE = `
-:host{display:block;color:var(--primary-text-color);font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif));font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400);line-height:var(--ha-line-height-normal,1.5)}
-*{box-sizing:border-box} .editor{display:grid;gap:16px;padding:8px 2px 16px}
-.nav{display:flex;gap:4px;overflow-x:auto;padding:0;border:0;scrollbar-width:thin}
-.nav button{flex:0 0 auto;padding:10px 12px;appearance:none;-webkit-appearance:none;border:0!important;border-bottom:0!important;border-radius:10px;background:transparent;color:var(--secondary-text-color,#65747a);font:inherit;font-weight:var(--ha-font-weight-medium,500);font-size:var(--ha-font-size-m,14px);cursor:pointer;box-shadow:none!important;outline:none;transition:background-color .15s ease}
-.nav button[aria-selected="true"]{background:rgba(111,119,128,.28);color:var(--primary-text-color,#16342d);box-shadow:none!important;border:0!important;border-bottom:0!important;outline:none}
-.nav button::before,.nav button::after{content:none!important;display:none!important}.nav button:focus-visible{outline:2px solid var(--secondary-text-color,#667a7b);outline-offset:2px}
-.section{display:grid;gap:16px;min-width:0;background:var(--ha-card-background,var(--card-background-color,#fff));border:1px solid var(--divider-color,#e4e6e4);border-radius:var(--ha-border-radius-lg,22px);padding:20px;box-shadow:var(--ha-card-box-shadow,0 4px 20px #00000008)}.section[hidden]{display:none}
-.section-title{font-size:var(--ha-font-size-xl,22px);font-weight:var(--ha-font-weight-normal,400);line-height:1.28;letter-spacing:normal;margin:4px 0 2px}.heading-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.row{display:flex;gap:12px;flex-wrap:wrap}.field{display:grid;gap:8px;flex:1;min-width:150px;font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400)}
-input:not([type="range"]),select{color:var(--primary-text-color,#203039);font:inherit;font-size:var(--ha-font-size-m,14px);min-height:50px;padding:12px 14px;border:0;border-bottom:1px solid var(--divider-color,#a4afae);border-radius:var(--ha-border-radius-md,6px) var(--ha-border-radius-md,6px) 0 0;background:var(--secondary-background-color,#f3f3f3);width:100%;max-width:100%}
-ha-selector{display:block;width:100%;min-width:0;--mdc-theme-primary:var(--primary-color,#218575)}
-button{cursor:pointer;color:var(--primary-text-color,#203039);border:1px solid var(--divider-color,#ced8d8);background:var(--card-background-color,#fff);border-radius:var(--ha-border-radius-lg,18px);padding:10px 14px;font:inherit;font-size:var(--ha-font-size-m,14px);min-height:42px}
-button:focus-visible,input:focus-visible,select:focus-visible,.map:focus-visible{outline:2px solid var(--primary-color,#218575);outline-offset:2px}
-.nav button:focus-visible{outline-color:var(--secondary-text-color,#667a7b)!important}
-.primary{background:var(--primary-color,#247e6b);color:var(--text-primary-color,#fff);border-color:transparent;font-weight:var(--ha-font-weight-medium,500)}.delete{color:var(--error-color,#bd4c40)}
-.hint{font-size:var(--ha-font-size-s,13px);color:var(--secondary-text-color,#667a7b);line-height:1.5}
-.items{display:grid;gap:12px}.item{border:1px solid var(--divider-color,#d6ddda);background:var(--secondary-background-color,#f7f7f7);padding:16px;border-radius:var(--ha-border-radius-lg,18px);display:grid;gap:12px}.item.selected{border-color:var(--divider-color,#d6ddda);box-shadow:0 0 0 1px var(--secondary-text-color,#87909033)}
-.item-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.item-head strong{font-size:var(--ha-font-size-m,14px)}.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}.item-grid .wide{grid-column:1/-1}
+:host{display:block;box-sizing:border-box;color:var(--primary-text-color,#212923);font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,Arial,sans-serif));font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400);line-height:1.45}
+*,*::before,*::after{box-sizing:border-box}
+.editor{display:grid;gap:0;min-width:0}
+.nav{display:flex;gap:4px;overflow-x:auto;padding:0 0 14px;border:0;border-bottom:1px solid var(--divider-color,#e0e5e2);scrollbar-width:thin}
+.nav button{flex:0 0 auto;padding:10px 12px;appearance:none;-webkit-appearance:none;background:transparent;color:var(--secondary-text-color,#61716b);border:0!important;border-bottom:0!important;border-radius:10px;font:inherit;font-weight:var(--ha-font-weight-medium,500);font-size:var(--ha-font-size-m,14px);cursor:pointer;box-shadow:none!important;outline:none}
+.nav button[aria-selected="true"]{background:var(--secondary-background-color,#e4e9e5);color:var(--primary-text-color,#202823);border:0!important;box-shadow:none!important;outline:none}
+.nav button::before,.nav button::after{content:none!important;display:none!important}
+.nav button:focus-visible{outline:2px solid var(--secondary-text-color,#6b7571)!important;outline-offset:2px}
+.section{display:grid;gap:14px;min-width:0;padding:22px 0 6px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.section[hidden]{display:none}
+.section-title{font-size:var(--ha-font-size-xl,20px);font-weight:var(--ha-font-weight-medium,500);line-height:1.3;margin:0;letter-spacing:0}
+.heading-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.field{display:grid;gap:7px;flex:1;min-width:140px;font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400)}
+.field>span{color:var(--primary-text-color,#26312a)}
+input:not([type="range"]),select{width:100%;max-width:100%;min-height:49px;padding:12px 14px;font:inherit;font-size:var(--ha-font-size-m,14px);color:var(--primary-text-color,#26312a);background:var(--secondary-background-color,#f2f3f2);border:0;border-bottom:1px solid var(--secondary-text-color,#84918c);border-radius:8px 8px 0 0}
+input:not([type="range"]):focus-visible,select:focus-visible{outline:2px solid var(--primary-color,#668277);outline-offset:1px}
+ha-selector{display:block;width:100%;min-width:0;font:inherit;--mdc-theme-primary:var(--primary-color,#56806b)}
+button{cursor:pointer;color:var(--primary-text-color,#25302b);background:transparent;border:1px solid var(--divider-color,#dce2de);border-radius:12px;padding:9px 12px;font:inherit;font-size:var(--ha-font-size-m,14px);min-height:40px}
+button:focus-visible{outline:2px solid var(--primary-color,#668277);outline-offset:2px}
+.primary{justify-self:start;background:var(--card-background-color,#fff);color:var(--primary-text-color,#26312a);border:1px solid var(--divider-color,#dce2de);border-radius:999px;padding:10px 16px;font-weight:var(--ha-font-weight-medium,500)}
+.delete{color:var(--error-color,#b34438);border:0;background:transparent;min-height:35px;padding:7px 9px}
+.delete:hover,.details:hover{background:var(--secondary-background-color,#f2f4f2)}
+.hint{font-size:var(--ha-font-size-s,12px);color:var(--secondary-text-color,#62736d);line-height:1.5}
+.items,.scenes{display:grid;gap:0;min-width:0}
+.item,.sceneitem{padding:18px 0;border:0;border-bottom:1px solid var(--divider-color,#e2e7e3);background:transparent;border-radius:0;box-shadow:none;display:grid;gap:13px;min-width:0}
+.item.selected{border-bottom-color:var(--divider-color,#e2e7e3);box-shadow:none}
+.item-head,.scene-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.item-head strong,.scene-head strong{font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-medium,500)}
+.item-head .choice{display:flex;align-items:center;gap:10px;padding:0;min-height:35px;border:0;background:transparent;font-weight:var(--ha-font-weight-medium,500)}
+.ordinal{display:inline-grid;place-items:center;border-radius:50%;background:var(--secondary-background-color,#e8ede9);color:var(--secondary-text-color,#4b5e55);height:27px;min-width:27px;font-size:var(--ha-font-size-s,12px)}
+.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;min-width:0}
+.item-grid .wide{grid-column:1/-1}
+.details{justify-self:start;border:0;padding:7px 3px;min-height:28px;color:var(--secondary-text-color,#667870);font-size:var(--ha-font-size-s,12px)}
+.details::before{content:'▸';margin-right:6px}
+.details[aria-expanded="true"]::before{content:'▾'}
+.details-panel{display:grid;gap:14px;padding:5px 0 8px}
+.details-panel[hidden]{display:none}
 .selector-fallback{display:none}.native-missing .selector-fallback{display:block}.native-missing ha-selector{display:none}
 .map{border:1px solid var(--divider-color,#d6ddda);border-radius:13px;position:relative;cursor:crosshair;overflow:hidden;background:var(--secondary-background-color,#e8ecec);line-height:0;isolation:isolate}
 .map svg,.map img{width:100%;height:auto;display:block}.map svg .room{fill:#e7e9e8}.map svg .room-alt{fill:#dce3e1}.map svg .wall{stroke:#93a3a7;stroke-width:8;fill:none}.map svg .furn{stroke:#93a3a7;stroke-width:2;fill:#d6dddd}.map svg .thin,.map svg .door{stroke:#93a3a7;stroke-width:2;fill:none}.map svg .room-label,.map svg .micro{fill:#56656a;font-size:14px;text-anchor:middle}.map svg .tile{stroke:#bac7c7}
 .pin{position:absolute;display:grid;place-items:center;transform:translate(-50%,-50%);width:27px;height:27px;border-radius:50%;background:#41535b;color:#fff;border:2px solid #fff;box-shadow:0 2px 6px #0004;font-size:11px;line-height:1;pointer-events:none}.pin.selected{background:#f1ac54;outline:3px solid #e9a34f66}
 .image-empty{border:1px dashed var(--divider-color,#bacac7);border-radius:11px;padding:24px 12px;text-align:center;color:var(--secondary-text-color,#65777a);font-size:12px}
-.scenes{display:grid;gap:12px}.sceneitem{border:1px solid var(--divider-color,#d6ddda);background:var(--secondary-background-color,#f7f7f7);padding:16px;border-radius:var(--ha-border-radius-lg,18px);display:grid;gap:12px}.scene-head{display:flex;align-items:center;justify-content:space-between}
-.advanced{border:1px solid var(--divider-color,#d6ddda);background:var(--secondary-background-color,#f7f7f7);border-radius:var(--ha-border-radius-lg,18px);padding:16px;display:grid;gap:12px}
-@media(max-width:480px){.nav button{padding:9px 8px;font-size:var(--ha-font-size-s,12px)}.section{padding:14px;border-radius:var(--ha-border-radius-lg,18px)}.item,.sceneitem,.advanced{padding:12px}.section-title{font-size:var(--ha-font-size-l,20px)}.item-grid{grid-template-columns:1fr}.field{min-width:0}}
-/* Home Assistant renders native media/entity fields; do not override their internal typography. */
-ha-selector{font-family:inherit;font-size:inherit}
-.media-selectors{display:grid;gap:16px}
-.size-control{display:grid;gap:8px}.size-control label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-medium,500)}.size-control input[type="range"]{width:100%;height:28px;min-height:28px;padding:0;background:transparent;accent-color:var(--primary-color,#218575);border:0}.size-limits{display:flex;justify-content:space-between;color:var(--secondary-text-color,#667a7b);font-size:var(--ha-font-size-s,12px)}
+.advanced{border:0;border-bottom:1px solid var(--divider-color,#e2e7e3);padding:14px 0;display:grid;gap:12px}
+.media-selectors{display:grid;gap:14px}
+.size-control{display:grid;gap:7px;min-width:0}
+.size-control label{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:var(--ha-font-size-m,14px);font-weight:var(--ha-font-weight-normal,400)}
+.size-control output{font-variant-numeric:tabular-nums;font-weight:var(--ha-font-weight-medium,500)}
+.size-control input[type="range"]{width:100%;height:30px;min-height:30px;padding:0;margin:0;background:transparent;border:0;accent-color:var(--primary-color,#668277);cursor:pointer}
+.size-limits{display:flex;justify-content:space-between;color:var(--secondary-text-color,#6b7973);font-size:var(--ha-font-size-s,12px)}
 .image-message{color:var(--error-color,#bd4c40);font-size:var(--ha-font-size-s,12px);line-height:1.45}
-
+@media(max-width:480px){.nav button{padding:9px 8px;font-size:var(--ha-font-size-s,12px)}.section{padding-top:16px}.item-grid{grid-template-columns:1fr}.field{min-width:0}.item{padding:15px 0}}
 `;
-
 const isValidEntity = (id, domain) => typeof id === 'string' && new RegExp(`^${domain}\\.[a-z0-9_]+$`).test(id);
 const coordinate = (v, defaultValue = 50) => Number.isFinite(Number(v)) ? Math.max(0, Math.min(100, Number(v))) : defaultValue;
 const markerSize = (v, fallback = 32) => v != null && typeof v !== 'boolean' && String(v).trim() !== '' && Number.isFinite(Number(v)) ? Math.max(32, Math.min(76, Math.round(Number(v)))) : fallback;
@@ -438,20 +457,44 @@ class GlowFloorCardEditor extends HTMLElement {
   }
   _renderLights(){
     const section=this.shadowRoot.querySelector('.section[data-tab="luci"]');section.replaceChildren();
-    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Luci della piantina';section.append(heading);
-    section.append(this._hint('Cerca una luce nell’elenco di Home Assistant e scegli l’entità corretta. Il nome visualizzato può essere personalizzato.'));
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Luci sulla piantina';section.append(heading);
+    section.append(this._hint('Seleziona le luci, personalizza il nome e posizionale toccando la piantina.'));
     const wrap=document.createElement('div');wrap.className='items';section.append(wrap);
     this._config.lights.forEach((light,index)=>{
       const box=document.createElement('div');box.className=`item ${this._selected===index?'selected':''}`;
       const head=document.createElement('div');head.className='item-head';
-      const choose=document.createElement('button');choose.type='button';choose.textContent=`${this._selected===index?'● ':'○ '}Luce ${index+1}`;choose.addEventListener('click',()=>{this._selected=index;this._renderLights();this._renderImage();});
-      const del=document.createElement('button');del.type='button';del.className='delete';del.textContent='Rimuovi';del.addEventListener('click',()=>{this._config.lights=this._config.lights.filter((_,i)=>i!==index);this._selected=Math.min(this._selected,Math.max(0,this._config.lights.length-1));this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});head.append(choose,del);box.append(head);
+      const choose=document.createElement('button');choose.type='button';choose.className='choice';choose.setAttribute('aria-pressed',String(this._selected===index));
+      const ordinal=document.createElement('span');ordinal.className='ordinal';ordinal.textContent=String(index+1);
+      const label=document.createElement('strong');label.textContent=`Luce ${index+1}`;choose.append(ordinal,label);
+      choose.addEventListener('click',()=>{this._selected=index;this._renderLights();this._renderImage();});
+      const del=document.createElement('button');del.type='button';del.className='delete';del.textContent='Rimuovi';
+      del.addEventListener('click',()=>{this._config.lights=this._config.lights.filter((_,i)=>i!==index);this._selected=Math.min(this._selected,Math.max(0,this._config.lights.length-1));this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});
+      head.append(choose,del);box.append(head);
       const grid=document.createElement('div');grid.className='item-grid';
       const ent=this._selector('light',light.entity,'Entità luce',value=>{this._editLight(index,'entity',value);this._renderLights();this._renderImage();});ent.classList.add('wide');grid.append(ent);
-      const name=this._field('Nome del pulsante',light.name,value=>{this._editLight(index,'name',value);this._renderImage();},{maxlength:60});name.classList.add('wide');grid.append(name);box.append(grid);wrap.append(box);
+      const name=this._field('Nome visualizzato',light.name,value=>{this._editLight(index,'name',value);this._renderImage();},{maxlength:60});name.classList.add('wide');grid.append(name);box.append(grid);
+      const details=document.createElement('button');details.type='button';details.className='details';details.textContent='Altre opzioni';details.setAttribute('aria-expanded','false');
+      const panel=document.createElement('div');panel.className='details-panel';panel.hidden=true;
+      details.addEventListener('click',()=>{panel.hidden=!panel.hidden;details.setAttribute('aria-expanded',String(!panel.hidden));});
+      const area=document.createElement('div');area.className='size-control';
+      const areaLabel=document.createElement('label');const areaName=document.createElement('span');areaName.textContent='Area luce';
+      const areaOutput=document.createElement('output');areaOutput.textContent=`${light.spread}%`;
+      const areaId=`gf-spread-${index}`;const slider=document.createElement('input');slider.id=areaId;slider.type='range';slider.min='12';slider.max='75';slider.step='1';slider.value=String(light.spread);slider.setAttribute('aria-label',`Area luce ${light.name||index+1}`);
+      areaLabel.htmlFor=areaId;areaLabel.append(areaName,areaOutput);
+      slider.addEventListener('input',()=>{areaOutput.textContent=`${slider.value}%`;this._editLight(index,'spread',slider.value);});
+      const limits=document.createElement('div');limits.className='size-limits';limits.innerHTML='<span>12% · Piccola</span><span>75% · Grande</span>';
+      area.append(areaLabel,slider,limits);panel.append(area);
+      const individual=this._field('Dimensione pulsante (px, facoltativa)',light.size??'',(value,input)=>{
+        if(value.trim() && (!Number.isFinite(Number(value)) || Number(value)<32 || Number(value)>76)){
+          input.setCustomValidity('Imposta un valore tra 32 e 76 oppure lascia vuoto.');input.reportValidity();return;
+        }
+        input.setCustomValidity('');this._editLight(index,'size',value);
+      },{type:'number',min:32,max:76,placeholder:'Dimensione generale'});
+      panel.append(individual);box.append(details,panel);wrap.append(box);
     });
     if(!this._config.lights.length)section.append(this._hint('Nessuna luce aggiunta. Inizia con “Aggiungi luce”.'));
-    const add=document.createElement('button');add.type='button';add.className='primary';add.textContent='+ Aggiungi luce';add.disabled=this._config.lights.length>=60;add.addEventListener('click',()=>{if(this._config.lights.length>=60)return;this._config.lights=[...this._config.lights,{entity:'',name:'Nuova luce',x:50,y:50,spread:32}];this._selected=this._config.lights.length-1;this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});section.append(add);
+    const add=document.createElement('button');add.type='button';add.className='primary';add.textContent='+ Aggiungi luce';add.disabled=this._config.lights.length>=60;
+    add.addEventListener('click',()=>{if(this._config.lights.length>=60)return;this._config.lights=[...this._config.lights,{entity:'',name:'Nuova luce',x:50,y:50,spread:32}];this._selected=this._config.lights.length-1;this._emit();this._renderLights();this._renderImage();this._renderAdvanced();});section.append(add);
   }
   async _loadEditorImage(){
     const img=this.shadowRoot.querySelector('.map img');
@@ -503,21 +546,15 @@ class GlowFloorCardEditor extends HTMLElement {
   _renderAdvanced(){
     const section=this.shadowRoot.querySelector('.section[data-tab="avanzate"]');section.replaceChildren();
     const heading=document.createElement('div');heading.className='section-title';heading.textContent='Impostazioni avanzate';section.append(heading);
-    section.append(this._hint('Le coordinate si impostano più facilmente dalla sezione Piantina. Modificale qui soltanto se necessario.'));
+    section.append(this._hint('Le coordinate si impostano dalla piantina. Per regolare l’area illuminata usa Luci → Altre opzioni.'));
     this._config.lights.forEach((light,index)=>{
       const group=document.createElement('div');group.className='advanced';
       const title=document.createElement('strong');title.textContent=light.name||`Luce ${index+1}`;group.append(title);
       const row=document.createElement('div');row.className='item-grid';
-      for(const [label,key,min,max] of [['Posizione X %','x',0,100],['Posizione Y %','y',0,100],['Raggio luce %','spread',12,75]]){
+      for(const [label,key,min,max] of [['Posizione X %','x',0,100],['Posizione Y %','y',0,100]]){
         row.append(this._field(label,light[key],value=>{this._editLight(index,key,value);this._renderMap();},{type:'number',min,max}));
       }
       group.append(row);
-      group.append(this._field('Dimensione pulsante (px, facoltativa)',light.size ?? '',(value,input)=>{
-        if(value.trim() && (!Number.isFinite(Number(value)) || Number(value)<32 || Number(value)>76)){
-          input.setCustomValidity('Imposta un valore tra 32 e 76 oppure lascia vuoto.');input.reportValidity();return;
-        }
-        input.setCustomValidity('');this._editLight(index,'size',value);
-      },{type:'number',min:32,max:76,placeholder:'Dimensione generale'}));
       section.append(group);
     });
     section.append(this._hint('Percorso immagine facoltativo, per chi usa file in /config/www (URL /local/...). Evita URL esterni per planimetrie private.'));

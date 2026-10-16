@@ -203,8 +203,9 @@ test('readme includes official HACS deep link and does not enable Pages',async()
 });
 
 test('editor navigation uses a neutral selected tab without an underline',()=>{
-  assert.match(source,/\.nav button\[aria-selected="true"\]\{background:rgba\(111,119,128,\.28\);[^}]+border-bottom:0!important;outline:none\}/);
-  assert.match(source,/\.nav\{[^}]+border:0;/);
+  assert.match(source,/\.nav button\[aria-selected="true"\]\{background:var\(--secondary-background-color/);
+  assert.match(source,/\.nav button::before,\.nav button::after\{content:none!important;display:none!important\}/);
+  assert.match(source,/\.nav\{[^}]+border:0;border-bottom:1px solid var\(--divider-color/);
 });
 
 test('floorplan buttons have clear Italian labels',()=>{
@@ -233,8 +234,8 @@ test('adding or removing light markers does not replace the preview floorplan im
 
 test('GlowFloor tabs do not render a selected green underline or edge',()=>{
   assert.match(source,/\.nav button\{[^}]*appearance:none;[^}]*border-bottom:0!important;[^}]*box-shadow:none!important;/);
-  assert.match(source,/\.nav button::before,\.nav button::after\{content:none!important;display:none!important\}/);
-  assert.match(source,/\.nav button:focus-visible\{outline-color:var\(--secondary-text-color/);
+  assert.match(source,/\.nav button\[aria-selected="true"\]\{[^}]*border:0!important;box-shadow:none!important;outline:none\}/);
+  assert.doesNotMatch(source,/\.nav button\[aria-selected="true"\]\{[^}]*border-bottom:2px/);
 });
 
 test('new cards use 32px while intentionally saved user sizes remain unchanged',()=>{
@@ -244,12 +245,28 @@ test('new cards use 32px while intentionally saved user sizes remain unchanged',
   assert.match(source,/--gf-marker-size,32px/);
 });
 
-test('card and editor use native Home Assistant typography without changing GlowFloor visual colors',()=>{
+test('card and editor inherit HA typography while keeping the editor minimal',()=>{
   assert.match(source,/:host\{display:block;font-family:var\(--ha-font-family-body/);
-  assert.match(source,/\.section-title\{font-size:var\(--ha-font-size-xl,22px\);font-weight:var\(--ha-font-weight-normal,400\)/);
-  assert.match(source,/\.section\{display:grid;gap:16px;min-width:0;background:var\(--ha-card-background/);
+  assert.match(source,/\.section-title\{font-size:var\(--ha-font-size-xl,20px\);font-weight:var\(--ha-font-weight-medium,500\)/);
+  assert.match(source,/\.section\{display:grid;gap:14px;min-width:0;padding:22px 0 6px;background:transparent;border:0/);
   assert.match(source,/input:not\(\[type="range"\]\),select\{[^}]+background:var\(--secondary-background-color/);
-  assert.match(source,/\.item\{[^}]+background:var\(--secondary-background-color/);
-  assert.match(source,/\.nav button\[aria-selected="true"\]\{[^}]*border-bottom:0!important;/);
+  assert.match(source,/\.item,\.sceneitem\{[^}]*border-bottom:1px solid var\(--divider-color/);
   assert.match(source,/:host\(\[data-theme="dark"\]\)\{--gf-frame:#141e26;/);
+});
+
+test('light area slider is per marker with live percentage feedback',()=>{
+  assert.match(source,/areaName\.textContent='Area luce'/);
+  assert.match(source,/slider\.type='range';slider\.min='12';slider\.max='75'/);
+  assert.match(source,/slider\.addEventListener\('input',\(\)=>\{areaOutput\.textContent=`\$\{slider\.value\}%`;this\._editLight\(index,'spread',slider\.value\)/);
+  assert.match(source,/details\.textContent='Altre opzioni'/);
+  assert.match(source,/\.details-panel\[hidden\]\{display:none\}/);
+  assert.equal(normalizeConfig({lights:[{entity:'light.a',spread:75}]}).lights[0].spread,75);
+});
+
+test('areas and marker sizes remain independent and existing values persist',()=>{
+  const cfg=normalizeConfig({marker_size:32,lights:[{entity:'light.a',spread:70,size:40}]});
+  assert.equal(cfg.lights[0].spread,70);
+  assert.equal(cfg.lights[0].size,40);
+  assert.equal(normalizeConfig(cfg).lights[0].spread,70);
+  assert.match(source,/if\(!sameOverlays\)this\._rebuildOverlays\(\)/);
 });

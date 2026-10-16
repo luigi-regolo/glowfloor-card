@@ -18,7 +18,7 @@ GlowFloor è una card personalizzata per le dashboard di Home Assistant. Può mo
 - **Intestazione facoltativa:** testo superiore, titolo e sottotitolo possono essere modificati singolarmente o lasciati vuoti. Se tutti sono vuoti, rimangono soltanto i comandi in alto.
 - **Tema automatico, chiaro o scuro:** modalità `auto`, `light` e `dark`.
 - **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile oppure selezionabile dalla libreria multimediale di Home Assistant e posizionamento dei marker con un tocco, senza YAML.
-- **Dimensione dei marker personalizzabile:** controllo generale da 32 a 76 px nella sezione Aspetto e dimensione facoltativa per ogni luce in Avanzate. Anche i marker piccoli mantengono un’area di interazione ampia almeno 44 px.
+- **Dimensione dei marker personalizzabile:** controllo generale da 32 a 76 px nella sezione Aspetto e dimensione facoltativa per ogni luce in Luci → Altre opzioni. Anche i marker piccoli mantengono un’area di interazione ampia almeno 44 px.
 - **Layout adattivo:** utilizzabile su dashboard desktop e mobili.
 - **Nessun servizio esterno necessario:** la card non richiede account cloud, librerie caricate da CDN o servizi di analisi.
 
@@ -77,10 +77,10 @@ L'editor visuale è organizzato in cinque sezioni:
 | Sezione | Opzioni |
 | --- | --- |
 | **Piantina** | Caricamento dal dispositivo o scelta nei media di Home Assistant, piantina di esempio e posizionamento dei marker con un tocco |
-| **Luci** | Selettore Home Assistant filtrato alle `light.*`, nome personalizzato e aggiunta/rimozione luci |
+| **Luci** | Selettore Home Assistant filtrato alle `light.*`, nome personalizzato, aggiunta/rimozione luci e slider **Area luce** (12–75%) in Altre opzioni |
 | **Scene** | Da 0 a 3 scene `scene.*` con nomi dei pulsanti personalizzabili |
 | **Aspetto** | Titolo, testo superiore, sottotitolo, tema automatico/chiaro/scuro, illuminazione diffusa e dimensione generale dei pulsanti (32–76 px) |
-| **Avanzate** | Coordinate percentuali, ampiezza delle aree illuminate, dimensione individuale facoltativa dei marker e inserimento manuale del percorso immagine |
+| **Avanzate** | Coordinate percentuali e inserimento manuale del percorso immagine |
 
 Tutti i testi dell'intestazione sono facoltativi. Lasciandoli vuoti, il contatore e i comandi rimangono visibili.
 
