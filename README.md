@@ -1,152 +1,141 @@
-<a href="https://www.tiktok.com/@luigi.regolo" title="Segui i tutorial Home Assistant su TikTok"><img src="assets/tiktok-segui.svg" alt="TikTok | Segui" width="116" height="22"></a>
-
 # GlowFloor Card
 
-**Una piantina interattiva per Home Assistant**, con pulsanti luminosi circolari, conteggio delle luci accese, spegnimento globale, illuminazione diffusa sulla piantina e fino a tre scene rapide personalizzabili.
+[![TikTok | Follow](assets/tiktok-segui.svg)](https://www.tiktok.com/@luigi.regolo)
+[![Latest release](https://img.shields.io/github/v/release/luigi-regolo/glowfloor-card?style=flat-square)](https://github.com/luigi-regolo/glowfloor-card/releases/latest)
+[![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue?style=flat-square)](LICENSE)
+[![HACS](https://img.shields.io/badge/HACS-Repository-41BDF5?style=flat-square)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
+[![GitHub Stars](https://img.shields.io/github/stars/luigi-regolo/glowfloor-card?style=flat-square)](https://github.com/luigi-regolo/glowfloor-card/stargazers)
 
-![Anteprima di GlowFloor in modalità scura](assets/glowfloor-dark.png)
+## Overview
 
-GlowFloor è una card personalizzata per le dashboard di Home Assistant. Può mostrare una piantina fornita dall'utente oppure l'illustrazione dimostrativa inclusa. Le luci vengono associate alle entità `light.*` e posizionate sulla piantina con l'editor visuale.
+**GlowFloor Card** is an interactive floorplan card for Home Assistant dashboards. Place circular light controls on a floorplan, switch individual lights on or off, and see a visual glow around lights that are turned on.
 
-## Funzionalità
+Use the included sample floorplan or choose an image from your Home Assistant instance. GlowFloor also supports an on-state counter, an all-off button, up to three optional scenes, and automatic, Light, or Dark appearance.
 
-- **Pulsanti sempre riconoscibili:** ogni lampadina ha una base circolare visibile anche da spenta; quando la luce è accesa compare un alone luminoso.
-- **Illuminazione diffusa:** quando una luce è accesa, una zona della piantina viene illuminata attorno al marker. Il colore segue `rgb_color` quando disponibile e l’intensità tiene conto della luminosità; l’effetto si può disattivare e la dimensione si regola per ciascuna luce. L’effetto non riconosce le pareti della piantina.
-- **Conteggio in tempo reale:** indica quante entità luce distinte, configurate nella card, risultano accese.
-- **Spegni tutte:** spegne soltanto le luci accese presenti nella configurazione della card.
-- **Fino a tre scene facoltative:** l'utente sceglie le entità `scene.*` e il testo dei rispettivi pulsanti. Non esistono nomi obbligatori.
-- **Intestazione facoltativa:** testo superiore, titolo e sottotitolo possono essere modificati singolarmente o lasciati vuoti. Se tutti sono vuoti, rimangono soltanto i comandi in alto.
-- **Tema automatico, chiaro o scuro:** modalità `auto`, `light` e `dark`.
-- **Editor visuale in italiano:** cinque sezioni (Piantina, Luci, Scene, Aspetto e Avanzate), selettori nativi Home Assistant per cercare le entità, immagine caricabile oppure selezionabile dalla libreria multimediale di Home Assistant e posizionamento dei marker con un tocco, senza YAML.
-- **Etichette discrete:** i nomi delle luci appaiono soltanto durante l’interazione (impostazione predefinita). Nell'editor Aspetto si può scegliere di mostrarli sempre o nasconderli. Su dispositivi touch, il nome appare brevemente dopo il tocco; i pulsanti restano accessibili anche senza etichetta visibile.
-- **Dimensione dei marker personalizzabile:** controllo generale da 32 a 76 px nella sezione Aspetto e dimensione facoltativa per ogni luce in Luci → Altre opzioni. Anche i marker piccoli mantengono un’area di interazione ampia almeno 44 px.
-- **Layout adattivo:** utilizzabile su dashboard desktop e mobili.
-- **Nessun servizio esterno necessario:** la card non richiede account cloud, librerie caricate da CDN o servizi di analisi.
+GlowFloor uses existing Home Assistant entities. It does not create devices or require dedicated cloud accounts, paid APIs, or external JavaScript libraries.
 
-## Anteprime
+## Preview
 
-| Modalità scura | Modalità chiara |
+| Dark | Light |
 | :---: | :---: |
-| ![GlowFloor scuro](assets/glowfloor-dark.png) | ![GlowFloor chiaro](assets/glowfloor-light.png) |
+| ![GlowFloor Card dark preview](assets/glowfloor-dark.png) | ![GlowFloor Card light preview](assets/glowfloor-light.png) |
 
-Le immagini mostrano una piantina dimostrativa. È possibile utilizzare una propria immagine.
+**Mobile preview**
 
-## Installazione con HACS (consigliata)
+<img src="assets/glowfloor-mobile.png" alt="GlowFloor Card mobile preview" width="280">
 
-GlowFloor Card si installa direttamente da **HACS**, aggiungendo l'indirizzo del repository GitHub come archivio personalizzato. Non è necessario scaricare file o compilare il codice.
+*The images are demonstration previews. Users can configure their own floorplans and entities.*
 
-[![Apri GlowFloor in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
+## Features
 
-Il pulsante apre GlowFloor in HACS attraverso My Home Assistant: **l’aggiunta dell’archivio e l’installazione richiedono comunque la conferma dell’utente**. Se il collegamento non è disponibile, utilizzare la procedura manuale riportata sotto.
+- **Interactive light markers:** Circular controls remain visible whether the associated `light.*` entity is on or off.
+- **Visual lighting effect:** An optional glow appears around an active marker. Its color follows `rgb_color` when available, and its intensity takes brightness into account when available.
+- **Adjustable light area:** A 12–75% slider for each light, independent of marker size.
+- **Configurable marker size:** A 32 px default, adjustable to 76 px globally or individually; the interactive target remains at least 44 px.
+- **Discreet light labels:** Names appear during interaction by default. Choose always visible or always hidden in the editor.
+- **Live counter and all-off:** Count distinct configured lights that are on; turn off only the configured lights that are currently on.
+- **Optional scenes:** Up to three `scene.*` shortcuts with editable labels.
+- **Custom floorplans:** Select or upload an image through the Home Assistant media selector, or use a local image path.
+- **Visual editor:** Five configuration sections, entity search, and marker positioning by tapping the floorplan; YAML is not required.
+- **Adaptable appearance:** Optional header texts, automatic/Light/Dark modes, and responsive layouts.
 
-1. Aprire **HACS** in Home Assistant.
-2. Aprire il menu **⋮** in alto a destra e selezionare **Archivi personalizzati** (*Custom repositories*).
-3. Incollare l'indirizzo del repository:
+## Installation
 
-   `https://github.com/luigi-regolo/glowfloor-card`
+### HACS
 
-4. Scegliere **Dashboard** come categoria e premere **Aggiungi**.
-5. Cercare **GlowFloor Card** in HACS, aprirla e premere **Scarica**.
-6. Aprire una dashboard in modalità modifica e aggiungere **GlowFloor Card**. Configurare la piantina e le luci attraverso l'editor visuale.
+Install GlowFloor through HACS as a **Dashboard** custom repository.
 
-### Se la card non compare dopo l'installazione
+[![Open GlowFloor in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
 
-Ricaricare la pagina di Home Assistant. Se la risorsa non è stata aggiunta automaticamente, nelle **Risorse** della dashboard aggiungere manualmente il seguente percorso come **modulo JavaScript**:
+1. Open **HACS** in Home Assistant.
+2. Open **Custom repositories** from the HACS menu.
+3. Enter `https://github.com/luigi-regolo/glowfloor-card`.
+4. Select **Dashboard**, then add the repository.
+5. Open **GlowFloor Card** in HACS and download it.
+6. Edit a dashboard, add **GlowFloor Card**, and configure it using the visual editor.
 
-`/hacsfiles/glowfloor-card/glowfloor-card.js`
+The button above opens the repository in My Home Assistant; adding and downloading it still require user confirmation.
 
-### Installazione manuale (alternativa)
+If the card does not appear after installation, reload Home Assistant in the browser. If necessary, register `/hacsfiles/glowfloor-card/glowfloor-card.js` under your dashboard resources as a **JavaScript module**.
 
-Per chi non utilizza HACS, è possibile copiare `dist/glowfloor-card.js` nella cartella `/config/www/` e registrare `/local/glowfloor-card.js` come risorsa **modulo JavaScript** della dashboard. Quindi ricaricare la pagina e aggiungere la card.
+### Manual installation
 
-## Collegare la piantina, le luci e le scene (senza YAML)
+1. Copy [`dist/glowfloor-card.js`](dist/glowfloor-card.js) into `/config/www/` in your Home Assistant instance.
+2. Add `/local/glowfloor-card.js` under **Settings → Dashboards → Resources** as a **JavaScript module**.
+3. Reload the dashboard and add `custom:glowfloor-card`.
 
-1. Installare GlowFloor da HACS, quindi aprire una dashboard in modalità modifica e scegliere **Aggiungi card → GlowFloor Card**.
-2. Nella sezione **Piantina**, scegliere **Carica immagine dal dispositivo** per importare una nuova piantina oppure **Scegli immagine esistente** per usare un file già disponibile nei media di Home Assistant. In alternativa, usare la piantina dimostrativa. Le immagini personali **non vanno caricate su GitHub**. Il caricamento richiede che la libreria multimediale e la funzione di upload siano disponibili nella versione e configurazione di Home Assistant. Le immagini restano archiviate nell’istanza e non vengono pubblicate nel repository.
-3. Nella sezione **Luci**, premere **Aggiungi luce**. Nel campo **Entità luce** cercare e selezionare una luce dalla propria installazione Home Assistant (`light.*`); quindi impostare il nome mostrato sul pulsante. Ripetere per le altre luci. Se il selettore nativo non è disponibile, è previsto un campo manuale per inserire l'ID effettivo.
-4. Tornare in **Piantina**, scegliere dall'elenco la luce da posizionare e **toccare il punto desiderato**. Le coordinate vengono salvate automaticamente in percentuale.
-5. Nella sezione **Scene**, se desiderato, aggiungere fino a tre scene (`scene.*`). Selezionare l'entità dal selettore e cambiare il testo del pulsante. Non è obbligatorio configurare scene.
-6. In **Aspetto**, modificare o eliminare titolo, testo superiore e sottotitolo; scegliere il tema e attivare/disattivare l'effetto di illuminazione diffusa. Le coordinate e l'ampiezza dell'effetto per ciascuna luce sono in **Avanzate**.
-7. Salvare la card e verificare che ogni lampadina comandi soltanto la luce associata. **Turn all off** spegne soltanto le luci configurate nella card.
+If the `www` directory is newly created, Home Assistant may require a restart before the file is served.
 
-La card utilizza le entità già presenti in Home Assistant, non crea nuove luci o scene. Per controllare manualmente un ID, aprire **Impostazioni → Dispositivi e servizi → Entità**, per esempio `light.soggiorno`. I nomi e gli ID nel README sono soltanto esempi. Se un'entità è associata a più marker, il contatore la considera una sola volta.
+## Configuration and Usage
 
-## Configurazione
+### Visual editor
 
-L'editor visuale è organizzato in cinque sezioni:
+The editor has five sections:
 
-| Sezione | Opzioni |
+| Section | Settings |
 | --- | --- |
-| **Piantina** | Caricamento dal dispositivo o scelta nei media di Home Assistant, piantina di esempio e posizionamento dei marker con un tocco |
-| **Luci** | Selettore Home Assistant filtrato alle `light.*`, nome personalizzato, aggiunta/rimozione luci e slider **Area luce** (12–75%) in Altre opzioni |
-| **Scene** | Da 0 a 3 scene `scene.*` con nomi dei pulsanti personalizzabili |
-| **Aspetto** | Titolo, testo superiore, sottotitolo, tema automatico/chiaro/scuro, illuminazione diffusa e dimensione generale dei pulsanti (32–76 px) |
-| **Avanzate** | Coordinate percentuali e inserimento manuale del percorso immagine |
+| **Piantina (Floorplan)** | Upload or select an image, restore the sample floorplan, and position light markers by tapping the image. |
+| **Luci (Lights)** | Select `light.*` entities, edit displayed names, and adjust each light's glow area (12–75%) and optional marker size (32–76 px) under **Altre opzioni**. |
+| **Scene** | Add up to three optional `scene.*` entities and customize their button names. |
+| **Aspetto (Appearance)** | Set optional header text, color mode, overall marker size, glow effects, and label visibility (`interaction`, `always`, `never`). |
+| **Avanzate (Advanced)** | Adjust marker coordinates and provide an image path manually. |
 
-Tutti i testi dell'intestazione sono facoltativi. Lasciandoli vuoti, il contatore e i comandi rimangono visibili.
+To begin, choose a floorplan, add a light entity, return to **Piantina**, select that light, and tap the desired location. Repeat for additional lights, then save the card. Home Assistant entity IDs must exist in your instance.
 
-### Esempio YAML (facoltativo)
+### Optional YAML example
 
 ```yaml
 type: custom:glowfloor-card
-eyebrow: ""
 title: ""
+eyebrow: ""
 subtitle: ""
-image: /local/floorplans/casa.png
+image: /local/floorplans/example.png
 theme_mode: auto
+label_mode: interaction
 spill_enabled: true
 marker_size: 32
 lights:
-  - entity: light.soggiorno
-    name: Soggiorno
-    x: 27
-    y: 44
-    spread: 34
-    size: 62
-  - entity: light.cucina
-    name: Cucina
-    x: 75
-    y: 29
-    spread: 27
+  - entity: light.example_living_room
+    name: Living room
+    x: 40
+    y: 55
+    spread: 32
 scenes:
-  - entity: scene.relax
+  - entity: scene.example_relax
     name: Relax
-  - entity: scene.cinema
-    name: Cinema
-  - entity: scene.notte
-    name: Buonanotte
 ```
 
-Le entità sono esempi: è necessario sostituirle con quelle effettivamente disponibili nella propria installazione. `x` e `y` rappresentano percentuali da 0 a 100 riferite alla piantina. `spread` regola l’area illuminata (12–75%, valore standard 32). `spill_enabled: false` disattiva tutte le illuminazioni diffuse mantenendo i marker. `marker_size` imposta la dimensione generale (32–76 px, predefinita 32). `size` è facoltativo per ogni luce e prevale sulla dimensione generale; omettendolo viene usata quella della card.
+Replace example entity IDs and the image path with values from your Home Assistant instance. `x` and `y` are percentages from 0 to 100. `spread` controls the visual light area (12–75%); optional per-light `size` overrides the overall `marker_size` (32–76 px). The visual editor is recommended for normal setup.
 
-### Utilizzare una piantina personale
+### Controls
 
-Il metodo consigliato è **Carica immagine dal dispositivo** oppure **Scegli immagine esistente**, nella sezione Piantina dell’editor. GlowFloor usa il selettore media ufficiale e risolve il percorso dell’immagine tramite Home Assistant, senza caricare immagini su server esterni. In alternativa, chi possiede già un file in `/config/www/floorplans/casa.png` può inserire `/local/floorplans/casa.png` nella sezione Avanzate. Evitare di pubblicare piantine reali, identificativi dei dispositivi o altri dati privati nei repository e nelle segnalazioni di problemi.
-
-## Comandi
-
-| Interazione | Risultato |
+| Action | Result |
 | --- | --- |
-| Tocco su una lampadina | Accensione o spegnimento della luce associata |
-| Pressione prolungata o clic destro | Apertura dei dettagli dell'entità in Home Assistant |
-| **Turn all off** | Spegnimento delle luci accese configurate in questa card |
-| Tocco su una scena | Attivazione della scena Home Assistant associata |
-| Selezione del tema | Passaggio tra modalità automatica, chiara e scura |
+| Tap or click a light marker | Toggle the associated light. |
+| Long-press or right-click a marker | Open the Home Assistant entity details. |
+| **Turn all off** | Turn off configured lights that are currently on. |
+| Select a scene | Activate the associated Home Assistant scene. |
+| Choose Auto, Dark, or Light on the card | Change the displayed theme temporarily; use the editor to save the configured mode. |
 
-## Limiti attuali
+## Compatibility and Requirements
 
-- I marker controllano entità `light.*`; non sono ancora supportati altri tipi di dispositivi.
-- Le scene rapide sono facoltative e possono essere al massimo tre.
-- L’illuminazione diffusa è un effetto radiale grafico: non interpreta le pareti e non cambia le impostazioni della lampadina.
-- Non sono ancora disponibili slider della luminosità, raggruppamenti per stanza o trascinamento dei punti. Il posizionamento funziona selezionando una luce e toccando la piantina.
-- Il cambio del tema dall'intestazione della card è temporaneo; per salvarne la scelta si utilizza l'editor.
-- La disponibilità dei selettori nativi, incluso il caricamento immagini, dipende dalla versione di Home Assistant. Se non disponibili, restano i campi manuali per le entità e i percorsi locali per le immagini.
+- Home Assistant with support for custom JavaScript dashboard cards.
+- At least one existing `light.*` entity to control lights; `scene.*` entities are optional.
+- Access to the Home Assistant media selector and suitable permissions for image browsing or upload, if using that method.
+- HACS is optional; the card can also be installed manually.
 
-## Privacy e sicurezza
+No specific minimum Home Assistant version has been independently verified for this repository. No additional JavaScript dependencies, subscriptions, or dedicated paid APIs are required by GlowFloor.
 
-GlowFloor utilizza le API della dashboard Home Assistant e opera con i permessi dell'utente autenticato. Non contiene telemetria, strumenti di analisi né richieste a un server del progetto. Se viene configurato un URL esterno per la piantina, il browser potrà contattare il relativo servizio: per questo si consiglia di usare immagini servite localmente da Home Assistant.
+## Releases
 
+See [GitHub Releases](https://github.com/luigi-regolo/glowfloor-card/releases) for published versions. The initial public release is [`v1.0.0`](https://github.com/luigi-regolo/glowfloor-card/releases/tag/v1.0.0).
 
-## Licenza
+## Copyright & License
 
-Distribuito con licenza **GNU GPL v3.0**: consultare [LICENSE](LICENSE). Copyright © 2026 luigi-regolo. Il software rimane utilizzabile e modificabile secondo i termini della licenza. Progetto indipendente, non affiliato né approvato da Home Assistant o HACS.
+Copyright © 2026 luigi-regolo.
+
+Original project created and maintained by **luigi-regolo**.
+
+Licensed under the **GNU General Public License version 3 only (GPL-3.0-only)**. See [LICENSE](LICENSE) for the full terms.
+
+The software is provided without warranty to the extent permitted by applicable law.
