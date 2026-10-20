@@ -627,5 +627,5 @@ if(!customElements.get(CARD_TAG))customElements.define(CARD_TAG,GlowFloorCard);
 if(!customElements.get(EDITOR_TAG))customElements.define(EDITOR_TAG,GlowFloorCardEditor);
 if(typeof window!=='undefined'){
   window.customCards=window.customCards||[];
-  if(!window.customCards.some(c=>c.type===CARD_TAG))window.customCards.push({type:CARD_TAG,name:'GlowFloor Card',description:'Interactive floorplan with glowing light markers, scenes and light/dark themes',preview:false});
+  if(!window.customCards.some(c=>c.type===CARD_TAG))window.customCards.push({type:CARD_TAG,name:'GlowFloor Card',description:'Interactive floorplan with glowing light markers, scenes and light/dark themes',preview:true});
 }

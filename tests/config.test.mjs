@@ -307,3 +307,9 @@ test('floorplan image is pre-decoded without lazy loading',()=>{
   assert.match(source,/await this\._imageDecodePromise\.pending;/);
   assert.doesNotMatch(source,/img\.loading='lazy'/);
 });
+
+test('registers a live preview in the Home Assistant card picker',()=>{
+  const card=ctx.window.customCards.find(entry=>entry.type==='glowfloor-card');
+  assert.equal(card?.name,'GlowFloor Card');
+  assert.equal(card?.preview,true);
+});
