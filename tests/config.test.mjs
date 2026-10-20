@@ -178,11 +178,11 @@ test('simultaneous requests for the same image share one Home Assistant media re
 });
 
 
-test('marker size defaults to 32px and clamps to 32–76px',()=>{
-  assert.equal(normalizeConfig({}).marker_size,32);
+test('marker size defaults to 28px and clamps to 26–76px',()=>{
+  assert.equal(normalizeConfig({}).marker_size,28);
   assert.equal(normalizeConfig({marker_size:500}).marker_size,76);
-  assert.equal(normalizeConfig({marker_size:2}).marker_size,32);
-  assert.equal(markerSize('bad'),32);
+  assert.equal(normalizeConfig({marker_size:2}).marker_size,26);
+  assert.equal(markerSize('bad'),28);
   assert.equal(markerSize('',null),null);
   assert.equal(markerSize(null,null),null);
   assert.equal(markerSize(undefined,null),null);
@@ -238,11 +238,11 @@ test('GlowFloor tabs do not render a selected green underline or edge',()=>{
   assert.doesNotMatch(source,/\.nav button\[aria-selected="true"\]\{[^}]*border-bottom:2px/);
 });
 
-test('new cards use 32px while intentionally saved user sizes remain unchanged',()=>{
-  assert.equal(normalizeConfig({}).marker_size,32);
+test('new cards use 28px while intentionally saved user sizes remain unchanged',()=>{
+  assert.equal(normalizeConfig({}).marker_size,28);
   assert.equal(normalizeConfig({marker_size:52}).marker_size,52);
   assert.deepEqual(Array.from(normalizeConfig({lights:[{entity:'light.a'},{entity:'light.b',size:64}]}).lights,l=>l.size),[null,64]);
-  assert.match(source,/--gf-marker-size,32px/);
+  assert.match(source,/--gf-marker-size,28px/);
 });
 
 test('card and editor inherit HA typography while keeping the editor minimal',()=>{
@@ -312,4 +312,29 @@ test('registers a live preview in the Home Assistant card picker',()=>{
   const card=ctx.window.customCards.find(entry=>entry.type==='glowfloor-card');
   assert.equal(card?.name,'GlowFloor Card');
   assert.equal(card?.preview,true);
+});
+
+test('Beta 2 retains saved marker sizes, coordinates and spread',()=>{
+  const c=normalizeConfig({marker_size:32,lights:[{entity:'light.a',x:23.5,y:74.2,spread:55,size:64},{entity:'light.b',x:50,y:25},{entity:'light.c',x:80,y:10,size:26}]});
+  assert.equal(c.marker_size,32);
+  assert.deepEqual(Array.from(c.lights,l=>[l.x,l.y,l.size,l.spread]),[[23.5,74.2,64,55],[50,25,null,32],[80,10,26,32]]);
+  assert.equal(normalizeConfig({}).marker_size,28);
+  assert.equal(markerSize(27),27);
+  assert.equal(markerSize(76),76);
+});
+test('Beta 2 has at least a 44px touch target around a 28px visual marker',()=>{
+  assert.match(source,/width:max\(44px,var\(--gf-marker-size,28px\)\);height:max\(44px,var\(--gf-marker-size,28px\)\)/);
+  assert.match(source,/\.orb\{[^}]*width:var\(--gf-marker-size,28px\);height:var\(--gf-marker-size,28px\)/);
+});
+test('Beta 2 uses subdued sage grey and soft champagne glow',()=>{
+  assert.match(source,/--gf-off:#d8dfd7;--gf-off-line:#9eaea1;--gf-off-ink:#586d60/);
+  assert.match(source,/--gf-off:#303932;--gf-off-line:#586c5e;--gf-off-ink:#a9b9ad/);
+  assert.match(source,/\.orb::before\{content:none\}/);
+  assert.match(source,/box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524/);
+});
+test('Beta 2 editor size inputs accept 26–76px with per-pixel slider precision',()=>{
+  assert.match(source,/range\.min='26';range\.max='76';range\.step='1'/);
+  assert.match(source,/\{type:'number',min:26,max:76,placeholder:'Dimensione generale'\}/);
+  assert.match(source,/Number\(value\)<26 \|\| Number\(value\)>76/);
+  assert.equal(normalizeConfig({marker_size:52,lights:[{size:40}]}).lights[0].size,40);
 });
