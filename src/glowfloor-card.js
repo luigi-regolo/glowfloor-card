@@ -19,28 +19,28 @@ const BUILTIN_FLOORPLAN = `<svg class="floor" viewBox="0 0 900 600" xmlns="http:
 </svg>`;
 
 const STYLE = `
-:host{display:block;font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif));--gf-accent:#ffca82;color:var(--gf-ink);box-sizing:border-box}
+:host{display:block;font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif));--gf-accent:#0a7156;color:var(--gf-ink);box-sizing:border-box}
 *,*::before,*::after{box-sizing:border-box}
-:host([data-theme="dark"]){--gf-frame:#141e26;--gf-line:#32414c;--gf-plan:#1d2932;--gf-room:#27343d;--gf-room2:#23303a;--gf-wall:#647783;--gf-furn:#8798a2;--gf-furn-fill:#344550;--gf-ink:#f1f5f6;--gf-muted:#a0b0b9;--gf-chip:#23313a;--gf-chip-border:#42515a;--gf-off:#34424d;--gf-off-line:#71818c;--gf-off-ink:#f1f5f6;--gf-glass:rgba(24,35,45,.91)}
-:host([data-theme="light"]){--gf-frame:#fbfcfb;--gf-line:#dce3e4;--gf-plan:#eef0ec;--gf-room:#e8e9e4;--gf-room2:#dfe5e5;--gf-wall:#87989a;--gf-furn:#9dada9;--gf-furn-fill:#dee4e0;--gf-ink:#1d2c32;--gf-muted:#65787e;--gf-chip:#f2f4f2;--gf-chip-border:#d9dfdd;--gf-off:#fff;--gf-off-line:#8b9a9e;--gf-off-ink:#27383d;--gf-glass:rgba(248,250,249,.94)}
-.shell{display:block;border:1px solid var(--gf-line);border-radius:23px;background:var(--gf-frame);box-shadow:0 8px 28px #00000016;overflow:hidden;padding:20px 20px 17px}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:5px}.title{color:var(--gf-ink);font-size:clamp(19px,2.6vw,26px);line-height:1.16;letter-spacing:-.7px;font-weight:750;overflow-wrap:anywhere}.title .dot{color:#e6a663}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:11px;font-weight:670;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px}.count::before{content:"";width:7px;height:7px;background:#f6b76a;border-radius:50%;box-shadow:0 0 8px #f6b76a77}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:14px;height:14px}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{filter:brightness(1.09)}.theme{padding:4px;display:flex;gap:2px}.theme button{cursor:pointer;border:0;background:transparent;color:var(--gf-muted);font:inherit;font-size:11px;border-radius:99px;padding:6px 10px}.theme button[aria-pressed="true"]{color:var(--gf-ink);background:var(--gf-frame);box-shadow:0 1px 6px #00000019}
-.plan{position:relative;width:100%;background:var(--gf-plan);border:1px solid var(--gf-line);border-radius:16px;overflow:hidden;isolation:isolate;line-height:0}
+:host([data-theme="dark"]){--gf-accent:#0e795d;--gf-frame:#101211;--gf-line:#2b302c;--gf-plan:#191c1a;--gf-room:#252b27;--gf-room2:#222823;--gf-wall:#6e8076;--gf-furn:#89978f;--gf-furn-fill:#333b35;--gf-ink:#f5f7f4;--gf-muted:#bbc5bd;--gf-chip:#282b29;--gf-chip-border:#353c37;--gf-off:#282b29;--gf-off-line:#667a6d;--gf-off-ink:#c1cbc2;--gf-light:#d3c29d;--gf-lit-surface:#423d32;--gf-glass:rgba(22,25,23,.94)}
+:host([data-theme="light"]){--gf-accent:#0a7156;--gf-frame:#fafbf9;--gf-line:#e0e5df;--gf-plan:#f0f2ef;--gf-room:#e9ece7;--gf-room2:#e0e7df;--gf-wall:#879a8d;--gf-furn:#8d9e91;--gf-furn-fill:#dce5dc;--gf-ink:#18221c;--gf-muted:#56675c;--gf-chip:#f0f2ef;--gf-chip-border:#e0e5df;--gf-off:#edf1ed;--gf-off-line:#96a69b;--gf-off-ink:#53675b;--gf-light:#9a7c4f;--gf-lit-surface:#eee5d5;--gf-glass:rgba(250,251,249,.96)}
+.shell{display:block;border:1px solid var(--gf-line);border-radius:26px;background:var(--gf-frame);box-shadow:none;overflow:hidden;padding:18px;min-width:0}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:5px}.title{color:var(--gf-ink);font-size:clamp(19px,2.6vw,26px);line-height:1.16;letter-spacing:-.7px;font-weight:750;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent)}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:11px;font-weight:670;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:14px;height:14px}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{font-size:11px;min-height:36px}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-accent)}.plan[hidden]{display:none!important}
+.plan{position:relative;width:100%;background:var(--gf-plan);border:1px solid var(--gf-line);border-radius:15px;overflow:hidden;isolation:isolate;line-height:0;min-width:0}
 /* Each pool of light sits on top of the floorplan, behind its control marker. */
-.spill{position:absolute;z-index:1;aspect-ratio:1;pointer-events:none;transform:translate(-50%,-50%) scale(.72);border-radius:50%;opacity:0;transition:opacity .32s ease,transform .52s cubic-bezier(.16,.8,.25,1);filter:blur(5px);background:radial-gradient(circle,rgba(var(--gf-light-rgb,255,194,116),.52) 0%,rgba(var(--gf-light-rgb,255,194,116),.29) 22%,rgba(var(--gf-light-rgb,255,194,116),.13) 45%,rgba(var(--gf-light-rgb,255,194,116),0) 72%)}
+.spill{position:absolute;z-index:1;aspect-ratio:1;pointer-events:none;transform:translate(-50%,-50%) scale(.72);border-radius:50%;opacity:0;transition:opacity .32s ease,transform .52s cubic-bezier(.16,.8,.25,1);filter:blur(5px);background:radial-gradient(circle,rgba(var(--gf-light-rgb,211,194,157),.35) 0%,rgba(var(--gf-light-rgb,211,194,157),.19) 22%,rgba(var(--gf-light-rgb,211,194,157),.08) 45%,rgba(var(--gf-light-rgb,255,194,116),0) 72%)}
 .spill.on{opacity:var(--gf-light-strength,.85);transform:translate(-50%,-50%) scale(1)}
 :host([data-theme="dark"]) .spill{mix-blend-mode:screen}
 :host([data-theme="light"]) .spill{filter:blur(4px)}
-.plan::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 48%,#00000012 100%)}.floor,.floor-image{width:100%;height:auto;display:block}.floor .room{fill:var(--gf-room)}.floor .room-alt{fill:var(--gf-room2)}.floor .wall{stroke:var(--gf-wall);stroke-width:8;fill:none}.floor .furn{stroke:var(--gf-furn);stroke-width:2.2;fill:var(--gf-furn-fill)}.floor .thin,.floor .door{stroke:var(--gf-furn);stroke-width:2;fill:none}.floor .door{stroke-dasharray:4 4}.floor .room-label,.floor .micro{font-size:15px;letter-spacing:3px;fill:var(--gf-muted);font-weight:700;text-anchor:middle}.floor .micro{font-size:10px;letter-spacing:2px}.floor .tile{stroke:var(--gf-furn);stroke-width:1;opacity:.24}
-.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,32px));height:max(44px,var(--gf-marker-size,32px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px);border-radius:50%;background:var(--gf-off);border:1.5px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 4px 16px #02070848,inset 0 1px 1px #ffffff18;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:"";position:absolute;inset:-5px;border:1px solid var(--gf-off-line);opacity:.35;border-radius:50%;pointer-events:none}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4);display:block}.marker.on .orb{background:linear-gradient(145deg,#ffe4ad,#f4ad55);border-color:#fff0cb;color:#583713;box-shadow:0 0 0 5px #efb8711e,0 0 25px 9px #f5ad6270,0 7px 24px #02090a35}.marker.on .orb::before{border-color:#ffd499;opacity:.85;box-shadow:0 0 16px #f9b46e88}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible,.theme button:focus-visible{outline:3px solid #74b1ff;outline-offset:4px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.plan::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 60%,#00000009 100%)}.floor,.floor-image{width:100%;height:auto;display:block}.floor .room{fill:var(--gf-room)}.floor .room-alt{fill:var(--gf-room2)}.floor .wall{stroke:var(--gf-wall);stroke-width:8;fill:none}.floor .furn{stroke:var(--gf-furn);stroke-width:2.2;fill:var(--gf-furn-fill)}.floor .thin,.floor .door{stroke:var(--gf-furn);stroke-width:2;fill:none}.floor .door{stroke-dasharray:4 4}.floor .room-label,.floor .micro{font-size:15px;letter-spacing:3px;fill:var(--gf-muted);font-weight:700;text-anchor:middle}.floor .micro{font-size:10px;letter-spacing:2px}.floor .tile{stroke:var(--gf-furn);stroke-width:1;opacity:.24}
+.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,32px));height:max(44px,var(--gf-marker-size,32px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px);border-radius:50%;background:var(--gf-off);border:1.5px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 2px 8px #00000020;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:"";position:absolute;inset:-5px;border:1px solid var(--gf-off-line);opacity:.35;border-radius:50%;pointer-events:none}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4);display:block}.marker.on .orb{background:var(--gf-lit-surface);border-color:var(--gf-light);color:var(--gf-light);box-shadow:0 0 0 3px #b98a4520,0 0 13px 3px #b98a4530,0 2px 8px #00000022}.marker.on .orb::before{border-color:var(--gf-light);opacity:.38;box-shadow:none}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible{outline:2px solid var(--gf-accent);outline-offset:3px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
 .marker-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .marker.label-visible{z-index:5}
 .marker.label-visible .marker-name,:host([data-label-mode="always"]) .marker-name{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .14s ease,transform .14s ease}
 :host([data-label-mode="never"]) .marker-name{display:none}
 
 .scene-dock[hidden]{display:none}.scene-dock{border-top:1px solid var(--gf-line);margin-top:16px;padding-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.dock-label{font-size:10px;letter-spacing:1.5px;font-weight:750;color:var(--gf-muted);margin-right:6px;text-transform:uppercase}.scene{border:1px solid var(--gf-chip-border);background:var(--gf-chip);border-radius:999px;color:var(--gf-ink);font:inherit;font-size:11px;padding:10px 13px;cursor:pointer;white-space:nowrap}.error{margin-top:12px;font-size:12px;color:#d56b59}
-@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.theme button{font-size:10px;padding:6px 8px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px)}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
-@media(prefers-reduced-motion:reduce){.orb,.spill{transition:none!important}}
+@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.toggle-plan{font-size:10px;padding:7px 10px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,32px);height:var(--gf-marker-size,32px)}.orb svg{width:calc(var(--gf-marker-size,32px) * .4);height:calc(var(--gf-marker-size,32px) * .4)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.orb,.spill,.marker-name{transition:none!important}}
 `;
 
 const EDITOR_STYLE = `
@@ -85,7 +85,7 @@ button:focus-visible{outline:2px solid var(--primary-color,#668277);outline-offs
 .selector-fallback{display:none}.native-missing .selector-fallback{display:block}.native-missing ha-selector{display:none}
 .map{border:1px solid var(--divider-color,#d6ddda);border-radius:13px;position:relative;cursor:crosshair;overflow:hidden;background:var(--secondary-background-color,#e8ecec);line-height:0;isolation:isolate}
 .map svg,.map img{width:100%;height:auto;display:block}.map svg .room{fill:#e7e9e8}.map svg .room-alt{fill:#dce3e1}.map svg .wall{stroke:#93a3a7;stroke-width:8;fill:none}.map svg .furn{stroke:#93a3a7;stroke-width:2;fill:#d6dddd}.map svg .thin,.map svg .door{stroke:#93a3a7;stroke-width:2;fill:none}.map svg .room-label,.map svg .micro{fill:#56656a;font-size:14px;text-anchor:middle}.map svg .tile{stroke:#bac7c7}
-.pin{position:absolute;display:grid;place-items:center;transform:translate(-50%,-50%);width:27px;height:27px;border-radius:50%;background:#41535b;color:#fff;border:2px solid #fff;box-shadow:0 2px 6px #0004;font-size:11px;line-height:1;pointer-events:none}.pin.selected{background:#f1ac54;outline:3px solid #e9a34f66}
+.pin{position:absolute;display:grid;place-items:center;transform:translate(-50%,-50%);width:27px;height:27px;border-radius:50%;background:#53675b;color:#fff;border:2px solid var(--card-background-color,#fff);box-shadow:0 2px 6px #0003;font-size:11px;line-height:1;pointer-events:none}.pin.selected{background:#0a7156;outline:3px solid #e9a34f66}
 .image-empty{border:1px dashed var(--divider-color,#bacac7);border-radius:11px;padding:24px 12px;text-align:center;color:var(--secondary-text-color,#65777a);font-size:12px}
 .advanced{border:0;border-bottom:1px solid var(--divider-color,#e2e7e3);padding:14px 0;display:grid;gap:12px}
 .media-selectors{display:grid;gap:14px}
@@ -101,7 +101,7 @@ const isValidEntity = (id, domain) => typeof id === 'string' && new RegExp(`^${d
 const coordinate = (v, defaultValue = 50) => Number.isFinite(Number(v)) ? Math.max(0, Math.min(100, Number(v))) : defaultValue;
 const markerSize = (v, fallback = 32) => v != null && typeof v !== 'boolean' && String(v).trim() !== '' && Number.isFinite(Number(v)) ? Math.max(32, Math.min(76, Math.round(Number(v)))) : fallback;
 const spillSize = (v) => Number.isFinite(Number(v)) ? Math.max(12, Math.min(75, Number(v))) : 32;
-const spillRgb = (v) => Array.isArray(v) && v.length === 3 && v.every(n => Number.isFinite(n) && n >= 0 && n <= 255) ? v.map(n => Math.round(n)).join(',') : '255,194,116';
+const spillRgb = (v) => Array.isArray(v) && v.length === 3 && v.every(n => Number.isFinite(n) && n >= 0 && n <= 255) ? v.map(n => Math.round(n)).join(',') : '211,194,157';
 const validImage = (value) => typeof value === 'string' && (/^\/(?!\/)/.test(value) || /^https:\/\//i.test(value) || /^media-source:\/\/[^\s]+$/.test(value));
 const imageContentId = (value) => typeof value === 'string' ? value : (value && typeof value === 'object' ? value.media_content_id : null);
 const normalizeImage = (value) => {
@@ -165,6 +165,8 @@ class GlowFloorCard extends HTMLElement {
     this._hass = null;
     this._markerElements = [];
     this._spillElements = [];
+    this._planVisible=true;
+    this._decodedImageUrl=null;this._imageDecodePromise=null;
     this._imageCache={};this._imageRequest=0;this._labelTimer=null;this._lastPointerType=null;
     this._media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     this._onMedia = () => this._updateTheme();
@@ -233,6 +235,15 @@ class GlowFloorCard extends HTMLElement {
     button.classList.add('label-visible');
     if(temporary)this._labelTimer=setTimeout(()=>{button.classList.remove('label-visible');this._labelTimer=null;},1800);
   }
+  _updatePlanVisibility(){
+    const plan=this.shadowRoot.querySelector('.plan');
+    const button=this.shadowRoot.querySelector('.toggle-plan');
+    if(!plan || !button)return;
+    plan.hidden=!this._planVisible;
+    button.setAttribute('aria-expanded',String(this._planVisible));
+    button.setAttribute('aria-label',this._planVisible?'Nascondi piantina':'Mostra piantina');
+    button.textContent=this._planVisible?'Nascondi piantina':'Mostra piantina';
+  }
   _refreshScenes(){
     const c=this._config,root=this.shadowRoot;
     const dock=root.querySelector('.scene-dock');
@@ -270,24 +281,25 @@ class GlowFloorCard extends HTMLElement {
     const mode=this._config.theme_mode;
     const prefersDark=typeof this._hass?.themes?.darkMode === 'boolean' ? this._hass.themes.darkMode : (this._media?.matches ?? true);
     this.dataset.theme=mode==='auto'?(prefersDark?'dark':'light'):mode;
-    this.shadowRoot.querySelectorAll('[data-mode]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.mode===mode)));
+    // Theme selection is available in the visual editor, not in the card header.
   }
   _render(){
     const c=this._config;
     if(!c)return;
     const root=this.shadowRoot;
     this.dataset.labelMode=c.label_mode;
-    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 lights on</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Turn all off</span></button><div class="theme" role="group" aria-label="Theme mode"><button type="button" data-mode="auto">Auto</button><button type="button" data-mode="dark">Dark</button><button type="button" data-mode="light">Light</button></div></div></div><div class="plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
+    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 luci accese</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Spegni tutto</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
     if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
     const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
     root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
     const plan=root.querySelector('.plan');
-    if(c.image){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>{this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.append(img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
+    if(c.image){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onerror=()=>{this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.append(img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
     this._rebuildOverlays();
     root.querySelector('.all-off').addEventListener('click',()=>this._turnAllOff());
-    root.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{this._config.theme_mode=b.dataset.mode;this._updateTheme();}));
+    root.querySelector('.toggle-plan').addEventListener('click',()=>{this._planVisible=!this._planVisible;this._updatePlanVisibility();});
+    this._updatePlanVisibility();
     this._refreshScenes();
     this._updateTheme();this._refreshStates();
   }
@@ -298,8 +310,25 @@ class GlowFloorCard extends HTMLElement {
     try{
       const url=await resolveFloorplanImage(this._hass,this._config.image,this._imageCache);
       if(request!==this._imageRequest || !img.isConnected)return;
-      if(img.src!==url)img.src=url;this._showError('');
-    }catch(error){if(request===this._imageRequest && this._hass)this._showError('Non riesco a leggere la piantina da Home Assistant. Riprova a selezionarla.');}
+      if(img.getAttribute('src')===url || img.src===url){this._showError('');return;}
+      if(this._decodedImageUrl!==url){
+        if(!this._imageDecodePromise || this._imageDecodePromise.url!==url){
+          const preload=new Image();
+          preload.decoding='async';preload.referrerPolicy='no-referrer';
+          preload.src=url;
+          const pending=(typeof preload.decode==='function' ? preload.decode() : new Promise((resolve,reject)=>{
+            preload.onload=resolve;preload.onerror=reject;
+            if(preload.complete)preload.naturalWidth?resolve():reject(new Error('Invalid image'));
+          }));
+          this._imageDecodePromise={url,pending};
+        }
+        await this._imageDecodePromise.pending;
+        if(request!==this._imageRequest || !img.isConnected)return;
+        this._decodedImageUrl=url;
+      }
+      if(img.src!==url)img.src=url;
+      this._showError('');
+    }catch(error){if(this._imageDecodePromise?.url && this._imageDecodePromise.url!==this._decodedImageUrl)this._imageDecodePromise=null;if(request===this._imageRequest && this._hass)this._showError('Non riesco a leggere la piantina da Home Assistant. Riprova a selezionarla.');}
   }
   _showError(message){const el=this.shadowRoot.querySelector('.error');if(el){el.textContent=message;el.hidden=!message;}}
   async _callService(domain,service,data){
@@ -328,13 +357,14 @@ class GlowFloorCard extends HTMLElement {
         const attrs=this._hass?.states?.[light.entity]?.attributes;
         spill.style.setProperty('--gf-light-rgb',spillRgb(attrs?.rgb_color));
         const brightness=Number(attrs?.brightness);
-        const intensity=Number.isFinite(brightness)&&brightness>=0&&brightness<=255?Math.max(.28,brightness/255):.85;
+        const intensity=Number.isFinite(brightness)&&brightness>=0&&brightness<=255?Math.max(.25,brightness/255):.70;
         spill.style.setProperty('--gf-light-strength',String(intensity));
       }
       button.setAttribute('aria-label',`${light.name}: ${!available?'unavailable':active?'on':'off'}`);
       // The accessible label is sufficient; avoid duplicate native browser tooltips.
     });
-    this.shadowRoot.querySelector('.count').textContent=`${on} ${on===1?'light':'lights'} on`;
+    this.shadowRoot.querySelector('.count').textContent=`${on} ${on===1?'luce accesa':'luci accese'}`;
+    this.shadowRoot.querySelector('.count').classList.toggle('has-on',on>0);
     this.shadowRoot.querySelector('.all-off').disabled=on===0;
   }
 }
@@ -447,7 +477,7 @@ class GlowFloorCardEditor extends HTMLElement {
   _renderImage(){
     const section=this.shadowRoot.querySelector('.section[data-tab="piantina"]');section.replaceChildren();
     const heading=document.createElement('div');heading.className='section-title';heading.textContent='Immagine della piantina';section.append(heading);
-    section.append(this._hint('Seleziona o carica un’immagine con Home Assistant. Le immagini caricate sono conservate nella tua istanza, non su GitHub.'));
+    section.append(this._hint('Seleziona una piantina esistente o carica un’immagine con Home Assistant.'));
     const mediaSelectors=document.createElement('div');mediaSelectors.className='media-selectors';
     const selectImage=value=>{this._update('image',normalizeImage(value));this._renderImage();};
     mediaSelectors.append(this._selector('media-upload',this._config.image,'Carica piantina',selectImage));

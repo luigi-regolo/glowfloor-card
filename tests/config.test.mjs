@@ -91,9 +91,9 @@ test('config accepts individual marker spill sizes and clamps extremes',()=>{
 
 test('RGB light spill colors are sanitized before insertion in CSS',()=>{
   assert.equal(spillRgb([255,128,44]),'255,128,44');
-  assert.equal(spillRgb([500,0,0]),'255,194,116');
-  assert.equal(spillRgb(['1; background:red',0,0]),'255,194,116');
-  assert.equal(spillRgb(undefined),'255,194,116');
+  assert.equal(spillRgb([500,0,0]),'211,194,157');
+  assert.equal(spillRgb(['1; background:red',0,0]),'211,194,157');
+  assert.equal(spillRgb(undefined),'211,194,157');
 });
 
 test('title color is explicitly set to the GlowFloor theme ink',()=>{
@@ -251,7 +251,7 @@ test('card and editor inherit HA typography while keeping the editor minimal',()
   assert.match(source,/\.section\{display:grid;gap:14px;min-width:0;padding:22px 0 6px;background:transparent;border:0/);
   assert.match(source,/input:not\(\[type="range"\]\),select\{[^}]+background:var\(--secondary-background-color/);
   assert.match(source,/\.item,\.sceneitem\{[^}]*border-bottom:1px solid var\(--divider-color/);
-  assert.match(source,/:host\(\[data-theme="dark"\]\)\{--gf-frame:#141e26;/);
+  assert.match(source,/:host\(\[data-theme="dark"\]\)\{--gf-accent:#0e795d;--gf-frame:#101211;/);
 });
 
 test('light area slider is per marker with live percentage feedback',()=>{
@@ -285,4 +285,25 @@ test('name labels are positioned outside the marker layout and remain accessible
   assert.match(source,/data-label-mode="never"/);
   assert.match(source,/button\.setAttribute\('aria-label'/);
   assert.match(source,/Solo durante l’interazione/);
+});
+
+
+test('Edera palette and header controls follow the approved design',()=>{
+  assert.match(source,/\.title \.dot\{color:var\(--gf-accent\)\}/);
+  assert.match(source,/<span>Spegni tutto<\/span>/);
+  assert.match(source,/aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina/);
+  assert.doesNotMatch(source,/role="group" aria-label="Theme mode"/);
+});
+
+test('show/hide keeps the floorplan mounted and does not persist a new setting',()=>{
+  assert.match(source,/this\._planVisible=true;/);
+  assert.match(source,/plan\.hidden=!this\._planVisible;/);
+  assert.match(source,/this\._planVisible=!this\._planVisible;this\._updatePlanVisibility\(\)/);
+  assert.doesNotMatch(source,/this\._update\('plan_visible'/);
+});
+
+test('floorplan image is pre-decoded without lazy loading',()=>{
+  assert.match(source,/const preload=new Image\(\);/);
+  assert.match(source,/await this\._imageDecodePromise\.pending;/);
+  assert.doesNotMatch(source,/img\.loading='lazy'/);
 });
