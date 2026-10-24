@@ -56,6 +56,15 @@ Install GlowFloor Card directly from the default HACS catalog.
 
 To install a specific release, use **Download** or **Redownload** and select the desired version when available.
 
+### Alternative: Custom repository
+
+If you prefer to add the repository manually:
+
+1. Open **HACS** and select **Custom repositories** from the menu.
+2. Enter `https://github.com/luigi-regolo/glowfloor-card`.
+3. Select **Dashboard** as the repository type and add it.
+4. Find **GlowFloor Card** in HACS and download it.
+
 ### Manual installation
 
 1. Download [`dist/glowfloor-card.js`](dist/glowfloor-card.js).
