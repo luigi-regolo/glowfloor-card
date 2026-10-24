@@ -41,21 +41,20 @@ GlowFloor uses existing Home Assistant entities and services without requiring a
 
 ## Installation
 
-### HACS
+### HACS (Recommended)
 
-Install GlowFloor Card using a **Dashboard** custom repository in HACS.
+Install GlowFloor Card directly from the default HACS catalog.
 
 [![Open GlowFloor Card in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
 
 1. Open **HACS** in Home Assistant.
-2. Open the three-dot menu and select **Custom repositories**.
-3. Enter `https://github.com/luigi-regolo/glowfloor-card`.
-4. Select **Dashboard** as the repository type and add it.
-5. Find **GlowFloor Card** in HACS and download it.
-6. Reload the dashboard if necessary.
-7. Add **GlowFloor Card** to a dashboard and configure it through the visual editor.
+2. Search for **GlowFloor Card**.
+3. Select **GlowFloor Card** from the results.
+4. Click **Download** to install the card.
+5. Reload your dashboard if necessary.
+6. Add **GlowFloor Card** to your dashboard and configure it using the visual editor.
 
-For a specific release, use **Download** or **Redownload** and select the desired version when available.
+To install a specific release, use **Download** or **Redownload** and select the desired version when available.
 
 ### Manual installation
 
