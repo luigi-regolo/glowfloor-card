@@ -11,8 +11,8 @@ const ctx={
   window:{customCards:[]},
   console,
 };
-runInNewContext(`${source}\nglobalThis.__test={normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage};`,ctx);
-const {normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage}=ctx.__test;
+runInNewContext(`${source}\nglobalThis.__test={normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage,pickImage,markerStyle,markerMin,validIcon,imageRatioStatus,STYLE_DEFAULT_SIZE,kelvinToRgb,lightRgb,spillColor,brightnessPct,isDimmable,dimFromDrag,emptyDelay,isVacant};`,ctx);
+const {normalizeConfig,isValidEntity,coordinate,validImage,spillRgb,markerSize,normalizeImage,imageContentId,mediaPickerValue,resolveFloorplanImage,pickImage,markerStyle,markerMin,validIcon,imageRatioStatus,STYLE_DEFAULT_SIZE,kelvinToRgb,lightRgb,spillColor,brightnessPct,isDimmable,dimFromDrag,emptyDelay,isVacant}=ctx.__test;
 
 test('registers the card and the UI editor',()=>{
   assert.ok(registry.has('glowfloor-card'));
@@ -208,9 +208,11 @@ test('editor navigation uses a neutral selected tab without an underline',()=>{
   assert.match(source,/\.nav\{[^}]+border:0;border-bottom:1px solid var\(--divider-color/);
 });
 
-test('floorplan buttons have clear Italian labels',()=>{
-  assert.match(source,/'Carica piantina'/);
-  assert.match(source,/'Scegli piantina esistente'/);
+test('floorplan buttons have clear Italian labels for the light and dark images',()=>{
+  assert.match(source,/`Carica piantina \$\{slot\.name\}`/);
+  assert.match(source,/`Scegli piantina \$\{slot\.name\} esistente`/);
+  assert.match(source,/name:'chiara',title:'Piantina chiara'/);
+  assert.match(source,/name:'scura',title:'Piantina scura'/);
   assert.match(source,/'Ripristina piantina predefinita'/);
   assert.doesNotMatch(source,/'Usa piantina di esempio'/);
 });
@@ -332,9 +334,202 @@ test('Beta 2 uses subdued sage grey and soft champagne glow',()=>{
   assert.match(source,/\.orb::before\{content:none\}/);
   assert.match(source,/box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524/);
 });
-test('Beta 2 editor size inputs accept 26–76px with per-pixel slider precision',()=>{
-  assert.match(source,/range\.min='26';range\.max='76';range\.step='1'/);
-  assert.match(source,/\{type:'number',min:26,max:76,placeholder:'Dimensione generale'\}/);
-  assert.match(source,/Number\(value\)<26 \|\| Number\(value\)>76/);
+test('editor size inputs follow the marker style minimum with per-pixel slider precision',()=>{
+  assert.match(source,/range\.min=String\(minPx\);range\.max='76';range\.step='1'/);
+  assert.match(source,/\{type:'number',min:minPx,max:76,placeholder:'Dimensione generale'\}/);
+  assert.match(source,/Number\(value\)<minPx \|\| Number\(value\)>76/);
   assert.equal(normalizeConfig({marker_size:52,lights:[{size:40}]}).lights[0].size,40);
+});
+
+test('existing configurations keep the chip style, 26px minimum and the GlowFloor bulb',()=>{
+  const c=normalizeConfig({marker_size:30,lights:[{entity:'light.a',size:20}]});
+  assert.equal(c.marker_style,'chip');
+  assert.equal(c.icon_mode,'default');
+  assert.equal(c.marker_size,30);
+  assert.equal(c.lights[0].size,26);
+  assert.equal(c.image,null);
+  assert.equal(c.image_dark,null);
+  assert.equal(markerStyle('bad'),'chip');
+  assert.equal(markerMin('chip'),26);
+});
+
+test('compact and icon styles use their own default sizes and a 16px minimum',()=>{
+  assert.equal(normalizeConfig({marker_style:'compact'}).marker_size,20);
+  assert.equal(normalizeConfig({marker_style:'icon'}).marker_size,18);
+  assert.equal(normalizeConfig({marker_style:'compact',marker_size:4}).marker_size,16);
+  assert.equal(normalizeConfig({marker_style:'compact',marker_size:24}).marker_size,24);
+  assert.deepEqual(Array.from(normalizeConfig({marker_style:'icon',lights:[{entity:'light.a',size:12},{entity:'light.b'}]}).lights,l=>l.size),[16,null]);
+  assert.deepEqual({...STYLE_DEFAULT_SIZE},{chip:28,compact:20,icon:18});
+});
+
+test('new cards from the card picker start with the compact style and Home Assistant icons',()=>{
+  const Card=registry.get('glowfloor-card');
+  const stub=Card.getStubConfig();
+  assert.equal(stub.marker_style,'compact');
+  assert.equal(stub.marker_size,20);
+  assert.equal(stub.icon_mode,'entity');
+  assert.deepEqual(Array.from(stub.lights),[]);
+});
+
+test('dark floorplan is optional and each theme falls back to the other image',()=>{
+  const light='/local/casa.png',dark='/local/casa-scura.png';
+  assert.equal(pickImage({image:light,image_dark:dark},'light'),light);
+  assert.equal(pickImage({image:light,image_dark:dark},'dark'),dark);
+  assert.equal(pickImage({image:light,image_dark:null},'dark'),light);
+  assert.equal(pickImage({image:null,image_dark:dark},'light'),dark);
+  assert.equal(pickImage({image:null,image_dark:null},'dark'),null);
+  const c=normalizeConfig({image:light,image_dark:{media_content_id:'media-source://image_upload/abc'}});
+  assert.equal(c.image,light);
+  assert.equal(imageContentId(c.image_dark),'media-source://image_upload/abc');
+  assert.equal(normalizeConfig({image_dark:'javascript:alert(1)'}).image_dark,null);
+  assert.equal(normalizeConfig({image:light}).image_dark,null);
+});
+
+test('the card swaps the floorplan with the resolved theme and keeps one cache per theme',()=>{
+  const Card=registry.get('glowfloor-card');
+  const card=Object.create(Card.prototype);
+  card._media=null;card._hass=null;
+  card._config={theme_mode:'dark'};assert.equal(card._resolvedTheme(),'dark');
+  card._config={theme_mode:'light'};assert.equal(card._resolvedTheme(),'light');
+  card._config={theme_mode:'auto'};card._hass={themes:{darkMode:false}};assert.equal(card._resolvedTheme(),'light');
+  card._hass={themes:{darkMode:true}};assert.equal(card._resolvedTheme(),'dark');
+  assert.match(source,/this\._imageCaches=\{light:\{\},dark:\{\}\}/);
+  assert.match(source,/resolveFloorplanImage\(this\._hass,active,this\._imageCaches\[theme\]\)/);
+  assert.match(source,/JSON\.stringify\(prev\.image_dark\)===JSON\.stringify\(next\.image_dark\)/);
+  assert.match(source,/this\._updateTheme\(\);this\._refreshStates\(\);this\._loadCardImage\(\);/);
+});
+
+test('image ratio check flags mismatching light and dark floorplans',()=>{
+  assert.equal(imageRatioStatus({w:1600,h:1000},{w:3200,h:2000}).ok,true);
+  assert.equal(imageRatioStatus({w:1600,h:1000},{w:1604,h:1000}).ok,true);
+  const bad=imageRatioStatus({w:1600,h:1000},{w:1600,h:1200});
+  assert.equal(bad.ok,false);
+  assert.ok(bad.diff>0.15 && bad.diff<0.25);
+  assert.equal(imageRatioStatus(null,{w:1,h:1}),null);
+  assert.equal(imageRatioStatus({w:0,h:10},{w:1,h:1}),null);
+  assert.match(source,/differiscono del/);
+});
+
+test('marker icons: Home Assistant entity icon, custom icon or the GlowFloor bulb',()=>{
+  assert.equal(validIcon('mdi:ceiling-light'),true);
+  assert.equal(validIcon('hass:lightbulb'),true);
+  assert.equal(validIcon('mdi:'),false);
+  assert.equal(validIcon('javascript:alert(1)'),false);
+  assert.equal(validIcon('<img src=x>'),false);
+  const c=normalizeConfig({lights:[{entity:'light.a',icon_source:'custom',icon:' mdi:floor-lamp '},{entity:'light.b',icon_source:'bad',icon:'nope'},{entity:'light.c'}]});
+  assert.equal(c.lights[0].icon_source,'custom');
+  assert.equal(c.lights[0].icon,'mdi:floor-lamp');
+  assert.equal('icon_source' in c.lights[1],false);
+  assert.equal('icon' in c.lights[1],false);
+  assert.equal('icon_source' in c.lights[2],false);
+  const Card=registry.get('glowfloor-card');
+  const card=Object.create(Card.prototype);
+  card._config=normalizeConfig({icon_mode:'entity'});
+  assert.deepEqual({...card._effectiveIcon({entity:'light.a'})},{type:'state'});
+  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'custom',icon:'mdi:lamp'})},{type:'icon',icon:'mdi:lamp'});
+  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'custom'})},{type:'state'});
+  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'default'})},{type:'bulb'});
+  assert.deepEqual({...card._effectiveIcon({entity:'',icon_source:'entity'})},{type:'bulb'});
+  card._config=normalizeConfig({});
+  assert.deepEqual({...card._effectiveIcon({entity:'light.a'})},{type:'bulb'});
+  assert.match(source,/customElements\.get\('ha-state-icon'\)/);
+  assert.match(source,/holder\.innerHTML=BULB_SVG/);
+});
+
+test('icon selector in the editor uses the native Home Assistant icon selector',()=>{
+  registry.set('ha-selector',class {});
+  const Editor=registry.get('glowfloor-card-editor');
+  const editor=Object.create(Editor.prototype);
+  editor._hass={states:{}};
+  const icon={_glowfloor:{domain:'icon',value:'mdi:floor-lamp',label:'Icona personalizzata'}};
+  editor._setNativeSelector(icon);
+  assert.deepEqual({...icon.selector.icon},{});
+  assert.equal(icon.value,'mdi:floor-lamp');
+});
+
+test('marker styles keep the 44px touch target and a legible icon on busy floorplans',()=>{
+  assert.match(source,/:host\(\[data-marker-style="compact"\]\)\{--gf-icon-ratio:\.6\}/);
+  assert.match(source,/:host\(\[data-marker-style="icon"\]\)\{--gf-icon-ratio:1\}/);
+  assert.match(source,/drop-shadow\(0 0 2px #000000bf\)/);
+  assert.match(source,/width:max\(44px,var\(--gf-marker-size,28px\)\);height:max\(44px,var\(--gf-marker-size,28px\)\)/);
+  assert.match(source,/this\.dataset\.markerStyle=c\.marker_style/);
+});
+
+const j=v=>JSON.stringify(v);
+
+test('color temperature: kelvin maps to warm/cool RGB and is only a fallback to rgb_color',()=>{
+  assert.equal(j(kelvinToRgb(2700)),'[255,167,87]');
+  assert.equal(j(kelvinToRgb(6600)),'[255,255,255]');
+  const cool=kelvinToRgb(9000);
+  assert.ok(cool[2]===255 && cool[0]<255,'cool white is bluish');
+  assert.equal(kelvinToRgb(null),null);
+  assert.equal(kelvinToRgb('x'),null);
+  assert.equal(kelvinToRgb(0),null);
+  assert.equal(j(lightRgb({rgb_color:[1,2,3],color_temp_kelvin:2700})),'[1,2,3]');
+  assert.equal(j(lightRgb({color_temp_kelvin:2700})),'[255,167,87]');
+  assert.equal(j(lightRgb({color_temp:370})),j(kelvinToRgb(1e6/370)));
+  assert.equal(lightRgb({}),null);
+  assert.equal(lightRgb(undefined),null);
+  assert.equal(spillColor({}),'211,194,157','keeps the original default glow');
+  assert.equal(spillColor({color_temp_kelvin:2700}),'255,167,87');
+});
+
+test('drag-to-dim helpers: brightness, dimmable detection, clamped drag',()=>{
+  assert.equal(brightnessPct({brightness:255}),100);
+  assert.equal(brightnessPct({brightness:128}),50);
+  assert.equal(brightnessPct({brightness:null}),null);
+  assert.equal(brightnessPct({}),null);
+  assert.equal(isDimmable({state:'on',attributes:{supported_color_modes:['onoff']}}),false);
+  assert.equal(isDimmable({state:'off',attributes:{supported_color_modes:['brightness']}}),true);
+  assert.equal(isDimmable({state:'on',attributes:{brightness:10}}),true);
+  assert.equal(isDimmable({state:'off',attributes:{}}),false);
+  assert.equal(isDimmable(undefined),false);
+  assert.equal(dimFromDrag(50,0),50);
+  assert.equal(dimFromDrag(50,40),70);
+  assert.equal(dimFromDrag(50,-400),0);
+  assert.equal(dimFromDrag(50,400),100);
+});
+
+test('dim gesture and empty rooms are opt-in and sanitized in the config',()=>{
+  const legacy=normalizeConfig({lights:[{entity:'light.a',name:'A',x:1,y:1}]});
+  assert.equal(legacy.dim_gesture,false);
+  assert.equal(legacy.empty_delay,10);
+  assert.equal('presence_entity' in legacy.lights[0],false);
+  assert.equal(normalizeConfig({dim_gesture:'true'}).dim_gesture,false,'only boolean true enables it');
+  assert.equal(normalizeConfig({dim_gesture:true}).dim_gesture,true);
+  assert.equal(emptyDelay(0),1);
+  assert.equal(emptyDelay(999),240);
+  assert.equal(emptyDelay('x'),10);
+  assert.equal(emptyDelay(''),10);
+  assert.equal(emptyDelay(25),25);
+  const c=normalizeConfig({lights:[
+    {entity:'light.a',presence_entity:' binary_sensor.room '},
+    {entity:'light.b',presence_entity:'switch.nope'},
+    {entity:'light.c',presence_entity:42},
+  ]});
+  assert.equal(c.lights[0].presence_entity,'binary_sensor.room');
+  assert.equal('presence_entity' in c.lights[1],false);
+  assert.equal('presence_entity' in c.lights[2],false);
+});
+
+test('empty room: presence off for at least the delay',()=>{
+  const now=Date.parse('2026-10-28T12:00:00Z');
+  const at=min=>new Date(now-min*60000).toISOString();
+  assert.equal(isVacant({state:'off',last_changed:at(11)},now,10),true);
+  assert.equal(isVacant({state:'off',last_changed:at(10)},now,10),true);
+  assert.equal(isVacant({state:'off',last_changed:at(9)},now,10),false);
+  assert.equal(isVacant({state:'on',last_changed:at(99)},now,10),false);
+  assert.equal(isVacant({state:'unavailable',last_changed:at(99)},now,10),false);
+  assert.equal(isVacant({state:'off'},now,10),false,'no timestamp: do not guess');
+  assert.equal(isVacant(undefined,now,10),false);
+});
+
+test('source wires pointer/keyboard gestures, pan-y and the empty-room button',()=>{
+  assert.match(source,/touch-action:pan-y/);
+  assert.match(source,/data-dim-gesture="true"/);
+  assert.match(source,/pointermove/);
+  assert.match(source,/brightness_pct/);
+  assert.match(source,/class="action vacant-off"/);
+  assert.match(source,/Spegni stanze vuote/);
+  assert.match(source,/clearInterval\(this\._vacancyTimer\)/);
 });

@@ -18,17 +18,25 @@ GlowFloor uses existing Home Assistant entities and services without requiring a
 
 ## Preview
 
-![GlowFloor Card — Graphite Dark floorplan preview](assets/glowfloor-preview.png)
+| Light | Dark |
+| --- | --- |
+| ![GlowFloor Card in Light mode](assets/glowfloor-light.png) | ![GlowFloor Card in Dark mode](assets/glowfloor-dark.png) |
 
-*GlowFloor Card in a Home Assistant dashboard, showing discreet light markers on a custom floorplan. Appearance and available controls depend on the configured entities and settings.*
+![GlowFloor Card while dragging a marker to dim a light](assets/glowfloor-dimming-light.png)
+
+*Screenshots use the built-in sample floorplan and example entities. The card follows the Home Assistant theme; dragging a marker shows the brightness before it is applied, and an amber dot marks a light left on in an empty room.*
 
 ## Features
 
-- **Interactive floorplan:** Use the built-in sample or select a custom image through Home Assistant.
-- **Discreet light markers:** Compact, Edera-inspired light controls with a 28 px default size, adjustable from 26 to 76 px.
+- **Interactive floorplan:** Use the built-in sample, or select custom images through Home Assistant, with separate Light and Dark versions.
+- **Light and Dark floorplans:** The image follows the active theme. If only one image is set, it is used in both modes. The editor warns when the two images have different aspect ratios.
+- **Marker styles:** Choose Full (disc with border), Compact, or Icon only. Marker size is adjustable from 26 to 76 px (Full) or 16 to 76 px (Compact and Icon only).
 - **Touch-friendly controls:** A minimum 44 × 44 px interaction area, independently of the visible marker size.
+- **Marker icons:** Use the GlowFloor bulb, the icon of the Home Assistant entity, or a custom icon, globally or per light.
 - **Light states:** Neutral sage-grey markers for inactive lights and soft champagne styling for active lights.
-- **Lighting effects:** Optional diffuse illumination following a light's RGB color and brightness when available.
+- **Lighting effects:** Optional diffuse illumination following a light's brightness and RGB color, or its color temperature when no RGB color is reported.
+- **Drag to dim (optional):** Drag a marker horizontally to set brightness; a short tap still toggles the light. Arrow keys are supported.
+- **Empty-room indicator (optional):** Link a presence sensor to a light; if the room stays empty for the configured time, the light is flagged and a button turns off all flagged lights. Nothing is switched off automatically.
 - **Adjustable light area:** Configure the glow spread individually for each light, from 12% to 75%.
 - **Contextual labels:** Show light names during interaction by default, with always-visible and always-hidden alternatives.
 - **Live light counter:** Display the number of distinct configured lights currently switched on.
@@ -37,7 +45,7 @@ GlowFloor uses existing Home Assistant entities and services without requiring a
 - **Optional scenes:** Add up to three Home Assistant scenes with customizable button labels.
 - **Visual configuration:** Five organized editor sections, native Home Assistant entity selectors, and touch-based marker positioning.
 - **Responsive appearance:** Automatic, Light, and Dark display modes.
-- **Configuration compatibility:** Preserve existing marker positions, custom sizes, and other saved settings.
+- **Configuration compatibility:** Existing configurations keep their marker style, positions, sizes, and icons; new features are off unless enabled.
 
 ## Installation
 
@@ -85,21 +93,23 @@ The editor contains five sections:
 
 | Section | Configuration |
 | --- | --- |
-| **Piantina (Floorplan)** | Select or upload a floorplan, restore the sample image, and position markers directly on the image. |
-| **Luci (Lights)** | Add `light.*` entities, customize their names, and configure individual glow areas and optional marker sizes. |
+| **Piantina (Floorplan)** | Select or upload separate Light and Dark floorplans, preview either theme, restore the sample image, and position markers directly on the image. |
+| **Luci (Lights)** | Add `light.*` entities, customize their names, and configure glow area, optional marker size, marker icon, and an optional presence sensor. |
 | **Scene (Scenes)** | Add up to three `scene.*` entities and customize their labels. |
-| **Aspetto (Appearance)** | Configure header text, display theme, default marker size, light effects, and label visibility. |
-| **Avanzate (Advanced)** | Adjust marker coordinates and configure a floorplan image path manually. |
+| **Aspetto (Appearance)** | Configure header text, display theme, marker style, icon source, marker size, light effects, label visibility, drag to dim, and the empty-room delay. |
+| **Avanzate (Advanced)** | Adjust marker coordinates and configure Light and Dark floorplan paths manually. |
 
 ### Marker configuration
 
-New configurations use a default marker size of **28 px**.
+`marker_style` accepts `chip` (Full), `compact`, or `icon`. When omitted, `chip` is used, so existing cards look unchanged. Cards created from the visual editor start with `compact`.
 
-Marker sizes can be adjusted between **26 and 76 px**, globally or for individual lights. The interactive button area remains at least **44 × 44 px**.
+| Style | Default size | Allowed size |
+| --- | --- | --- |
+| `chip` | 28 px | 26–76 px |
+| `compact` | 20 px | 16–76 px |
+| `icon` | 18 px | 16–76 px |
 
-Existing configurations retain explicitly saved dimensions and positions. Individual marker sizes override the global setting.
-
-The illuminated area is configured separately and does not change the marker dimensions.
+The interactive button area remains at least **44 × 44 px**. Individual marker sizes override the global setting. The illuminated area is configured separately and does not change the marker dimensions.
 
 ### Optional YAML configuration
 
@@ -113,30 +123,41 @@ subtitle: ""
 theme_mode: auto
 label_mode: interaction
 spill_enabled: true
-marker_size: 28
+marker_style: compact
+marker_size: 20
+icon_mode: entity        # entity | default
+dim_gesture: true        # drag a marker to dim; default: false
+empty_delay: 10          # minutes, 1-240
 image: /local/floorplans/example.png
+image_dark: /local/floorplans/example-dark.png
 lights:
   - entity: light.example_living_room
     name: Living room
     x: 40
     y: 55
     spread: 32
+    icon_source: custom  # entity | custom | default (optional)
+    icon: mdi:ceiling-light
+    presence_entity: binary_sensor.example_living_room_presence
 scenes:
   - entity: scene.example_relax
     name: Relax
 ```
 
-Replace the example entities and image path with valid values from your Home Assistant instance.
+Replace the example entities and image paths with valid values from your Home Assistant instance.
 
-Marker coordinates (`x` and `y`) use percentages from 0 to 100. The `spread` value accepts 12–75%, and an optional per-light `size` accepts 26–76 px.
+Marker coordinates (`x` and `y`) use percentages from 0 to 100. The `spread` value accepts 12–75%. `presence_entity` must be a `binary_sensor.*` entity: a light is flagged as left on in an empty room when the sensor has been `off` for at least `empty_delay` minutes. Drag to dim only applies to lights that support brightness.
 
 ### Card controls
 
 | Interaction | Result |
 | --- | --- |
 | Tap or click a light marker | Toggle the associated light. |
+| Drag a marker left or right (if enabled) | Set brightness; applied on release. |
+| Arrow keys on a focused marker (if enabled) | Adjust brightness in 5% steps. |
 | Long-press or right-click a marker | Open its Home Assistant entity details. |
 | **Spegni tutto** | Turn off configured lights that are currently on. |
+| **Spegni stanze vuote (N)** | Turn off the N lights flagged as empty-room. Shown only when at least one is flagged. |
 | **Nascondi piantina / Mostra piantina** | Temporarily hide or show the floorplan. |
 | Select a scene | Activate the associated Home Assistant scene. |
 
@@ -145,6 +166,7 @@ Marker coordinates (`x` and `y`) use percentages from 0 to 100. The `spread` val
 - Home Assistant with support for custom JavaScript dashboard cards.
 - Existing `light.*` entities for light control.
 - Optional `scene.*` entities for scene shortcuts.
+- Optional `binary_sensor.*` entities for empty-room detection.
 - Home Assistant media access and suitable permissions when selecting or uploading images.
 - HACS for repository-based installation, or manual JavaScript module installation.
 

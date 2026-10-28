@@ -8,7 +8,8 @@ const CARD_TAG = 'glowfloor-card';
 const EDITOR_TAG = 'glowfloor-card-editor';
 const BULB_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6m-5 3h4M8 14.5a6 6 0 1 1 8 0c-1.25 1-1.4 2.5-1.4 3.5H9.4c0-1-.15-2.5-1.4-3.5Z"/></svg>';
 const POWER_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v10m-6.36-6.36a9 9 0 1 0 12.72 0"/></svg>';
-const BUILTIN_FLOORPLAN = `<svg class="floor" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+const MOON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>';
+const BUILTIN_FLOORPLAN =`<svg class="floor" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs><pattern id="gf-hatch" width="19" height="19" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V19" class="tile"/></pattern><pattern id="gf-tile" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" class="tile"/></pattern></defs>
   <path class="room" d="M64 66H840V542H64Z"/><path class="room-alt" d="M407 66H840V303H407Z M407 316H650V542H407Z"/><path fill="url(#gf-hatch)" opacity=".4" d="M73 75H394V530H73Z"/><path fill="url(#gf-tile)" opacity=".4" d="M665 319H833V535H665Z"/>
   <path class="wall" d="M64 66H840V542H64V66Z M401 66V196 M401 246V542 M401 303H568 M623 303H840 M656 303V359 M656 417V542"/><path class="door" d="M401 246Q453 244 453 192 M623 303Q620 354 571 354 M656 417Q710 414 710 362"/>
@@ -21,8 +22,8 @@ const BUILTIN_FLOORPLAN = `<svg class="floor" viewBox="0 0 900 600" xmlns="http:
 const STYLE = `
 :host{display:block;font-family:var(--ha-font-family-body,var(--paper-font-body1_-_font-family,Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif));--gf-accent:#0a7156;color:var(--gf-ink);box-sizing:border-box}
 *,*::before,*::after{box-sizing:border-box}
-:host([data-theme="dark"]){--gf-accent:#0e795d;--gf-frame:#101211;--gf-line:#2b302c;--gf-plan:#191c1a;--gf-room:#252b27;--gf-room2:#222823;--gf-wall:#6e8076;--gf-furn:#89978f;--gf-furn-fill:#333b35;--gf-ink:#f5f7f4;--gf-muted:#bbc5bd;--gf-chip:#282b29;--gf-chip-border:#353c37;--gf-off:#303932;--gf-off-line:#586c5e;--gf-off-ink:#a9b9ad;--gf-light:#d3c29d;--gf-lit-surface:#3c382f;--gf-glass:rgba(22,25,23,.94)}
-:host([data-theme="light"]){--gf-accent:#0a7156;--gf-frame:#fafbf9;--gf-line:#e0e5df;--gf-plan:#f0f2ef;--gf-room:#e9ece7;--gf-room2:#e0e7df;--gf-wall:#879a8d;--gf-furn:#8d9e91;--gf-furn-fill:#dce5dc;--gf-ink:#18221c;--gf-muted:#56675c;--gf-chip:#f0f2ef;--gf-chip-border:#e0e5df;--gf-off:#d8dfd7;--gf-off-line:#9eaea1;--gf-off-ink:#586d60;--gf-light:#9a7c4f;--gf-lit-surface:#e5d8c0;--gf-glass:rgba(250,251,249,.96)}
+:host([data-theme="dark"]){--gf-accent:#0e795d;--gf-frame:#101211;--gf-line:#2b302c;--gf-plan:#191c1a;--gf-room:#252b27;--gf-room2:#222823;--gf-wall:#6e8076;--gf-furn:#89978f;--gf-furn-fill:#333b35;--gf-ink:#f5f7f4;--gf-muted:#bbc5bd;--gf-chip:#282b29;--gf-chip-border:#353c37;--gf-off:#303932;--gf-off-line:#586c5e;--gf-off-ink:#a9b9ad;--gf-light:#d3c29d;--gf-lit-surface:#3c382f;--gf-off-a:rgba(48,57,50,.72);--gf-glass:rgba(22,25,23,.94)}
+:host([data-theme="light"]){--gf-accent:#0a7156;--gf-frame:#fafbf9;--gf-line:#e0e5df;--gf-plan:#f0f2ef;--gf-room:#e9ece7;--gf-room2:#e0e7df;--gf-wall:#879a8d;--gf-furn:#8d9e91;--gf-furn-fill:#dce5dc;--gf-ink:#18221c;--gf-muted:#56675c;--gf-chip:#f0f2ef;--gf-chip-border:#e0e5df;--gf-off:#d8dfd7;--gf-off-line:#9eaea1;--gf-off-ink:#586d60;--gf-light:#9a7c4f;--gf-lit-surface:#e5d8c0;--gf-off-a:rgba(216,223,215,.75);--gf-glass:rgba(250,251,249,.96)}
 .shell{display:block;border:1px solid var(--gf-line);border-radius:26px;background:var(--gf-frame);box-shadow:none;overflow:hidden;padding:18px;min-width:0}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:5px}.title{color:var(--gf-ink);font-size:clamp(19px,2.6vw,26px);line-height:1.16;letter-spacing:-.7px;font-weight:750;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent)}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:11px;font-weight:670;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:14px;height:14px}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{font-size:11px;min-height:36px}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-accent)}.plan[hidden]{display:none!important}
 .plan{position:relative;width:100%;background:var(--gf-plan);border:1px solid var(--gf-line);border-radius:15px;overflow:hidden;isolation:isolate;line-height:0;min-width:0}
@@ -32,14 +33,31 @@ const STYLE = `
 :host([data-theme="dark"]) .spill{mix-blend-mode:screen}
 :host([data-theme="light"]) .spill{filter:blur(4px)}
 .plan::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 60%,#00000009 100%)}.floor,.floor-image{width:100%;height:auto;display:block}.floor .room{fill:var(--gf-room)}.floor .room-alt{fill:var(--gf-room2)}.floor .wall{stroke:var(--gf-wall);stroke-width:8;fill:none}.floor .furn{stroke:var(--gf-furn);stroke-width:2.2;fill:var(--gf-furn-fill)}.floor .thin,.floor .door{stroke:var(--gf-furn);stroke-width:2;fill:none}.floor .door{stroke-dasharray:4 4}.floor .room-label,.floor .micro{font-size:15px;letter-spacing:3px;fill:var(--gf-muted);font-weight:700;text-anchor:middle}.floor .micro{font-size:10px;letter-spacing:2px}.floor .tile{stroke:var(--gf-furn);stroke-width:1;opacity:.24}
-.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,28px));height:max(44px,var(--gf-marker-size,28px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px);border-radius:50%;background:var(--gf-off);border:1px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 1px 3px #00000014;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:none}.orb svg{width:calc(var(--gf-marker-size,28px) * .4);height:calc(var(--gf-marker-size,28px) * .4);display:block}.marker.on .orb{background:var(--gf-lit-surface);border-color:var(--gf-light);color:var(--gf-light);box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524,0 1px 4px #00000020}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible{outline:2px solid var(--gf-accent);outline-offset:3px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,28px));height:max(44px,var(--gf-marker-size,28px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px);border-radius:50%;background:var(--gf-off);border:1px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 1px 3px #00000014;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:none}.orb .ic{display:grid;place-items:center;width:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));height:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));--mdc-icon-size:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4))}.orb .ic svg{width:100%;height:100%;display:block}.orb .ic ha-icon,.orb .ic ha-state-icon{display:flex;width:100%;height:100%}.marker.on .orb{background:var(--gf-lit-surface);border-color:var(--gf-light);color:var(--gf-light);box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524,0 1px 4px #00000020}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible{outline:2px solid var(--gf-accent);outline-offset:3px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
 .marker-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .marker.label-visible{z-index:5}
 .marker.label-visible .marker-name,:host([data-label-mode="always"]) .marker-name{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .14s ease,transform .14s ease}
 :host([data-label-mode="never"]) .marker-name{display:none}
+/* Marker styles: "chip" keeps the original look; "compact" and "icon" are lighter on busy floorplans. */
+:host([data-marker-style="compact"]){--gf-icon-ratio:.6}
+:host([data-marker-style="compact"]) .orb{background:var(--gf-off-a);box-shadow:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+:host([data-marker-style="compact"]) .marker.on .orb{background:var(--gf-lit-surface);box-shadow:0 0 0 2px #b98a4512,0 0 7px 1px #b98a4524}
+:host([data-marker-style="icon"]){--gf-icon-ratio:1}
+:host([data-marker-style="icon"]) .orb,:host([data-marker-style="icon"]) .marker.on .orb{background:transparent;border-color:transparent;box-shadow:none}
+:host([data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #000000bf)}
+:host([data-theme="light"][data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #ffffffe6)}
+/* Drag-to-dim (opt-in) and empty-room indicator. */
+.action[hidden]{display:none}
+:host([data-dim-gesture="true"]) .marker{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.dim-badge{position:absolute;bottom:calc(100% - 6px);left:50%;transform:translateX(-50%);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);border-radius:8px;padding:2px 6px;color:var(--gf-ink);font-size:10px;font-weight:700;line-height:1.3;font-variant-numeric:tabular-nums;white-space:nowrap;box-shadow:0 2px 8px #00000018}
+.marker[data-badge="below"] .dim-badge{bottom:auto;top:calc(100% - 6px)}
+.marker.dimming{z-index:6;cursor:ew-resize}
+.marker.dimming .dim-badge{opacity:1;visibility:visible}
+.marker.dimming .orb{transform:scale(1.12)}
+.marker.vacant .orb::after{content:"";position:absolute;right:-3px;top:-3px;width:8px;height:8px;border-radius:50%;background:#e0a13a;border:1.5px solid var(--gf-frame)}
 
 .scene-dock[hidden]{display:none}.scene-dock{border-top:1px solid var(--gf-line);margin-top:16px;padding-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.dock-label{font-size:10px;letter-spacing:1.5px;font-weight:750;color:var(--gf-muted);margin-right:6px;text-transform:uppercase}.scene{border:1px solid var(--gf-chip-border);background:var(--gf-chip);border-radius:999px;color:var(--gf-ink);font:inherit;font-size:11px;padding:10px 13px;cursor:pointer;white-space:nowrap}.error{margin-top:12px;font-size:12px;color:#d56b59}
-@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.toggle-plan{font-size:10px;padding:7px 10px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px)}.orb svg{width:calc(var(--gf-marker-size,28px) * .4);height:calc(var(--gf-marker-size,28px) * .4)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
+@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.toggle-plan{font-size:10px;padding:7px 10px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.orb,.spill,.marker-name{transition:none!important}}
 `;
 
@@ -99,9 +117,63 @@ button:focus-visible{outline:2px solid var(--primary-color,#668277);outline-offs
 `;
 const isValidEntity = (id, domain) => typeof id === 'string' && new RegExp(`^${domain}\\.[a-z0-9_]+$`).test(id);
 const coordinate = (v, defaultValue = 50) => Number.isFinite(Number(v)) ? Math.max(0, Math.min(100, Number(v))) : defaultValue;
-const markerSize = (v, fallback = 28) => v != null && typeof v !== 'boolean' && String(v).trim() !== '' && Number.isFinite(Number(v)) ? Math.max(26, Math.min(76, Math.round(Number(v)))) : fallback;
+const MARKER_STYLES = ['chip', 'compact', 'icon'];
+const STYLE_DEFAULT_SIZE = { chip: 28, compact: 20, icon: 18 };
+const ICON_SOURCES = ['entity', 'custom', 'default'];
+const markerStyle = (v) => MARKER_STYLES.includes(v) ? v : 'chip';
+const markerMin = (style) => style === 'chip' ? 26 : 16;
+const markerSize = (v, fallback = 28, min = 26) => v != null && typeof v !== 'boolean' && String(v).trim() !== '' && Number.isFinite(Number(v)) ? Math.max(min, Math.min(76, Math.round(Number(v)))) : fallback;
+const validIcon = (v) => typeof v === 'string' && /^[a-z0-9_-]+:[a-z0-9_-]+$/i.test(v.trim());
+const pickImage = (config, theme) => {
+  const light = config?.image || null, dark = config?.image_dark || null;
+  return theme === 'dark' ? (dark || light) : (light || dark);
+};
+const imageRatioStatus = (a, b, tolerance = 0.01) => {
+  if (!a || !b || !a.w || !a.h || !b.w || !b.h) return null;
+  const ra = a.w / a.h, rb = b.w / b.h, diff = Math.abs(ra - rb) / Math.max(ra, rb);
+  return { ok: diff <= tolerance, diff };
+};
 const spillSize = (v) => Number.isFinite(Number(v)) ? Math.max(12, Math.min(75, Number(v))) : 32;
 const spillRgb = (v) => Array.isArray(v) && v.length === 3 && v.every(n => Number.isFinite(n) && n >= 0 && n <= 255) ? v.map(n => Math.round(n)).join(',') : '211,194,157';
+const clampNum = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+// Color temperature -> RGB (Tanner Helland approximation), used only when the light exposes no rgb_color.
+const kelvinToRgb = (kelvin) => {
+  const value = Number(kelvin);
+  if (kelvin == null || !Number.isFinite(value) || value <= 0) return null;
+  const k = clampNum(value, 1000, 40000) / 100;
+  const r = k <= 66 ? 255 : 329.698727446 * Math.pow(k - 60, -0.1332047592);
+  const g = k <= 66 ? 99.4708025861 * Math.log(k) - 161.1195681661 : 288.1221695283 * Math.pow(k - 60, -0.0755148492);
+  const b = k >= 66 ? 255 : k <= 19 ? 0 : 138.5177312231 * Math.log(k - 10) - 305.0447927307;
+  return [r, g, b].map(n => Math.round(clampNum(n, 0, 255)));
+};
+const validRgb = (v) => Array.isArray(v) && v.length === 3 && v.every(n => Number.isFinite(n) && n >= 0 && n <= 255);
+const lightRgb = (attrs) => {
+  if (validRgb(attrs?.rgb_color)) return attrs.rgb_color;
+  const fromKelvin = kelvinToRgb(attrs?.color_temp_kelvin);
+  if (fromKelvin) return fromKelvin;
+  const mired = Number(attrs?.color_temp);
+  return attrs?.color_temp != null && Number.isFinite(mired) && mired > 0 ? kelvinToRgb(1e6 / mired) : null;
+};
+const spillColor = (attrs) => spillRgb(lightRgb(attrs));
+const brightnessPct = (attrs) => {
+  if (attrs?.brightness == null) return null;
+  const b = Number(attrs.brightness);
+  return Number.isFinite(b) && b >= 0 && b <= 255 ? Math.round(b / 255 * 100) : null;
+};
+const isDimmable = (stateObj) => {
+  const modes = stateObj?.attributes?.supported_color_modes;
+  if (Array.isArray(modes)) return modes.some(m => m !== 'onoff');
+  return brightnessPct(stateObj?.attributes) !== null && stateObj?.state === 'on';
+};
+const DIM_RANGE_PX = 200, DIM_THRESHOLD_PX = 8, DIM_KEY_STEP = 5;
+const dimFromDrag = (startPct, dx, range = DIM_RANGE_PX) => clampNum(Math.round(Number(startPct) + Number(dx) / range * 100), 0, 100);
+const emptyDelay = (v) => v != null && String(v).trim() !== '' && Number.isFinite(Number(v)) ? clampNum(Math.round(Number(v)), 1, 240) : 10;
+// A room counts as empty when its presence sensor has been "off" for at least `delayMin` minutes.
+const isVacant = (presence, now, delayMin) => {
+  if (!presence || presence.state !== 'off') return false;
+  const since = Date.parse(presence.last_changed);
+  return Number.isFinite(since) && now - since >= delayMin * 60000;
+};
 const validImage = (value) => typeof value === 'string' && (/^\/(?!\/)/.test(value) || /^https:\/\//i.test(value) || /^media-source:\/\/[^\s]+$/.test(value));
 const imageContentId = (value) => typeof value === 'string' ? value : (value && typeof value === 'object' ? value.media_content_id : null);
 const normalizeImage = (value) => {
@@ -129,9 +201,10 @@ const resolveFloorplanImage = async (hass,value,cache={}) => {
   cache.pendingId=id;cache.pending=pending;
   try{return await pending;}finally{if(cache.pending===pending){delete cache.pending;delete cache.pendingId;}}
 };
-const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 28, label_mode: 'interaction', lights: [] });
+const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 28, marker_style: 'chip', icon_mode: 'default', label_mode: 'interaction', dim_gesture: false, empty_delay: 10, lights: [] });
 const normalizeConfig = (raw) => {
   if (!raw || typeof raw !== 'object') throw new Error('GlowFloor: invalid configuration.');
+  const style = markerStyle(raw.marker_style), minSize = markerMin(style);
   return {
     ...defaultConfig(), ...raw,
     eyebrow: String(raw.eyebrow ?? 'GLOWFLOOR / INTERACTIVE PLAN').slice(0, 100),
@@ -139,14 +212,22 @@ const normalizeConfig = (raw) => {
     subtitle: String(raw.subtitle ?? '').slice(0, 200),
     theme_mode: ['auto', 'dark', 'light'].includes(raw.theme_mode) ? raw.theme_mode : 'auto',
     spill_enabled: raw.spill_enabled !== false,
-    marker_size: markerSize(raw.marker_size),
+    marker_style: style,
+    marker_size: markerSize(raw.marker_size, STYLE_DEFAULT_SIZE[style], minSize),
+    icon_mode: ['entity', 'default'].includes(raw.icon_mode) ? raw.icon_mode : 'default',
     label_mode: ['interaction','always','never'].includes(raw.label_mode) ? raw.label_mode : 'interaction',
+    dim_gesture: raw.dim_gesture === true,
+    empty_delay: emptyDelay(raw.empty_delay),
     image: normalizeImage(raw.image),
+    image_dark: normalizeImage(raw.image_dark),
     lights: (Array.isArray(raw.lights) ? raw.lights : []).slice(0, 60).filter(item => item && typeof item === 'object').map(item => ({
       entity: typeof item.entity === 'string' ? item.entity.trim() : '',
       name: String(item.name || item.entity || 'Light').slice(0, 60),
       x: coordinate(item.x), y: coordinate(item.y), spread: spillSize(item.spread),
-      size: markerSize(item.size, null),
+      size: markerSize(item.size, null, minSize),
+      ...(ICON_SOURCES.includes(item.icon_source) ? { icon_source: item.icon_source } : {}),
+      ...(validIcon(item.icon) ? { icon: item.icon.trim() } : {}),
+      ...(typeof item.presence_entity === 'string' && isValidEntity(item.presence_entity.trim(), 'binary_sensor') ? { presence_entity: item.presence_entity.trim() } : {}),
     })),
     scenes: (Array.isArray(raw.scenes) ? raw.scenes : []).slice(0, MAX_SCENES).filter(item => item && typeof item === 'object').map(item => ({
       entity: typeof item.entity === 'string' ? item.entity.trim() : '',
@@ -156,7 +237,7 @@ const normalizeConfig = (raw) => {
 };
 
 class GlowFloorCard extends HTMLElement {
-  static getStubConfig() { return { ...defaultConfig() }; }
+  static getStubConfig() { return { ...defaultConfig(), marker_style: 'compact', marker_size: STYLE_DEFAULT_SIZE.compact, icon_mode: 'entity' }; }
   static getConfigElement() { return document.createElement(EDITOR_TAG); }
   constructor() {
     super();
@@ -167,12 +248,21 @@ class GlowFloorCard extends HTMLElement {
     this._spillElements = [];
     this._planVisible=true;
     this._decodedImageUrl=null;this._imageDecodePromise=null;
-    this._imageCache={};this._imageRequest=0;this._labelTimer=null;this._lastPointerType=null;
+    this._imageCaches={light:{},dark:{}};this._imageRequest=0;this._labelTimer=null;this._lastPointerType=null;
     this._media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     this._onMedia = () => this._updateTheme();
     this._media?.addEventListener?.('change',this._onMedia);
   }
-  disconnectedCallback(){ this._media?.removeEventListener?.('change',this._onMedia);this._clearLabels(); }
+  connectedCallback(){
+    this._media?.addEventListener?.('change',this._onMedia);
+    // Presence delays elapse without any state change, so re-evaluate periodically.
+    if(!this._vacancyTimer)this._vacancyTimer=setInterval(()=>{if(this._config?.lights.some(l=>l.presence_entity))this._refreshStates();},30000);
+  }
+  disconnectedCallback(){
+    this._media?.removeEventListener?.('change',this._onMedia);this._clearLabels();
+    if(this._vacancyTimer){clearInterval(this._vacancyTimer);this._vacancyTimer=null;}
+    clearTimeout(this._kbTimer);
+  }
   setConfig(raw){
     const next=normalizeConfig(raw);
     const prev=this._config;
@@ -180,7 +270,8 @@ class GlowFloorCard extends HTMLElement {
     // Keep the floorplan image mounted when lights or scenes change.
     // Replacing the whole card makes large uploaded images visibly redraw top-to-bottom.
     if(prev && this.shadowRoot.querySelector('.shell')
-      && JSON.stringify(prev.image)===JSON.stringify(next.image)){
+      && JSON.stringify(prev.image)===JSON.stringify(next.image)
+      && JSON.stringify(prev.image_dark)===JSON.stringify(next.image_dark)){
       const sameOverlays=prev.lights.length===next.lights.length
         && prev.lights.every((light,index)=>light.entity===next.lights[index].entity);
       if(!sameOverlays)this._rebuildOverlays();
@@ -201,7 +292,8 @@ class GlowFloorCard extends HTMLElement {
     });
     this._markerElements=c.lights.map((light,index)=>{
       const button=document.createElement('button');button.type='button';button.className='marker';button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;
-      button.innerHTML=`<span class="orb">${BULB_SVG}</span><span class="marker-name"><span></span></span>`;
+      button.dataset.badge=light.y<14?'below':'above';
+      button.innerHTML=`<span class="orb"><span class="ic"></span></span><span class="dim-badge" aria-hidden="true"></span><span class="marker-name"><span></span></span>`;
       button.querySelector('.marker-name span').textContent=light.name;
       button.addEventListener('click',event=>{
         if(button.dataset.suppressClick==='true'){button.dataset.suppressClick='false';return;}
@@ -213,14 +305,59 @@ class GlowFloorCard extends HTMLElement {
       button.addEventListener('focus',()=>this._showLabel(index));
       button.addEventListener('blur',()=>this._clearLabels());
       button.addEventListener('contextmenu',event=>{event.preventDefault();this._moreInfo(light.entity);});
-      let holdTimer=null;
+      let holdTimer=null,drag=null;
+      const clearHold=()=>{if(holdTimer!==null){clearTimeout(holdTimer);holdTimer=null;}};
       button.addEventListener('pointerdown',ev=>{
         this._lastPointerType=ev.pointerType;
         if(ev.button!==0)return;
+        const stateObj=this._hass?.states?.[light.entity];
+        drag=this._config.dim_gesture && isDimmable(stateObj)
+          ? {id:ev.pointerId,x:ev.clientX,active:false,pct:null,start:stateObj.state==='on'?(brightnessPct(stateObj.attributes)??100):0}
+          : null;
         holdTimer=setTimeout(()=>{holdTimer=null;button.dataset.suppressClick='true';this._moreInfo(light.entity);},600);
       });
-      const clearHold=()=>{if(holdTimer!==null){clearTimeout(holdTimer);holdTimer=null;}};
-      for(const evt of ['pointerup','pointercancel','pointerleave'])button.addEventListener(evt,clearHold);
+      // Horizontal drag adjusts brightness; the service call is sent once, on release.
+      button.addEventListener('pointermove',ev=>{
+        if(!drag || ev.pointerId!==drag.id)return;
+        let dx=ev.clientX-drag.x;
+        if(!drag.active){
+          if(Math.abs(dx)<DIM_THRESHOLD_PX)return;
+          drag.active=true;clearHold();drag.x=ev.clientX;dx=0;
+          try{button.setPointerCapture?.(ev.pointerId);}catch(error){/* capture is optional */}
+          button.classList.add('dimming');
+        }
+        drag.pct=dimFromDrag(drag.start,dx);
+        this._previewDim(index,drag.pct);
+      });
+      button.addEventListener('pointerup',()=>{
+        clearHold();
+        if(drag?.active){
+          const pct=drag.pct;
+          button.dataset.suppressClick='true';setTimeout(()=>{button.dataset.suppressClick='false';},120);
+          button.classList.remove('dimming');
+          this._commitDim(light.entity,pct);
+        }
+        drag=null;
+      });
+      button.addEventListener('pointercancel',()=>{
+        clearHold();
+        if(drag?.active){button.classList.remove('dimming');this._refreshStates();}
+        drag=null;
+      });
+      button.addEventListener('pointerleave',clearHold);
+      button.addEventListener('keydown',ev=>{
+        if(!this._config.dim_gesture)return;
+        const dir={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[ev.key];
+        const stateObj=this._hass?.states?.[light.entity];
+        if(!dir || !isDimmable(stateObj) || ['unavailable','unknown'].includes(stateObj.state))return;
+        ev.preventDefault();
+        const current=this._kbPct?.[index] ?? (stateObj.state==='on'?(brightnessPct(stateObj.attributes)??100):0);
+        const pct=clampNum(current+dir*DIM_KEY_STEP,0,100);
+        (this._kbPct=this._kbPct||{})[index]=pct;
+        button.classList.add('dimming');this._previewDim(index,pct);
+        clearTimeout(this._kbTimer);
+        this._kbTimer=setTimeout(()=>{delete this._kbPct[index];button.classList.remove('dimming');this._commitDim(light.entity,pct);},500);
+      });
       plan.append(button);return button;
     });
   }
@@ -255,7 +392,7 @@ class GlowFloorCard extends HTMLElement {
   }
   _refreshCardConfig(){
     const c=this._config, root=this.shadowRoot;
-    this.dataset.labelMode=c.label_mode;
+    this.dataset.labelMode=c.label_mode;this.dataset.markerStyle=c.marker_style;this.dataset.dimGesture=String(c.dim_gesture);
     if(c.label_mode!=='interaction')this._clearLabels();
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
@@ -265,39 +402,43 @@ class GlowFloorCard extends HTMLElement {
     c.lights.forEach((light,index)=>{
       const button=this._markerElements[index],spill=this._spillElements[index];
       if(button){
-        button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;
+        button.style.left=`${light.x}%`;button.style.top=`${light.y}%`;button.dataset.badge=light.y<14?'below':'above';
         button.style.setProperty('--gf-marker-size',`${light.size ?? c.marker_size}px`);
         button.querySelector('.marker-name span').textContent=light.name;
       }
       if(spill){spill.style.left=`${light.x}%`;spill.style.top=`${light.y}%`;spill.style.width=`${light.spread}%`;}
     });
-    this._updateTheme();this._refreshStates();
+    this._updateTheme();this._refreshStates();this._loadCardImage();
   }
   set hass(value){ this._hass=value; this._updateTheme(); this._refreshStates(); this._loadCardImage(); }
   get hass(){return this._hass;}
   getCardSize(){return 5;}
+  _resolvedTheme(){
+    const mode=this._config?.theme_mode||'auto';
+    const prefersDark=typeof this._hass?.themes?.darkMode === 'boolean' ? this._hass.themes.darkMode : (this._media?.matches ?? true);
+    return mode==='auto'?(prefersDark?'dark':'light'):mode;
+  }
   _updateTheme(){
     if(!this._config) return;
-    const mode=this._config.theme_mode;
-    const prefersDark=typeof this._hass?.themes?.darkMode === 'boolean' ? this._hass.themes.darkMode : (this._media?.matches ?? true);
-    this.dataset.theme=mode==='auto'?(prefersDark?'dark':'light'):mode;
+    this.dataset.theme=this._resolvedTheme();
     // Theme selection is available in the visual editor, not in the card header.
   }
   _render(){
     const c=this._config;
     if(!c)return;
     const root=this.shadowRoot;
-    this.dataset.labelMode=c.label_mode;
-    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 luci accese</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Spegni tutto</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
+    this.dataset.labelMode=c.label_mode;this.dataset.markerStyle=c.marker_style;this.dataset.dimGesture=String(c.dim_gesture);
+    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 luci accese</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Spegni tutto</span></button><button class="action vacant-off" type="button" hidden>${MOON_SVG}<span>Spegni stanze vuote (0)</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
     if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
     const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
     root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
     const plan=root.querySelector('.plan');
-    if(c.image){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onerror=()=>{this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.append(img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
+    if(pickImage(c,this._resolvedTheme())){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onerror=()=>{this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.append(img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
     this._rebuildOverlays();
     root.querySelector('.all-off').addEventListener('click',()=>this._turnAllOff());
+    root.querySelector('.vacant-off').addEventListener('click',()=>this._turnVacantOff());
     root.querySelector('.toggle-plan').addEventListener('click',()=>{this._planVisible=!this._planVisible;this._updatePlanVisibility();});
     this._updatePlanVisibility();
     this._refreshScenes();
@@ -305,10 +446,11 @@ class GlowFloorCard extends HTMLElement {
   }
   async _loadCardImage(){
     const img=this.shadowRoot.querySelector('.floor-image');
-    if(!img || !this._config?.image)return;
+    const theme=this._resolvedTheme(),active=pickImage(this._config,theme);
+    if(!img || !active)return;
     const request=++this._imageRequest;
     try{
-      const url=await resolveFloorplanImage(this._hass,this._config.image,this._imageCache);
+      const url=await resolveFloorplanImage(this._hass,active,this._imageCaches[theme]);
       if(request!==this._imageRequest || !img.isConnected)return;
       if(img.getAttribute('src')===url || img.src===url){this._showError('');return;}
       if(this._decodedImageUrl!==url){
@@ -333,7 +475,25 @@ class GlowFloorCard extends HTMLElement {
   _showError(message){const el=this.shadowRoot.querySelector('.error');if(el){el.textContent=message;el.hidden=!message;}}
   async _callService(domain,service,data){
     if(!this._hass?.callService) return this._showError('Home Assistant is not connected.');
-    try{this._showError('');await this._hass.callService(domain,service,data);}catch(error){console.error('[GlowFloor]',error);this._showError('Action failed. Check Home Assistant logs and permissions.');}
+    try{this._showError('');await this._hass.callService(domain,service,data);return true;}catch(error){console.error('[GlowFloor]',error);this._showError('Action failed. Check Home Assistant logs and permissions.');return false;}
+  }
+  _previewDim(index,pct){
+    const button=this._markerElements[index],spill=this._spillElements[index];if(!button)return;
+    button.querySelector('.dim-badge').textContent=`${pct}%`;
+    button.classList.toggle('on',pct>0);
+    if(spill){
+      spill.classList.toggle('on',pct>0 && this._config.spill_enabled);
+      spill.style.setProperty('--gf-light-strength',String(Math.max(.25,pct/100)));
+    }
+  }
+  async _commitDim(entity,pct){
+    if(!isValidEntity(entity,'light'))return;
+    const ok=pct<=0 ? await this._callService('light','turn_off',{entity_id:entity}) : await this._callService('light','turn_on',{entity_id:entity,brightness_pct:pct});
+    // Re-sync the preview with the real state (immediately on failure, as a safety net otherwise).
+    if(!ok)this._refreshStates();else setTimeout(()=>this._refreshStates(),2000);
+  }
+  _turnVacantOff(){
+    if(this._vacantIds?.length)this._callService('light','turn_off',{entity_id:this._vacantIds});
   }
   _toggle(entity){if(!isValidEntity(entity,'light') || !this._hass?.states?.[entity] || ['unavailable','unknown'].includes(this._hass.states[entity].state))return;this._callService('light','toggle',{entity_id:entity});}
   _moreInfo(entity){if(!isValidEntity(entity,'light'))return;this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:entity},bubbles:true,composed:true}));}
@@ -341,28 +501,57 @@ class GlowFloorCard extends HTMLElement {
     const ids=[...new Set(this._config.lights.map(x=>x.entity).filter(entity=>isValidEntity(entity,'light') && this._hass?.states?.[entity]?.state==='on'))];
     if(ids.length)this._callService('light','turn_off',{entity_id:ids});
   }
+  _effectiveIcon(light){
+    const source=light.icon_source||this._config.icon_mode;
+    if(source==='custom' && validIcon(light.icon))return {type:'icon',icon:light.icon};
+    if((source==='custom' || source==='entity') && isValidEntity(light.entity,'light'))return {type:'state'};
+    return {type:'bulb'};
+  }
+  _setIcon(index){
+    const light=this._config.lights[index],holder=this._markerElements[index]?.querySelector('.ic');
+    if(!light || !holder)return;
+    const spec=this._effectiveIcon(light),key=spec.type+(spec.icon||'');
+    if(holder.dataset.kind!==key){
+      holder.replaceChildren();
+      let el=null;
+      if(spec.type==='icon' && customElements.get('ha-icon')){el=document.createElement('ha-icon');el.setAttribute('icon',spec.icon);}
+      else if(spec.type==='state' && customElements.get('ha-state-icon'))el=document.createElement('ha-state-icon');
+      if(el){holder.append(el);holder.dataset.kind=key;}
+      else{holder.innerHTML=BULB_SVG;holder.dataset.kind=spec.type==='bulb'?key:'';}
+    }
+    const stateIcon=holder.querySelector('ha-state-icon');
+    if(stateIcon && this._hass){stateIcon.hass=this._hass;stateIcon.stateObj=this._hass.states?.[light.entity];}
+  }
   _refreshStates(){
     if(!this._config || !this.shadowRoot.querySelector('.count'))return;
-    let on=0;const seen=new Set();
+    let on=0;const seen=new Set(),vacant=new Set(),now=Date.now();
     this._config.lights.forEach((light,index)=>{
       const button=this._markerElements[index];if(!button)return;
+      this._setIcon(index);
       const valid=isValidEntity(light.entity,'light');const state=valid?this._hass?.states?.[light.entity]?.state:null;
       const available=Boolean(state && state!=='unknown' && state!=='unavailable');
       const active=state==='on';
       if(active && !seen.has(light.entity)){on++;seen.add(light.entity);}
+      const empty=active && Boolean(light.presence_entity) && isVacant(this._hass?.states?.[light.presence_entity],now,this._config.empty_delay);
+      if(empty)vacant.add(light.entity);
+      if(button.classList.contains('dimming'))return; // the user is dragging: keep the live preview
       button.classList.toggle('on',active);button.classList.toggle('unavailable',!available);button.disabled=!available;button.setAttribute('aria-pressed',String(active));
+      button.classList.toggle('vacant',empty);
       const spill=this._spillElements[index];
       if(spill){
         spill.classList.toggle('on',active && this._config.spill_enabled);
         const attrs=this._hass?.states?.[light.entity]?.attributes;
-        spill.style.setProperty('--gf-light-rgb',spillRgb(attrs?.rgb_color));
+        spill.style.setProperty('--gf-light-rgb',spillColor(attrs));
         const brightness=Number(attrs?.brightness);
         const intensity=Number.isFinite(brightness)&&brightness>=0&&brightness<=255?Math.max(.25,brightness/255):.70;
         spill.style.setProperty('--gf-light-strength',String(intensity));
       }
-      button.setAttribute('aria-label',`${light.name}: ${!available?'unavailable':active?'on':'off'}`);
+      button.setAttribute('aria-label',`${light.name}: ${!available?'unavailable':active?'on':'off'}${empty?', empty room':''}`);
       // The accessible label is sufficient; avoid duplicate native browser tooltips.
     });
+    this._vacantIds=[...vacant];
+    const vacantButton=this.shadowRoot.querySelector('.vacant-off');
+    if(vacantButton){vacantButton.hidden=vacant.size===0;vacantButton.querySelector('span').textContent=`Spegni stanze vuote (${vacant.size})`;}
     this.shadowRoot.querySelector('.count').textContent=`${on} ${on===1?'luce accesa':'luci accese'}`;
     this.shadowRoot.querySelector('.count').classList.toggle('has-on',on>0);
     this.shadowRoot.querySelector('.all-off').disabled=on===0;
@@ -372,9 +561,42 @@ class GlowFloorCard extends HTMLElement {
 class GlowFloorCardEditor extends HTMLElement {
   constructor(){
     super();this.attachShadow({mode:'open'});this._config=defaultConfig();
-    this._selected=0;this._tab='piantina';this._hass=null;this._helperRequested=false;this._imageCache={};this._editorImageRequest=0;
+    this._selected=0;this._tab='piantina';this._hass=null;this._helperRequested=false;this._imageCaches={light:{},dark:{}};this._editorImageRequest=0;
+    this._ratioResult=null;this._ratioPending=null;this._previewTheme=null;
   }
-  set hass(value){this._hass=value;this._syncNativeSelectors();this._loadEditorImage();}
+  set hass(value){this._hass=value;this._syncNativeSelectors();this._loadEditorImage();this._checkRatios();}
+  _previewThemeValue(){return this._previewTheme||(this._hass?.themes?.darkMode?'dark':'light');}
+  _paintRatio(){
+    const el=this.shadowRoot?.querySelector('.ratio-msg');if(!el)return;
+    const {image,image_dark}=this._config,r=this._ratioResult;
+    el.classList.remove('image-message');
+    if(!image && !image_dark){el.textContent='';return;}
+    if(!image || !image_dark){el.textContent='Con una sola immagine, la card la usa in entrambi i temi.';return;}
+    if(r && r.key===JSON.stringify([image,image_dark])){el.textContent=r.text;if(r.warn)el.classList.add('image-message');}
+    else el.textContent='';
+  }
+  _measureImage(value,slot){
+    return resolveFloorplanImage(this._hass,value,this._imageCaches[slot]).then(url=>new Promise((resolve,reject)=>{
+      const probe=new Image();probe.referrerPolicy='no-referrer';
+      probe.onload=()=>resolve({w:probe.naturalWidth,h:probe.naturalHeight});probe.onerror=()=>reject(new Error('Invalid image'));probe.src=url;
+    }));
+  }
+  async _checkRatios(){
+    const {image,image_dark}=this._config;this._paintRatio();
+    if(!image || !image_dark || !this._hass)return;
+    const key=JSON.stringify([image,image_dark]);
+    if(this._ratioResult?.key===key || this._ratioPending===key)return;
+    this._ratioPending=key;
+    let result={key,warn:false,text:''};
+    try{
+      const [a,b]=await Promise.all([this._measureImage(image,'light'),this._measureImage(image_dark,'dark')]);
+      const status=imageRatioStatus(a,b);
+      if(status)result={key,warn:!status.ok,text:status.ok?'Proporzioni coerenti: i marker restano allineati nei due temi.':`Le proporzioni delle due immagini differiscono del ${Math.max(1,Math.round(status.diff*100))}%: i marker potrebbero non combaciare tra i due temi.`};
+    }catch(error){console.debug('[GlowFloor] Controllo proporzioni non disponibile:',error);}
+    finally{if(this._ratioPending===key)this._ratioPending=null;}
+    this._ratioResult=result;
+    if(JSON.stringify([this._config.image,this._config.image_dark])===key)this._paintRatio();
+  }
   setConfig(raw){
     const next=normalizeConfig(raw);
     if(this.shadowRoot.querySelector('.editor') && JSON.stringify(next)===JSON.stringify(this._config))return;
@@ -398,7 +620,8 @@ class GlowFloorCardEditor extends HTMLElement {
   _update(prop,value){this._config[prop]=value;this._emit();}
   _editLight(index,prop,value){
     const lights=this._config.lights.map(x=>({...x}));if(!lights[index])return;
-    lights[index][prop]=['x','y'].includes(prop)?coordinate(value):prop==='spread'?spillSize(value):prop==='size'?markerSize(value,null):value;
+    lights[index][prop]=['x','y'].includes(prop)?coordinate(value):prop==='spread'?spillSize(value):prop==='size'?markerSize(value,null,markerMin(this._config.marker_style)):value;
+    if((prop==='icon_source' || prop==='icon' || prop==='presence_entity') && !value)delete lights[index][prop];
     if(prop==='entity' && lights[index].name==='Nuova luce'){
       lights[index].name=String(this._hass?.states?.[value]?.attributes?.friendly_name||value||'Nuova luce').slice(0,60);
     }
@@ -436,7 +659,7 @@ class GlowFloorCardEditor extends HTMLElement {
     });
     wrap.append(native);
     if(!domain.startsWith('media-')){
-      const fallback=this._field(label,value,(text)=>onChange(text),{placeholder:`${domain}.nome`});
+      const fallback=this._field(label,value,(text)=>onChange(text),{placeholder:domain==='icon'?'mdi:lightbulb':`${domain}.nome`});
       fallback.classList.add('selector-fallback');wrap.append(fallback);
       if(!customElements.get('ha-selector'))wrap.classList.add('native-missing');
     }else if(!customElements.get('ha-selector')){
@@ -449,7 +672,7 @@ class GlowFloorCardEditor extends HTMLElement {
     const data=el._glowfloor;if(!data || !customElements.get('ha-selector'))return;
     const {domain,value,label}=data;
     el.hass=this._hass;
-    el.selector=domain.startsWith('media-') ? {media:{accept:['image/*'],image_upload:domain==='media-upload',hide_content_type:true}} : {entity:{filter:{domain}}};
+    el.selector=domain.startsWith('media-') ? {media:{accept:['image/*'],image_upload:domain==='media-upload',hide_content_type:true}} : domain==='icon' ? {icon:{}} : {entity:{filter:{domain}}};
     el.label=label;el.required=false;
     el.value=domain.startsWith('media-') ? mediaPickerValue(value) : (value||'');
   }
@@ -476,14 +699,28 @@ class GlowFloorCardEditor extends HTMLElement {
   }
   _renderImage(){
     const section=this.shadowRoot.querySelector('.section[data-tab="piantina"]');section.replaceChildren();
-    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Immagine della piantina';section.append(heading);
-    section.append(this._hint('Seleziona una piantina esistente o carica un’immagine con Home Assistant.'));
-    const mediaSelectors=document.createElement('div');mediaSelectors.className='media-selectors';
-    const selectImage=value=>{this._update('image',normalizeImage(value));this._renderImage();};
-    mediaSelectors.append(this._selector('media-upload',this._config.image,'Carica piantina',selectImage));
-    mediaSelectors.append(this._selector('media-browse',this._config.image,'Scegli piantina esistente',selectImage));
-    section.append(mediaSelectors);
-    const reset=document.createElement('button');reset.type='button';reset.textContent='Ripristina piantina predefinita';reset.addEventListener('click',()=>{this._update('image',null);this._renderImage();});section.append(reset);
+    const heading=document.createElement('div');heading.className='section-title';heading.textContent='Immagini della piantina';section.append(heading);
+    section.append(this._hint('Carica o scegli una piantina chiara e una scura: la card usa quella del tema attivo. Con una sola immagine, viene usata in entrambi i temi.'));
+    for(const slot of [{prop:'image',name:'chiara',title:'Piantina chiara'},{prop:'image_dark',name:'scura',title:'Piantina scura'}]){
+      const slotTitle=document.createElement('strong');slotTitle.textContent=slot.title;section.append(slotTitle);
+      const mediaSelectors=document.createElement('div');mediaSelectors.className='media-selectors';
+      const selectImage=value=>{this._update(slot.prop,normalizeImage(value));this._renderImage();};
+      mediaSelectors.append(this._selector('media-upload',this._config[slot.prop],`Carica piantina ${slot.name}`,selectImage));
+      mediaSelectors.append(this._selector('media-browse',this._config[slot.prop],`Scegli piantina ${slot.name} esistente`,selectImage));
+      section.append(mediaSelectors);
+      if(this._config[slot.prop]){
+        const remove=document.createElement('button');remove.type='button';remove.textContent=`Rimuovi piantina ${slot.name}`;
+        remove.addEventListener('click',()=>{this._update(slot.prop,null);this._renderImage();});section.append(remove);
+      }
+    }
+    const ratio=document.createElement('div');ratio.className='hint ratio-msg';ratio.setAttribute('role','status');section.append(ratio);
+    if(this._config.image || this._config.image_dark){
+      const reset=document.createElement('button');reset.type='button';reset.textContent='Ripristina piantina predefinita';reset.addEventListener('click',()=>{this._update('image',null);this._update('image_dark',null);this._renderImage();});section.append(reset);
+    }
+    if(this._config.image && this._config.image_dark){
+      section.append(this._field('Anteprima piantina',this._previewThemeValue(),value=>{this._previewTheme=value;this._renderMap();},{options:[['light','Chiara'],['dark','Scura']]}));
+    }
+    this._paintRatio();this._checkRatios();
     const title=document.createElement('div');title.className='section-title';title.textContent='Posiziona le luci';section.append(title);
     section.append(this._hint('Prima aggiungi una luce nella sezione Luci; poi selezionala sotto e tocca la piantina per posizionare il punto luminoso.'));
     const chooser=document.createElement('div');chooser.className='field';const select=document.createElement('select');select.setAttribute('aria-label','Luce da posizionare');
@@ -495,11 +732,12 @@ class GlowFloorCardEditor extends HTMLElement {
   }
   _renderMap(){
     const box=this.shadowRoot.querySelector('.map');if(!box)return;
-    const imageKey=JSON.stringify(this._config.image);
+    const active=pickImage(this._config,this._previewThemeValue());
+    const imageKey=JSON.stringify(active);
     const hasFloorplan=Boolean(box.querySelector('.floor, .floor-image'));
     if(box.dataset.imageKey!==imageKey || !hasFloorplan){
       box.replaceChildren();box.dataset.imageKey=imageKey;
-      if(this._config.image){
+      if(active){
         const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.referrerPolicy='no-referrer';img.onerror=()=>{box.dataset.imageError='true';};box.append(img);this._loadEditorImage();
       }else box.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);
     }else box.querySelectorAll('.pin').forEach(pin=>pin.remove());
@@ -541,13 +779,18 @@ class GlowFloorCardEditor extends HTMLElement {
       slider.addEventListener('input',()=>{areaOutput.textContent=`${slider.value}%`;this._editLight(index,'spread',slider.value);});
       const limits=document.createElement('div');limits.className='size-limits';limits.innerHTML='<span>12% · Piccola</span><span>75% · Grande</span>';
       area.append(areaLabel,slider,limits);panel.append(area);
+      const minPx=markerMin(this._config.marker_style);
       const individual=this._field('Dimensione pulsante (px, facoltativa)',light.size??'',(value,input)=>{
-        if(value.trim() && (!Number.isFinite(Number(value)) || Number(value)<26 || Number(value)>76)){
-          input.setCustomValidity('Imposta un valore tra 26 e 76 oppure lascia vuoto.');input.reportValidity();return;
+        if(value.trim() && (!Number.isFinite(Number(value)) || Number(value)<minPx || Number(value)>76)){
+          input.setCustomValidity(`Imposta un valore tra ${minPx} e 76 oppure lascia vuoto.`);input.reportValidity();return;
         }
         input.setCustomValidity('');this._editLight(index,'size',value);
-      },{type:'number',min:26,max:76,placeholder:'Dimensione generale'});
-      panel.append(individual);box.append(details,panel);wrap.append(box);
+      },{type:'number',min:minPx,max:76,placeholder:'Dimensione generale'});
+      const iconWrap=this._selector('icon',light.icon||'','Icona personalizzata',value=>this._editLight(index,'icon',value||''));
+      iconWrap.hidden=light.icon_source!=='custom';
+      const iconChoice=this._field('Icona del marker',light.icon_source||'',value=>{this._editLight(index,'icon_source',value||null);iconWrap.hidden=value!=='custom';},{options:[['','Come impostazione generale'],['entity','Dall’entità Home Assistant'],['custom','Personalizzata'],['default','Lampadina GlowFloor']]});
+      const presence=this._selector('binary_sensor',light.presence_entity||'','Sensore di presenza (facoltativo)',value=>this._editLight(index,'presence_entity',value||''));
+      panel.append(iconChoice,iconWrap,presence,individual);box.append(details,panel);wrap.append(box);
     });
     if(!this._config.lights.length)section.append(this._hint('Nessuna luce aggiunta. Inizia con “Aggiungi luce”.'));
     const add=document.createElement('button');add.type='button';add.className='primary';add.textContent='+ Aggiungi luce';add.disabled=this._config.lights.length>=60;
@@ -555,10 +798,11 @@ class GlowFloorCardEditor extends HTMLElement {
   }
   async _loadEditorImage(){
     const img=this.shadowRoot.querySelector('.map img');
-    if(!img || !this._config?.image)return;
+    const theme=this._previewThemeValue(),active=pickImage(this._config,theme);
+    if(!img || !active)return;
     const request=++this._editorImageRequest;
     try{
-      const url=await resolveFloorplanImage(this._hass,this._config.image,this._imageCache);
+      const url=await resolveFloorplanImage(this._hass,active,this._imageCaches[theme]);
       if(request!==this._editorImageRequest || !img.isConnected)return;
       if(img.src!==url)img.src=url;
     }catch(error){if(request===this._editorImageRequest && this._hass){
@@ -589,17 +833,33 @@ class GlowFloorCardEditor extends HTMLElement {
     section.append(this._field('Sottotitolo (facoltativo)',this._config.subtitle,value=>this._update('subtitle',value),{maxlength:200}));
     section.append(this._hint('Lascia vuoti tutti e tre i campi per nascondere le scritte superiori. Contatore e pulsanti restano visibili.'));
     section.append(this._field('Modalità colore',this._config.theme_mode,value=>this._update('theme_mode',value),{options:[['auto','Automatica (Home Assistant)'],['dark','Scura'],['light','Chiara']]}));
+    const style=this._config.marker_style,minPx=markerMin(style);
+    section.append(this._field('Stile dei marker',style,value=>{
+      const prev=this._config.marker_style,next=markerStyle(value);
+      const wasDefault=this._config.marker_size===STYLE_DEFAULT_SIZE[prev];
+      this._config.marker_style=next;
+      this._config.marker_size=markerSize(wasDefault?STYLE_DEFAULT_SIZE[next]:this._config.marker_size,STYLE_DEFAULT_SIZE[next],markerMin(next));
+      this._emit();this._renderAppearance();this._renderLights();
+    },{options:[['chip','Pieno (disco con bordo)'],['compact','Compatto (più discreto)'],['icon','Solo icona']]}));
+    section.append(this._field('Icone delle luci',this._config.icon_mode,value=>this._update('icon_mode',value),{options:[['default','Lampadina GlowFloor'],['entity','Dall’entità Home Assistant']]}));
     const sizeBox=document.createElement('div');sizeBox.className='size-control';
     const sizeLabel=document.createElement('label');sizeLabel.textContent='Dimensione pulsanti';
     const sizeOutput=document.createElement('output');sizeOutput.textContent=`${this._config.marker_size} px`;
-    const range=document.createElement('input');range.type='range';range.min='26';range.max='76';range.step='1';range.value=String(this._config.marker_size);range.setAttribute('aria-label','Dimensione pulsanti in pixel');
-    range.addEventListener('input',()=>{sizeOutput.textContent=`${range.value} px`;this._update('marker_size',markerSize(range.value));});
+    const range=document.createElement('input');range.type='range';range.min=String(minPx);range.max='76';range.step='1';range.value=String(this._config.marker_size);range.setAttribute('aria-label','Dimensione pulsanti in pixel');
+    range.addEventListener('input',()=>{sizeOutput.textContent=`${range.value} px`;this._update('marker_size',markerSize(range.value,STYLE_DEFAULT_SIZE[style],minPx));});
     sizeLabel.append(sizeOutput);sizeBox.append(sizeLabel,range);
-    const limits=document.createElement('div');limits.className='size-limits';limits.innerHTML='<span>Piccoli · 26 px</span><span>Grandi · 76 px</span>';sizeBox.append(limits);
+    const limits=document.createElement('div');limits.className='size-limits';limits.innerHTML=`<span>Piccoli · ${minPx} px</span><span>Grandi · 76 px</span>`;sizeBox.append(limits);
     section.append(sizeBox);
     section.append(this._hint('La dimensione si applica a tutte le luci. In Avanzate puoi scegliere una dimensione differente per ciascun marker.'));
     section.append(this._field('Nomi delle luci',this._config.label_mode,value=>this._update('label_mode',value),{options:[['interaction','Solo durante l’interazione'],['always','Sempre visibili'],['never','Sempre nascosti']]}));
     section.append(this._field('Illuminazione diffusa',String(this._config.spill_enabled),value=>this._update('spill_enabled',value==='true'),{options:[['true','Attivata'],['false','Disattivata']]}));
+    section.append(this._field('Regola la luminosità trascinando',String(this._config.dim_gesture),value=>this._update('dim_gesture',value==='true'),{options:[['false','Disattivato'],['true','Attivato']]}));
+    section.append(this._hint('Con il gesto attivo, trascina un marker a destra o sinistra per regolare la luminosità (con tastiera: frecce). Il tocco breve continua ad accendere e spegnere.'));
+    section.append(this._field('Stanza vuota dopo (minuti)',this._config.empty_delay,(value,input)=>{
+      if(value.trim() && (!Number.isFinite(Number(value)) || Number(value)<1 || Number(value)>240)){input.setCustomValidity('Imposta un valore tra 1 e 240.');input.reportValidity();return;}
+      input.setCustomValidity('');this._update('empty_delay',emptyDelay(value));
+    },{type:'number',min:1,max:240}));
+    section.append(this._hint('Si applica alle luci con un sensore di presenza (Luci → Altre opzioni): se il sensore resta “off” per questo tempo, la luce accesa è segnalata come stanza vuota. La card non spegne nulla da sola.'));
   }
   _renderAdvanced(){
     const section=this.shadowRoot.querySelector('.section[data-tab="avanzate"]');section.replaceChildren();
@@ -616,10 +876,12 @@ class GlowFloorCardEditor extends HTMLElement {
       section.append(group);
     });
     section.append(this._hint('Percorso immagine facoltativo, per chi usa file in /config/www (URL /local/...). Evita URL esterni per planimetrie private.'));
-    section.append(this._field('Percorso o URL immagine',imageContentId(this._config.image)||'',(value,input)=>{
-      if(value && !validImage(value)){input.setCustomValidity('Usa /local/..., media-source://... oppure un URL https valido.');input.reportValidity();return;}
-      input.setCustomValidity('');this._update('image',value||null);this._renderImage();
-    },{placeholder:'/local/floorplans/casa.png'}));
+    for(const [label,prop,placeholder] of [['Percorso o URL immagine chiara','image','/local/floorplans/casa.png'],['Percorso o URL immagine scura','image_dark','/local/floorplans/casa-scura.png']]){
+      section.append(this._field(label,imageContentId(this._config[prop])||'',(value,input)=>{
+        if(value && !validImage(value)){input.setCustomValidity('Usa /local/..., media-source://... oppure un URL https valido.');input.reportValidity();return;}
+        input.setCustomValidity('');this._update(prop,value||null);this._renderImage();
+      },{placeholder}));
+    }
   }
 }
 
