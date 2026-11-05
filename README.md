@@ -1,9 +1,8 @@
 # GlowFloor Card
 
-[![TikTok | Segui](assets/tiktok-segui.svg)](https://www.tiktok.com/@luigi.regolo)
-[![Latest release](https://img.shields.io/github/v/release/luigi-regolo/glowfloor-card?style=flat-square)](https://github.com/luigi-regolo/glowfloor-card/releases/latest)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5?style=flat-square)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
+[![Release](https://img.shields.io/github/v/release/luigi-regolo/glowfloor-card?label=Release&style=flat-square)](https://github.com/luigi-regolo/glowfloor-card/releases/latest)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue?style=flat-square)](LICENSE)
-[![HACS](https://img.shields.io/badge/HACS-Repository-41BDF5?style=flat-square)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luigi-regolo&repository=glowfloor-card&category=plugin)
 [![GitHub Stars](https://img.shields.io/github/stars/luigi-regolo/glowfloor-card?style=flat-square)](https://github.com/luigi-regolo/glowfloor-card/stargazers)
 
 ## Overview
@@ -178,7 +177,7 @@ For private floorplans, use images hosted within your Home Assistant instance ra
 
 ## Releases
 
-See [GitHub Releases](https://github.com/luigi-regolo/glowfloor-card/releases) for published stable and pre-release versions.
+See [GitHub Releases](https://github.com/luigi-regolo/glowfloor-card/releases) for published versions.
 
 ## Copyright & License
 
