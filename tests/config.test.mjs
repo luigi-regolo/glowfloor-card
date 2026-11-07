@@ -291,10 +291,26 @@ test('name labels are positioned outside the marker layout and remain accessible
 
 
 test('Edera palette and header controls follow the approved design',()=>{
-  assert.match(source,/\.title \.dot\{color:var\(--gf-accent\)\}/);
-  assert.match(source,/<span>Spegni tutto<\/span>/);
-  assert.match(source,/aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina/);
+  assert.match(source,/\.title \.dot\{color:var\(--gf-accent\);font-weight:800\}/);
+  assert.match(source,/<span class="t">Spegni tutto<\/span>/);
+  assert.match(source,/aria-controls="glowfloor-plan" aria-expanded="true" aria-label="Nascondi piantina"/);
   assert.doesNotMatch(source,/role="group" aria-label="Theme mode"/);
+});
+
+test('compact markers are neutral when off and yellow when on; empty-room dot is 10px',()=>{
+  assert.match(source,/data-marker-style="compact"\]\) \.orb\{background:var\(--gf-n-off\)/);
+  assert.match(source,/data-marker-style="compact"\]\) \.marker\.on \.orb\{background:var\(--gf-y-bg\)/);
+  assert.match(source,/\.marker\.vacant \.orb::after\{[^}]*width:10px;height:10px/);
+  assert.match(source,/<span class="dock-label">SCENE<\/span>/);
+  assert.doesNotMatch(source,/<span class="dock-label">SCENES<\/span>/);
+});
+
+test('floorplan keeps its space with a placeholder and fades in once decoded',()=>{
+  assert.match(source,/\.plan\.pending\{aspect-ratio:3\/2\}/);
+  assert.match(source,/plan\.classList\.add\('pending'\)/);
+  assert.match(source,/_imageReady\(ok=true\)/);
+  assert.match(source,/!this\._hass\)return;/);
+  assert.match(source,/\.skel\{animation:none!important\}/);
 });
 
 test('show/hide keeps the floorplan mounted and does not persist a new setting',()=>{

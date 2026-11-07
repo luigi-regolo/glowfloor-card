@@ -32,7 +32,7 @@ GlowFloor uses existing Home Assistant entities and services without requiring a
 - **Marker styles:** Choose Full (disc with border), Compact, or Icon only. Marker size is adjustable from 26 to 76 px (Full) or 16 to 76 px (Compact and Icon only).
 - **Touch-friendly controls:** A minimum 44 × 44 px interaction area, independently of the visible marker size.
 - **Marker icons:** Use the GlowFloor bulb, the icon of the Home Assistant entity, or a custom icon, globally or per light.
-- **Light states:** Neutral sage-grey markers for inactive lights and soft champagne styling for active lights.
+- **Light states:** Neutral sage-grey markers for inactive lights. Active lights are soft yellow in Compact style and soft champagne in Full and Icon only styles. A small amber dot flags a vacant room that still has lights on.
 - **Lighting effects:** Optional diffuse illumination following a light's brightness and RGB color, or its color temperature when no RGB color is reported.
 - **Drag to dim (optional):** Drag a marker horizontally to set brightness; a short tap still toggles the light. Arrow keys are supported.
 - **Empty-room indicator (optional):** Link a presence sensor to a light; if the room stays empty for the configured time, the light is flagged and a button turns off all flagged lights. Nothing is switched off automatically.

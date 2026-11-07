@@ -8,6 +8,8 @@ const CARD_TAG = 'glowfloor-card';
 const EDITOR_TAG = 'glowfloor-card-editor';
 const BULB_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6m-5 3h4M8 14.5a6 6 0 1 1 8 0c-1.25 1-1.4 2.5-1.4 3.5H9.4c0-1-.15-2.5-1.4-3.5Z"/></svg>';
 const POWER_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v10m-6.36-6.36a9 9 0 1 0 12.72 0"/></svg>';
+const EYE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.5 10.5 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.5 6.6C3.7 8.4 2 12 2 12s3.6 7 10 7c1.6 0 3-.4 4.3-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
 const MOON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>';
 const BUILTIN_FLOORPLAN =`<svg class="floor" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs><pattern id="gf-hatch" width="19" height="19" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V19" class="tile"/></pattern><pattern id="gf-tile" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" class="tile"/></pattern></defs>
@@ -24,8 +26,10 @@ const STYLE = `
 *,*::before,*::after{box-sizing:border-box}
 :host([data-theme="dark"]){--gf-accent:#0e795d;--gf-frame:#101211;--gf-line:#2b302c;--gf-plan:#191c1a;--gf-room:#252b27;--gf-room2:#222823;--gf-wall:#6e8076;--gf-furn:#89978f;--gf-furn-fill:#333b35;--gf-ink:#f5f7f4;--gf-muted:#bbc5bd;--gf-chip:#282b29;--gf-chip-border:#353c37;--gf-off:#303932;--gf-off-line:#586c5e;--gf-off-ink:#a9b9ad;--gf-light:#d3c29d;--gf-lit-surface:#3c382f;--gf-off-a:rgba(48,57,50,.72);--gf-glass:rgba(22,25,23,.94)}
 :host([data-theme="light"]){--gf-accent:#0a7156;--gf-frame:#fafbf9;--gf-line:#e0e5df;--gf-plan:#f0f2ef;--gf-room:#e9ece7;--gf-room2:#e0e7df;--gf-wall:#879a8d;--gf-furn:#8d9e91;--gf-furn-fill:#dce5dc;--gf-ink:#18221c;--gf-muted:#56675c;--gf-chip:#f0f2ef;--gf-chip-border:#e0e5df;--gf-off:#d8dfd7;--gf-off-line:#9eaea1;--gf-off-ink:#586d60;--gf-light:#9a7c4f;--gf-lit-surface:#e5d8c0;--gf-off-a:rgba(216,223,215,.75);--gf-glass:rgba(250,251,249,.96)}
-.shell{display:block;border:1px solid var(--gf-line);border-radius:26px;background:var(--gf-frame);box-shadow:none;overflow:hidden;padding:18px;min-width:0}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:5px}.title{color:var(--gf-ink);font-size:clamp(19px,2.6vw,26px);line-height:1.16;letter-spacing:-.7px;font-weight:750;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent)}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:11px;font-weight:670;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:14px;height:14px}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{font-size:11px;min-height:36px}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-accent)}.plan[hidden]{display:none!important}
+:host{--gf-n-off:rgba(255,255,255,.66);--gf-n-off-line:rgba(24,34,28,.22);--gf-n-off-ink:#6a7a70;--gf-y-bg:#fff0b8;--gf-y-line:#d8a41a;--gf-y-ink:#9a6400;--gf-y-glow:#f2c94c33;--gf-skel-a:#e6eae5;--gf-skel-b:#f3f5f2;--gf-action-ink:#0a7156}
+:host([data-theme="dark"]){--gf-n-off:rgba(40,43,41,.72);--gf-n-off-line:rgba(245,247,244,.22);--gf-n-off-ink:#a9b9ad;--gf-y-bg:#4a3f1c;--gf-y-line:#f2c94c;--gf-y-ink:#f7d86b;--gf-y-glow:#f2c94c40;--gf-skel-a:#202422;--gf-skel-b:#2a2f2c;--gf-action-ink:#f5f7f4}
+.shell{display:block;border:1px solid var(--gf-line);border-radius:26px;background:var(--gf-frame);box-shadow:none;overflow:hidden;padding:18px;min-width:0;container-type:inline-size}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 4px 16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:7px}.title{color:var(--gf-ink);font-size:25px;line-height:1.14;letter-spacing:-.7px;font-weight:780;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent);font-weight:800}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:12px;font-weight:550;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:15px;height:15px;flex:none}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{width:36px;padding:0;justify-content:center}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-action-ink)}.all-off:not(:disabled){border-color:var(--gf-accent);color:var(--gf-action-ink);background:color-mix(in srgb,var(--gf-accent) 12%,var(--gf-chip))}@container (max-width:480px){.count .lbl,.action .t{display:none}.action{width:36px;padding:0;justify-content:center}.count{padding:0 12px}}@container (max-width:420px){.title{font-size:23px}}.plan[hidden]{display:none!important}
 .plan{position:relative;width:100%;background:var(--gf-plan);border:1px solid var(--gf-line);border-radius:15px;overflow:hidden;isolation:isolate;line-height:0;min-width:0}
 /* Each pool of light sits on top of the floorplan, behind its control marker. */
 .spill{position:absolute;z-index:1;aspect-ratio:1;pointer-events:none;transform:translate(-50%,-50%) scale(.72);border-radius:50%;opacity:0;transition:opacity .32s ease,transform .52s cubic-bezier(.16,.8,.25,1);filter:blur(5px);background:radial-gradient(circle,rgba(var(--gf-light-rgb,211,194,157),.35) 0%,rgba(var(--gf-light-rgb,211,194,157),.19) 22%,rgba(var(--gf-light-rgb,211,194,157),.08) 45%,rgba(var(--gf-light-rgb,255,194,116),0) 72%)}
@@ -33,19 +37,26 @@ const STYLE = `
 :host([data-theme="dark"]) .spill{mix-blend-mode:screen}
 :host([data-theme="light"]) .spill{filter:blur(4px)}
 .plan::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 60%,#00000009 100%)}.floor,.floor-image{width:100%;height:auto;display:block}.floor .room{fill:var(--gf-room)}.floor .room-alt{fill:var(--gf-room2)}.floor .wall{stroke:var(--gf-wall);stroke-width:8;fill:none}.floor .furn{stroke:var(--gf-furn);stroke-width:2.2;fill:var(--gf-furn-fill)}.floor .thin,.floor .door{stroke:var(--gf-furn);stroke-width:2;fill:none}.floor .door{stroke-dasharray:4 4}.floor .room-label,.floor .micro{font-size:15px;letter-spacing:3px;fill:var(--gf-muted);font-weight:700;text-anchor:middle}.floor .micro{font-size:10px;letter-spacing:2px}.floor .tile{stroke:var(--gf-furn);stroke-width:1;opacity:.24}
-.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,28px));height:max(44px,var(--gf-marker-size,28px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px);border-radius:50%;background:var(--gf-off);border:1px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 1px 3px #00000014;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:none}.orb .ic{display:grid;place-items:center;width:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));height:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));--mdc-icon-size:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4))}.orb .ic svg{width:100%;height:100%;display:block}.orb .ic{position:relative;line-height:0}.orb .ic ha-icon,.orb .ic ha-state-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0;padding:0;line-height:0}.marker.on .orb{background:var(--gf-lit-surface);border-color:var(--gf-light);color:var(--gf-light);box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524,0 1px 4px #00000020}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible{outline:2px solid var(--gf-accent);outline-offset:3px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:106px;color:var(--gf-ink);font-size:9px;font-weight:500;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.marker{position:absolute;z-index:2;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;width:max(44px,var(--gf-marker-size,28px));height:max(44px,var(--gf-marker-size,28px));color:var(--gf-ink);font:inherit;cursor:pointer;display:grid;place-items:center;line-height:1;-webkit-tap-highlight-color:transparent}.orb{display:grid;place-items:center;width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px);border-radius:50%;background:var(--gf-off);border:1px solid var(--gf-off-line);color:var(--gf-off-ink);box-shadow:0 1px 3px #00000014;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;position:relative}.orb::before{content:none}.orb .ic{display:grid;place-items:center;width:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));height:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4));--mdc-icon-size:calc(var(--gf-marker-size,28px) * var(--gf-icon-ratio,.4))}.orb .ic svg{width:100%;height:100%;display:block}.orb .ic{position:relative;line-height:0}.orb .ic ha-icon,.orb .ic ha-state-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0;padding:0;line-height:0}.marker.on .orb{background:var(--gf-lit-surface);border-color:var(--gf-light);color:var(--gf-light);box-shadow:0 0 0 2px #b98a4512,0 0 9px 2px #b98a4524,0 1px 4px #00000020}.marker:not(:disabled):hover .orb{transform:scale(1.06)}.marker:disabled{cursor:not-allowed}.marker.unavailable .orb{opacity:.55;border-style:dashed}.marker:focus-visible .orb,.action:focus-visible,.scene:focus-visible{outline:2px solid var(--gf-accent);outline-offset:3px}.marker-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translate(-50%,-3px);opacity:0;visibility:hidden;pointer-events:none;border:1px solid var(--gf-chip-border);background:var(--gf-glass);backdrop-filter:blur(8px);border-radius:8px;padding:4px 7px;max-width:132px;color:var(--gf-ink);font-size:11.5px;font-weight:600;line-height:1.2;box-shadow:0 2px 8px #00000018;white-space:nowrap;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
 .marker-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .marker.label-visible{z-index:5}
 .marker.label-visible .marker-name,:host([data-label-mode="always"]) .marker-name{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .14s ease,transform .14s ease}
 :host([data-label-mode="never"]) .marker-name{display:none}
 /* Marker styles: "chip" keeps the original look; "compact" and "icon" are lighter on busy floorplans. */
 :host([data-marker-style="compact"]){--gf-icon-ratio:.6}
-:host([data-marker-style="compact"]) .orb{background:var(--gf-off-a);box-shadow:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-:host([data-marker-style="compact"]) .marker.on .orb{background:var(--gf-lit-surface);box-shadow:0 0 0 2px #b98a4512,0 0 7px 1px #b98a4524}
+:host([data-marker-style="compact"]) .orb{background:var(--gf-n-off);border-color:var(--gf-n-off-line);color:var(--gf-n-off-ink);box-shadow:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+:host([data-marker-style="compact"]) .marker.on .orb{background:var(--gf-y-bg);border-color:var(--gf-y-line);color:var(--gf-y-ink);box-shadow:0 0 0 2px var(--gf-y-glow),0 1px 4px #00000022}
 :host([data-marker-style="icon"]){--gf-icon-ratio:1}
 :host([data-marker-style="icon"]) .orb,:host([data-marker-style="icon"]) .marker.on .orb{background:transparent;border:0;box-shadow:none}
 :host([data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #000000bf)}
 :host([data-theme="light"][data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #ffffffe6)}
+.plan.pending{aspect-ratio:3/2}
+.plan.pending .floor-image{position:absolute;inset:0;height:100%;object-fit:cover}
+.plan.pending .marker,.plan.pending .spill{visibility:hidden}
+.floor-image{opacity:0;transition:opacity .28s ease}.floor-image.ready{opacity:1}
+.skel{position:absolute;inset:0;z-index:0;background:linear-gradient(100deg,var(--gf-skel-a) 30%,var(--gf-skel-b) 50%,var(--gf-skel-a) 70%);background-size:220% 100%;animation:gf-shimmer 1.4s linear infinite}
+.plan:not(.pending) .skel{display:none}
+@keyframes gf-shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
 /* Drag-to-dim (opt-in) and empty-room indicator. */
 .action[hidden]{display:none}
 :host([data-dim-gesture="true"]) .marker{touch-action:pan-y;user-select:none;-webkit-user-select:none}
@@ -54,11 +65,11 @@ const STYLE = `
 .marker.dimming{z-index:6;cursor:ew-resize}
 .marker.dimming .dim-badge{opacity:1;visibility:visible}
 .marker.dimming .orb{transform:scale(1.12)}
-.marker.vacant .orb::after{content:"";position:absolute;right:-3px;top:-3px;width:8px;height:8px;border-radius:50%;background:#e0a13a;border:1.5px solid var(--gf-frame)}
+.marker.vacant .orb::after{content:"";position:absolute;right:-4px;top:-4px;width:10px;height:10px;border-radius:50%;background:#e0a13a;border:2px solid var(--gf-frame)}
 
-.scene-dock[hidden]{display:none}.scene-dock{border-top:1px solid var(--gf-line);margin-top:16px;padding-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.dock-label{font-size:10px;letter-spacing:1.5px;font-weight:750;color:var(--gf-muted);margin-right:6px;text-transform:uppercase}.scene{border:1px solid var(--gf-chip-border);background:var(--gf-chip);border-radius:999px;color:var(--gf-ink);font:inherit;font-size:11px;padding:10px 13px;cursor:pointer;white-space:nowrap}.error{margin-top:12px;font-size:12px;color:#d56b59}
-@media(max-width:520px){.shell{padding:15px 11px 14px;border-radius:18px}.bar{gap:11px;padding:0 5px}.intro{width:100%}.tools{width:100%;justify-content:space-between;gap:5px}.count,.action{min-height:32px;padding:7px 10px;font-size:10px}.toggle-plan{font-size:10px;padding:7px 10px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:9px;padding:4px 6px;max-width:86px}.orb{width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px)}.scene-dock{gap:6px}.scene{padding:8px 10px;font-size:10px}}
-@media(prefers-reduced-motion:reduce){.orb,.spill,.marker-name{transition:none!important}}
+.scene-dock[hidden]{display:none}.scene-dock{border-top:1px solid var(--gf-line);margin-top:16px;padding-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.dock-label{font-size:10px;letter-spacing:1.7px;font-weight:750;color:var(--gf-muted);margin-right:6px;text-transform:uppercase}.scene{border:1px solid var(--gf-chip-border);background:var(--gf-chip);border-radius:999px;color:var(--gf-ink);font:inherit;font-size:12px;font-weight:550;padding:9px 14px;min-height:36px;cursor:pointer;white-space:nowrap}.error{margin-top:12px;font-size:12px;color:#d56b59}
+@media(max-width:520px){.shell{padding:13px;border-radius:23px}.bar{gap:11px}.intro{width:100%}.tools{width:100%;justify-content:flex-start;gap:8px}.plan{border-radius:12px}.marker{gap:4px}.marker-name{font-size:10.5px;padding:4px 6px;max-width:104px}.orb{width:var(--gf-marker-size,28px);height:var(--gf-marker-size,28px)}.scene-dock{gap:6px}}
+@media(prefers-reduced-motion:reduce){.orb,.spill,.marker-name,.floor-image{transition:none!important}.skel{animation:none!important}}
 `;
 
 const EDITOR_STYLE = `
@@ -379,7 +390,8 @@ class GlowFloorCard extends HTMLElement {
     plan.hidden=!this._planVisible;
     button.setAttribute('aria-expanded',String(this._planVisible));
     button.setAttribute('aria-label',this._planVisible?'Nascondi piantina':'Mostra piantina');
-    button.textContent=this._planVisible?'Nascondi piantina':'Mostra piantina';
+    button.title=this._planVisible?'Nascondi piantina':'Mostra piantina';
+    button.innerHTML=this._planVisible?EYE_SVG:EYE_OFF_SVG;
   }
   _refreshScenes(){
     const c=this._config,root=this.shadowRoot;
@@ -428,14 +440,14 @@ class GlowFloorCard extends HTMLElement {
     if(!c)return;
     const root=this.shadowRoot;
     this.dataset.labelMode=c.label_mode;this.dataset.markerStyle=c.marker_style;this.dataset.dimGesture=String(c.dim_gesture);
-    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite">0 luci accese</div><button class="action all-off" type="button" disabled>${POWER_SVG}<span>Spegni tutto</span></button><button class="action vacant-off" type="button" hidden>${MOON_SVG}<span>Spegni stanze vuote (0)</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true">Nascondi piantina</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENES</span></div><div class="error" role="alert" hidden></div></ha-card>`;
+    root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite" aria-label="0 luci accese"><span class="num">0</span> <span class="lbl">luci accese</span></div><button class="action all-off" type="button" aria-label="Spegni tutto" disabled>${POWER_SVG}<span class="t">Spegni tutto</span></button><button class="action vacant-off" type="button" aria-label="Spegni stanze vuote (0)" hidden>${MOON_SVG}<span class="t">Spegni stanze vuote (0)</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true" aria-label="Nascondi piantina" title="Nascondi piantina">${EYE_SVG}</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENE</span></div><div class="error" role="alert" hidden></div></ha-card>`;
     const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
     const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
     if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
     const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
     root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
     const plan=root.querySelector('.plan');
-    if(pickImage(c,this._resolvedTheme())){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onerror=()=>{this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.append(img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
+    if(pickImage(c,this._resolvedTheme())){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onload=()=>this._imageReady();img.onerror=()=>{this._imageReady(false);this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.classList.add('pending');const skel=document.createElement('div');skel.className='skel';skel.setAttribute('aria-hidden','true');plan.append(skel,img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
     this._rebuildOverlays();
     root.querySelector('.all-off').addEventListener('click',()=>this._turnAllOff());
     root.querySelector('.vacant-off').addEventListener('click',()=>this._turnVacantOff());
@@ -447,7 +459,8 @@ class GlowFloorCard extends HTMLElement {
   async _loadCardImage(){
     const img=this.shadowRoot.querySelector('.floor-image');
     const theme=this._resolvedTheme(),active=pickImage(this._config,theme);
-    if(!img || !active)return;
+    // Wait for Home Assistant so the image matching its real theme is chosen once.
+    if(!img || !active || !this._hass)return;
     const request=++this._imageRequest;
     try{
       const url=await resolveFloorplanImage(this._hass,active,this._imageCaches[theme]);
@@ -471,6 +484,12 @@ class GlowFloorCard extends HTMLElement {
       if(img.src!==url)img.src=url;
       this._showError('');
     }catch(error){if(this._imageDecodePromise?.url && this._imageDecodePromise.url!==this._decodedImageUrl)this._imageDecodePromise=null;if(request===this._imageRequest && this._hass)this._showError('Non riesco a leggere la piantina da Home Assistant. Riprova a selezionarla.');}
+  }
+  _imageReady(ok=true){
+    const plan=this.shadowRoot.querySelector('.plan'),img=this.shadowRoot.querySelector('.floor-image');
+    if(!plan||!img)return;
+    plan.classList.remove('pending');
+    if(ok)img.classList.add('ready');
   }
   _showError(message){const el=this.shadowRoot.querySelector('.error');if(el){el.textContent=message;el.hidden=!message;}}
   async _callService(domain,service,data){
@@ -551,9 +570,10 @@ class GlowFloorCard extends HTMLElement {
     });
     this._vacantIds=[...vacant];
     const vacantButton=this.shadowRoot.querySelector('.vacant-off');
-    if(vacantButton){vacantButton.hidden=vacant.size===0;vacantButton.querySelector('span').textContent=`Spegni stanze vuote (${vacant.size})`;}
-    this.shadowRoot.querySelector('.count').textContent=`${on} ${on===1?'luce accesa':'luci accese'}`;
-    this.shadowRoot.querySelector('.count').classList.toggle('has-on',on>0);
+    if(vacantButton){vacantButton.hidden=vacant.size===0;const vacantText=`Spegni stanze vuote (${vacant.size})`;vacantButton.querySelector('.t').textContent=vacantText;vacantButton.setAttribute('aria-label',vacantText);}
+    const countEl=this.shadowRoot.querySelector('.count'),countLabel=on===1?'luce accesa':'luci accese';
+    countEl.querySelector('.num').textContent=String(on);countEl.querySelector('.lbl').textContent=countLabel;countEl.setAttribute('aria-label',`${on} ${countLabel}`);
+    countEl.classList.toggle('has-on',on>0);
     this.shadowRoot.querySelector('.all-off').disabled=on===0;
   }
 }
