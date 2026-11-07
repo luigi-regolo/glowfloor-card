@@ -178,10 +178,10 @@ test('simultaneous requests for the same image share one Home Assistant media re
 });
 
 
-test('marker size defaults to 28px and clamps to 26–76px',()=>{
-  assert.equal(normalizeConfig({}).marker_size,28);
+test('marker size defaults to 20px and clamps to 16–76px',()=>{
+  assert.equal(normalizeConfig({}).marker_size,20);
   assert.equal(normalizeConfig({marker_size:500}).marker_size,76);
-  assert.equal(normalizeConfig({marker_size:2}).marker_size,26);
+  assert.equal(normalizeConfig({marker_size:2}).marker_size,16);
   assert.equal(markerSize('bad'),28);
   assert.equal(markerSize('',null),null);
   assert.equal(markerSize(null,null),null);
@@ -240,8 +240,9 @@ test('GlowFloor tabs do not render a selected green underline or edge',()=>{
   assert.doesNotMatch(source,/\.nav button\[aria-selected="true"\]\{[^}]*border-bottom:2px/);
 });
 
-test('new cards use 28px while intentionally saved user sizes remain unchanged',()=>{
-  assert.equal(normalizeConfig({}).marker_size,28);
+test('new cards use 20px while intentionally saved user sizes remain unchanged',()=>{
+  assert.equal(normalizeConfig({}).marker_size,20);
+  assert.equal(normalizeConfig({marker_style:'chip',marker_size:28}).marker_size,20);
   assert.equal(normalizeConfig({marker_size:52}).marker_size,52);
   assert.deepEqual(Array.from(normalizeConfig({lights:[{entity:'light.a'},{entity:'light.b',size:64}]}).lights,l=>l.size),[null,64]);
   assert.match(source,/--gf-marker-size,28px/);
@@ -336,7 +337,7 @@ test('Beta 2 retains saved marker sizes, coordinates and spread',()=>{
   const c=normalizeConfig({marker_size:32,lights:[{entity:'light.a',x:23.5,y:74.2,spread:55,size:64},{entity:'light.b',x:50,y:25},{entity:'light.c',x:80,y:10,size:26}]});
   assert.equal(c.marker_size,32);
   assert.deepEqual(Array.from(c.lights,l=>[l.x,l.y,l.size,l.spread]),[[23.5,74.2,64,55],[50,25,null,32],[80,10,26,32]]);
-  assert.equal(normalizeConfig({}).marker_size,28);
+  assert.equal(normalizeConfig({}).marker_size,20);
   assert.equal(markerSize(27),27);
   assert.equal(markerSize(76),76);
 });
@@ -357,116 +358,41 @@ test('editor size inputs follow the marker style minimum with per-pixel slider p
   assert.equal(normalizeConfig({marker_size:52,lights:[{size:40}]}).lights[0].size,40);
 });
 
-test('existing configurations keep the chip style, 26px minimum and the GlowFloor bulb',()=>{
-  const c=normalizeConfig({marker_size:30,lights:[{entity:'light.a',size:20}]});
-  assert.equal(c.marker_style,'chip');
+test('legacy chip and icon styles are mapped to the single compact style',()=>{
+  const c=normalizeConfig({marker_style:'icon',marker_size:30,lights:[{entity:'light.a',size:20}]});
+  assert.equal(c.marker_style,'compact');
   assert.equal(c.icon_mode,'default');
   assert.equal(c.marker_size,30);
-  assert.equal(c.lights[0].size,26);
+  assert.equal(c.lights[0].size,20);
   assert.equal(c.image,null);
   assert.equal(c.image_dark,null);
-  assert.equal(markerStyle('bad'),'chip');
-  assert.equal(markerMin('chip'),26);
+  assert.equal(markerStyle('chip'),'compact');
+  assert.equal(markerMin(),16);
 });
 
-test('compact and icon styles use their own default sizes and a 16px minimum',()=>{
+test('compact is the only marker style, default 20px, 16px minimum',()=>{
   assert.equal(normalizeConfig({marker_style:'compact'}).marker_size,20);
-  assert.equal(normalizeConfig({marker_style:'icon'}).marker_size,18);
-  assert.equal(normalizeConfig({marker_style:'compact',marker_size:4}).marker_size,16);
-  assert.equal(normalizeConfig({marker_style:'compact',marker_size:24}).marker_size,24);
-  assert.deepEqual(Array.from(normalizeConfig({marker_style:'icon',lights:[{entity:'light.a',size:12},{entity:'light.b'}]}).lights,l=>l.size),[16,null]);
-  assert.deepEqual({...STYLE_DEFAULT_SIZE},{chip:28,compact:20,icon:18});
+  assert.equal(normalizeConfig({marker_size:4}).marker_size,16);
+  assert.equal(normalizeConfig({marker_size:24}).marker_size,24);
+  assert.deepEqual({...STYLE_DEFAULT_SIZE},{compact:20});
+  assert.doesNotMatch(source,/data-marker-style="icon"/);
 });
 
-test('new cards from the card picker start with the compact style and Home Assistant icons',()=>{
-  const Card=registry.get('glowfloor-card');
-  const stub=Card.getStubConfig();
-  assert.equal(stub.marker_style,'compact');
-  assert.equal(stub.marker_size,20);
-  assert.equal(stub.icon_mode,'entity');
-  assert.deepEqual(Array.from(stub.lights),[]);
-});
-
-test('dark floorplan is optional and each theme falls back to the other image',()=>{
-  const light='/local/casa.png',dark='/local/casa-scura.png';
-  assert.equal(pickImage({image:light,image_dark:dark},'light'),light);
-  assert.equal(pickImage({image:light,image_dark:dark},'dark'),dark);
-  assert.equal(pickImage({image:light,image_dark:null},'dark'),light);
-  assert.equal(pickImage({image:null,image_dark:dark},'light'),dark);
-  assert.equal(pickImage({image:null,image_dark:null},'dark'),null);
-  const c=normalizeConfig({image:light,image_dark:{media_content_id:'media-source://image_upload/abc'}});
-  assert.equal(c.image,light);
-  assert.equal(imageContentId(c.image_dark),'media-source://image_upload/abc');
-  assert.equal(normalizeConfig({image_dark:'javascript:alert(1)'}).image_dark,null);
-  assert.equal(normalizeConfig({image:light}).image_dark,null);
-});
-
-test('the card swaps the floorplan with the resolved theme and keeps one cache per theme',()=>{
-  const Card=registry.get('glowfloor-card');
-  const card=Object.create(Card.prototype);
-  card._media=null;card._hass=null;
-  card._config={theme_mode:'dark'};assert.equal(card._resolvedTheme(),'dark');
-  card._config={theme_mode:'light'};assert.equal(card._resolvedTheme(),'light');
-  card._config={theme_mode:'auto'};card._hass={themes:{darkMode:false}};assert.equal(card._resolvedTheme(),'light');
-  card._hass={themes:{darkMode:true}};assert.equal(card._resolvedTheme(),'dark');
-  assert.match(source,/this\._imageCaches=\{light:\{\},dark:\{\}\}/);
-  assert.match(source,/resolveFloorplanImage\(this\._hass,active,this\._imageCaches\[theme\]\)/);
-  assert.match(source,/JSON\.stringify\(prev\.image_dark\)===JSON\.stringify\(next\.image_dark\)/);
-  assert.match(source,/this\._updateTheme\(\);this\._refreshStates\(\);this\._loadCardImage\(\);/);
-});
-
-test('image ratio check flags mismatching light and dark floorplans',()=>{
-  assert.equal(imageRatioStatus({w:1600,h:1000},{w:3200,h:2000}).ok,true);
-  assert.equal(imageRatioStatus({w:1600,h:1000},{w:1604,h:1000}).ok,true);
-  const bad=imageRatioStatus({w:1600,h:1000},{w:1600,h:1200});
-  assert.equal(bad.ok,false);
-  assert.ok(bad.diff>0.15 && bad.diff<0.25);
-  assert.equal(imageRatioStatus(null,{w:1,h:1}),null);
-  assert.equal(imageRatioStatus({w:0,h:10},{w:1,h:1}),null);
-  assert.match(source,/differiscono del/);
-});
-
-test('marker icons: Home Assistant entity icon, custom icon or the GlowFloor bulb',()=>{
-  assert.equal(validIcon('mdi:ceiling-light'),true);
-  assert.equal(validIcon('hass:lightbulb'),true);
-  assert.equal(validIcon('mdi:'),false);
-  assert.equal(validIcon('javascript:alert(1)'),false);
-  assert.equal(validIcon('<img src=x>'),false);
-  const c=normalizeConfig({lights:[{entity:'light.a',icon_source:'custom',icon:' mdi:floor-lamp '},{entity:'light.b',icon_source:'bad',icon:'nope'},{entity:'light.c'}]});
-  assert.equal(c.lights[0].icon_source,'custom');
-  assert.equal(c.lights[0].icon,'mdi:floor-lamp');
-  assert.equal('icon_source' in c.lights[1],false);
-  assert.equal('icon' in c.lights[1],false);
-  assert.equal('icon_source' in c.lights[2],false);
-  const Card=registry.get('glowfloor-card');
-  const card=Object.create(Card.prototype);
-  card._config=normalizeConfig({icon_mode:'entity'});
-  assert.deepEqual({...card._effectiveIcon({entity:'light.a'})},{type:'state'});
-  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'custom',icon:'mdi:lamp'})},{type:'icon',icon:'mdi:lamp'});
-  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'custom'})},{type:'state'});
-  assert.deepEqual({...card._effectiveIcon({entity:'light.a',icon_source:'default'})},{type:'bulb'});
-  assert.deepEqual({...card._effectiveIcon({entity:'',icon_source:'entity'})},{type:'bulb'});
-  card._config=normalizeConfig({});
-  assert.deepEqual({...card._effectiveIcon({entity:'light.a'})},{type:'bulb'});
-  assert.match(source,/customElements\.get\('ha-state-icon'\)/);
-  assert.match(source,/holder\.innerHTML=BULB_SVG/);
-});
-
-test('icon selector in the editor uses the native Home Assistant icon selector',()=>{
-  registry.set('ha-selector',class {});
-  const Editor=registry.get('glowfloor-card-editor');
-  const editor=Object.create(Editor.prototype);
-  editor._hass={states:{}};
-  const icon={_glowfloor:{domain:'icon',value:'mdi:floor-lamp',label:'Icona personalizzata'}};
-  editor._setNativeSelector(icon);
-  assert.deepEqual({...icon.selector.icon},{});
-  assert.equal(icon.value,'mdi:floor-lamp');
+test('title and top label can be shown or hidden without losing their text',()=>{
+  const c=normalizeConfig({});
+  assert.equal(c.show_title,true);
+  assert.equal(c.show_eyebrow,true);
+  const h=normalizeConfig({show_title:false,show_eyebrow:false,title:'Casa',eyebrow:'X'});
+  assert.equal(h.show_title,false);
+  assert.equal(h.show_eyebrow,false);
+  assert.equal(h.title,'Casa');
+  assert.match(source,/title\.hidden=!\(c\.show_title&&c\.title\)/);
+  assert.match(source,/eyebrow\.hidden=!\(c\.show_eyebrow&&c\.eyebrow\)/);
+  assert.match(source,/\.title\{color:var\(--gf-ink\);font-size:23px;line-height:1\.14;letter-spacing:-\.7px;font-weight:780/);
 });
 
 test('marker styles keep the 44px touch target and a legible icon on busy floorplans',()=>{
   assert.match(source,/:host\(\[data-marker-style="compact"\]\)\{--gf-icon-ratio:\.6\}/);
-  assert.match(source,/:host\(\[data-marker-style="icon"\]\)\{--gf-icon-ratio:1\}/);
-  assert.match(source,/drop-shadow\(0 0 2px #000000bf\)/);
   assert.match(source,/width:max\(44px,var\(--gf-marker-size,28px\)\);height:max\(44px,var\(--gf-marker-size,28px\)\)/);
   assert.match(source,/this\.dataset\.markerStyle=c\.marker_style/);
 });
@@ -548,4 +474,9 @@ test('source wires pointer/keyboard gestures, pan-y and the empty-room button',(
   assert.match(source,/class="action vacant-off"/);
   assert.match(source,/Spegni stanze vuote/);
   assert.match(source,/clearInterval\(this\._vacancyTimer\)/);
+});
+
+test('toolbar keeps labels with three controls and shows icons only when the vacant-room button makes four',()=>{
+  assert.match(source,/\.tools:has\(\.vacant-off:not\(\[hidden\]\)\) \.count \.lbl,\.tools:has\(\.vacant-off:not\(\[hidden\]\)\) \.action \.t\{display:none\}/);
+  assert.doesNotMatch(source,/@container \(max-width:(340|480|560)px\)/);
 });

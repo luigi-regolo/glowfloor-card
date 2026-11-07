@@ -29,10 +29,11 @@ GlowFloor uses existing Home Assistant entities and services without requiring a
 
 - **Interactive floorplan:** Use the built-in sample, or select custom images through Home Assistant, with separate Light and Dark versions.
 - **Light and Dark floorplans:** The image follows the active theme. If only one image is set, it is used in both modes. The editor warns when the two images have different aspect ratios.
-- **Marker styles:** Choose Full (disc with border), Compact, or Icon only. Marker size is adjustable from 26 to 76 px (Full) or 16 to 76 px (Compact and Icon only).
+- **Compact markers:** Discreet round markers, adjustable from 16 to 76 px (default 20 px).
+- **Header text:** The top label and the title can each be shown or hidden without losing their text.
 - **Touch-friendly controls:** A minimum 44 × 44 px interaction area, independently of the visible marker size.
 - **Marker icons:** Use the GlowFloor bulb, the icon of the Home Assistant entity, or a custom icon, globally or per light.
-- **Light states:** Neutral sage-grey markers for inactive lights. Active lights are soft yellow in Compact style and soft champagne in Full and Icon only styles. A small amber dot flags a vacant room that still has lights on.
+- **Light states:** Neutral sage-grey markers for inactive lights. Active lights are soft yellow. A small amber dot flags a vacant room that still has lights on.
 - **Lighting effects:** Optional diffuse illumination following a light's brightness and RGB color, or its color temperature when no RGB color is reported.
 - **Drag to dim (optional):** Drag a marker horizontally to set brightness; a short tap still toggles the light. Arrow keys are supported.
 - **Empty-room indicator (optional):** Link a presence sensor to a light; if the room stays empty for the configured time, the light is flagged and a button turns off all flagged lights. Nothing is switched off automatically.
@@ -95,18 +96,12 @@ The editor contains five sections:
 | **Piantina (Floorplan)** | Select or upload separate Light and Dark floorplans, preview either theme, restore the sample image, and position markers directly on the image. |
 | **Luci (Lights)** | Add `light.*` entities, customize their names, and configure glow area, optional marker size, marker icon, and an optional presence sensor. |
 | **Scene (Scenes)** | Add up to three `scene.*` entities and customize their labels. |
-| **Aspetto (Appearance)** | Configure header text, display theme, marker style, icon source, marker size, light effects, label visibility, drag to dim, and the empty-room delay. |
+| **Aspetto (Appearance)** | Configure header text with show/hide switches for the title and the top label, display theme, icon source, marker size, light effects, label visibility, drag to dim, and the empty-room delay. |
 | **Avanzate (Advanced)** | Adjust marker coordinates and configure Light and Dark floorplan paths manually. |
 
 ### Marker configuration
 
-`marker_style` accepts `chip` (Full), `compact`, or `icon`. When omitted, `chip` is used, so existing cards look unchanged. Cards created from the visual editor start with `compact`.
-
-| Style | Default size | Allowed size |
-| --- | --- | --- |
-| `chip` | 28 px | 26–76 px |
-| `compact` | 20 px | 16–76 px |
-| `icon` | 18 px | 16–76 px |
+Markers use a single compact style: default size **20 px**, allowed range **16–76 px**. The former `marker_style` options (`chip`, `icon`) are still accepted in existing configurations and are rendered as compact.
 
 The interactive button area remains at least **44 × 44 px**. Individual marker sizes override the global setting. The illuminated area is configured separately and does not change the marker dimensions.
 
@@ -117,12 +112,13 @@ The visual editor is recommended. YAML remains available for advanced configurat
 ```yaml
 type: custom:glowfloor-card
 title: Floorplan
-eyebrow: ""
+show_title: true         # show or hide the title; default: true
+eyebrow: GLOWFLOOR
+show_eyebrow: true       # show or hide the top label; default: true
 subtitle: ""
 theme_mode: auto
 label_mode: interaction
 spill_enabled: true
-marker_style: compact
 marker_size: 20
 icon_mode: entity        # entity | default
 dim_gesture: true        # drag a marker to dim; default: false

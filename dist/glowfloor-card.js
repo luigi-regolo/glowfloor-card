@@ -29,7 +29,7 @@ const STYLE = `
 :host{--gf-n-off:rgba(255,255,255,.66);--gf-n-off-line:rgba(24,34,28,.22);--gf-n-off-ink:#6a7a70;--gf-y-bg:#fff0b8;--gf-y-line:#d8a41a;--gf-y-ink:#9a6400;--gf-y-glow:#f2c94c33;--gf-skel-a:#e6eae5;--gf-skel-b:#f3f5f2;--gf-action-ink:#0a7156}
 :host([data-theme="dark"]){--gf-n-off:rgba(40,43,41,.72);--gf-n-off-line:rgba(245,247,244,.22);--gf-n-off-ink:#a9b9ad;--gf-y-bg:#4a3f1c;--gf-y-line:#f2c94c;--gf-y-ink:#f7d86b;--gf-y-glow:#f2c94c40;--gf-skel-a:#202422;--gf-skel-b:#2a2f2c;--gf-action-ink:#f5f7f4}
 .shell{display:block;border:1px solid var(--gf-line);border-radius:26px;background:var(--gf-frame);box-shadow:none;overflow:hidden;padding:18px;min-width:0;container-type:inline-size}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 4px 16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:7px}.title{color:var(--gf-ink);font-size:25px;line-height:1.14;letter-spacing:-.7px;font-weight:780;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent);font-weight:800}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:12px;font-weight:550;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:15px;height:15px;flex:none}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{width:36px;padding:0;justify-content:center}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-action-ink)}.all-off:not(:disabled){border-color:var(--gf-accent);color:var(--gf-action-ink);background:color-mix(in srgb,var(--gf-accent) 12%,var(--gf-chip))}@container (max-width:480px){.count .lbl,.action .t{display:none}.action{width:36px;padding:0;justify-content:center}.count{padding:0 12px}}@container (max-width:420px){.title{font-size:23px}}.plan[hidden]{display:none!important}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 4px 16px;flex-wrap:wrap}.intro{min-width:0}.intro[hidden],.intro [hidden]{display:none}.eyebrow{color:var(--gf-muted);font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:7px}.title{color:var(--gf-ink);font-size:23px;line-height:1.14;letter-spacing:-.7px;font-weight:780;overflow-wrap:anywhere}.title .dot{color:var(--gf-accent);font-weight:800}.sub{font-size:12px;color:var(--gf-muted);margin-top:5px}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.count,.action,.theme{border:1px solid var(--gf-chip-border);border-radius:999px;background:var(--gf-chip);color:var(--gf-ink);font:inherit;font-size:12px;font-weight:550;white-space:nowrap;min-height:36px}.count{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums}.count::before{content:"";width:7px;height:7px;background:var(--gf-muted);border-radius:50%;opacity:.7}.action{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer}.action svg{width:15px;height:15px;flex:none}.action:disabled{opacity:.48;cursor:not-allowed}.action:not(:disabled):hover,.scene:hover{border-color:var(--gf-accent)}.count.has-on::before{background:var(--gf-accent);opacity:1}.toggle-plan{width:36px;padding:0;justify-content:center}.toggle-plan[aria-expanded="false"]{border-color:var(--gf-accent);color:var(--gf-action-ink)}.all-off:not(:disabled){border-color:var(--gf-accent);color:var(--gf-action-ink);background:color-mix(in srgb,var(--gf-accent) 12%,var(--gf-chip))}.tools:has(.vacant-off:not([hidden])) .count .lbl,.tools:has(.vacant-off:not([hidden])) .action .t{display:none}.tools:has(.vacant-off:not([hidden])) .action{width:36px;padding:0;justify-content:center}.tools:has(.vacant-off:not([hidden])) .count{padding:0 12px}.plan[hidden]{display:none!important}
 .plan{position:relative;width:100%;background:var(--gf-plan);border:1px solid var(--gf-line);border-radius:15px;overflow:hidden;isolation:isolate;line-height:0;min-width:0}
 /* Each pool of light sits on top of the floorplan, behind its control marker. */
 .spill{position:absolute;z-index:1;aspect-ratio:1;pointer-events:none;transform:translate(-50%,-50%) scale(.72);border-radius:50%;opacity:0;transition:opacity .32s ease,transform .52s cubic-bezier(.16,.8,.25,1);filter:blur(5px);background:radial-gradient(circle,rgba(var(--gf-light-rgb,211,194,157),.35) 0%,rgba(var(--gf-light-rgb,211,194,157),.19) 22%,rgba(var(--gf-light-rgb,211,194,157),.08) 45%,rgba(var(--gf-light-rgb,255,194,116),0) 72%)}
@@ -46,10 +46,6 @@ const STYLE = `
 :host([data-marker-style="compact"]){--gf-icon-ratio:.6}
 :host([data-marker-style="compact"]) .orb{background:var(--gf-n-off);border-color:var(--gf-n-off-line);color:var(--gf-n-off-ink);box-shadow:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 :host([data-marker-style="compact"]) .marker.on .orb{background:var(--gf-y-bg);border-color:var(--gf-y-line);color:var(--gf-y-ink);box-shadow:0 0 0 2px var(--gf-y-glow),0 1px 4px #00000022}
-:host([data-marker-style="icon"]){--gf-icon-ratio:1}
-:host([data-marker-style="icon"]) .orb,:host([data-marker-style="icon"]) .marker.on .orb{background:transparent;border:0;box-shadow:none}
-:host([data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #000000bf)}
-:host([data-theme="light"][data-marker-style="icon"]) .orb{filter:drop-shadow(0 0 2px #ffffffe6)}
 .plan.pending{aspect-ratio:3/2}
 .plan.pending .floor-image{position:absolute;inset:0;height:100%;object-fit:cover}
 .plan.pending .marker,.plan.pending .spill{visibility:hidden}
@@ -128,11 +124,10 @@ button:focus-visible{outline:2px solid var(--primary-color,#668277);outline-offs
 `;
 const isValidEntity = (id, domain) => typeof id === 'string' && new RegExp(`^${domain}\\.[a-z0-9_]+$`).test(id);
 const coordinate = (v, defaultValue = 50) => Number.isFinite(Number(v)) ? Math.max(0, Math.min(100, Number(v))) : defaultValue;
-const MARKER_STYLES = ['chip', 'compact', 'icon'];
-const STYLE_DEFAULT_SIZE = { chip: 28, compact: 20, icon: 18 };
+const STYLE_DEFAULT_SIZE = { compact: 20 };
 const ICON_SOURCES = ['entity', 'custom', 'default'];
-const markerStyle = (v) => MARKER_STYLES.includes(v) ? v : 'chip';
-const markerMin = (style) => style === 'chip' ? 26 : 16;
+const markerStyle = () => 'compact';
+const markerMin = () => 16;
 const markerSize = (v, fallback = 28, min = 26) => v != null && typeof v !== 'boolean' && String(v).trim() !== '' && Number.isFinite(Number(v)) ? Math.max(min, Math.min(76, Math.round(Number(v)))) : fallback;
 const validIcon = (v) => typeof v === 'string' && /^[a-z0-9_-]+:[a-z0-9_-]+$/i.test(v.trim());
 const pickImage = (config, theme) => {
@@ -212,7 +207,7 @@ const resolveFloorplanImage = async (hass,value,cache={}) => {
   cache.pendingId=id;cache.pending=pending;
   try{return await pending;}finally{if(cache.pending===pending){delete cache.pending;delete cache.pendingId;}}
 };
-const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 28, marker_style: 'chip', icon_mode: 'default', label_mode: 'interaction', dim_gesture: false, empty_delay: 10, lights: [] });
+const defaultConfig = () => ({ eyebrow: 'GLOWFLOOR / INTERACTIVE PLAN', title: 'Living spaces', subtitle: '', theme_mode: 'auto', spill_enabled: true, marker_size: 20, marker_style: 'compact', show_eyebrow: true, show_title: true, icon_mode: 'default', label_mode: 'interaction', dim_gesture: false, empty_delay: 10, lights: [] });
 const normalizeConfig = (raw) => {
   if (!raw || typeof raw !== 'object') throw new Error('GlowFloor: invalid configuration.');
   const style = markerStyle(raw.marker_style), minSize = markerMin(style);
@@ -224,7 +219,9 @@ const normalizeConfig = (raw) => {
     theme_mode: ['auto', 'dark', 'light'].includes(raw.theme_mode) ? raw.theme_mode : 'auto',
     spill_enabled: raw.spill_enabled !== false,
     marker_style: style,
-    marker_size: markerSize(raw.marker_size, STYLE_DEFAULT_SIZE[style], minSize),
+    marker_size: markerSize(raw.marker_style === 'chip' && Number(raw.marker_size) === 28 ? null : raw.marker_size, STYLE_DEFAULT_SIZE[style], minSize),
+    show_eyebrow: raw.show_eyebrow !== false,
+    show_title: raw.show_title !== false,
     icon_mode: ['entity', 'default'].includes(raw.icon_mode) ? raw.icon_mode : 'default',
     label_mode: ['interaction','always','never'].includes(raw.label_mode) ? raw.label_mode : 'interaction',
     dim_gesture: raw.dim_gesture === true,
@@ -406,11 +403,11 @@ class GlowFloorCard extends HTMLElement {
     const c=this._config, root=this.shadowRoot;
     this.dataset.labelMode=c.label_mode;this.dataset.markerStyle=c.marker_style;this.dataset.dimGesture=String(c.dim_gesture);
     if(c.label_mode!=='interaction')this._clearLabels();
-    const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
-    const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
-    if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
+    const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!(c.show_eyebrow&&c.eyebrow);
+    const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!(c.show_title&&c.title);
+    if(c.show_title&&c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
     const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
-    root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
+    root.querySelector('.intro').hidden=!((c.show_eyebrow&&c.eyebrow)||(c.show_title&&c.title)||c.subtitle);
     c.lights.forEach((light,index)=>{
       const button=this._markerElements[index],spill=this._spillElements[index];
       if(button){
@@ -441,11 +438,11 @@ class GlowFloorCard extends HTMLElement {
     const root=this.shadowRoot;
     this.dataset.labelMode=c.label_mode;this.dataset.markerStyle=c.marker_style;this.dataset.dimGesture=String(c.dim_gesture);
     root.innerHTML=`<style>${STYLE}</style><ha-card class="shell"><div class="bar"><div class="intro"><div class="eyebrow"></div><div class="title"></div><div class="sub"></div></div><div class="tools"><div class="count" role="status" aria-live="polite" aria-label="0 luci accese"><span class="num">0</span> <span class="lbl">luci accese</span></div><button class="action all-off" type="button" aria-label="Spegni tutto" disabled>${POWER_SVG}<span class="t">Spegni tutto</span></button><button class="action vacant-off" type="button" aria-label="Spegni stanze vuote (0)" hidden>${MOON_SVG}<span class="t">Spegni stanze vuote (0)</span></button><button class="action toggle-plan" type="button" aria-controls="glowfloor-plan" aria-expanded="true" aria-label="Nascondi piantina" title="Nascondi piantina">${EYE_SVG}</button></div></div><div class="plan" id="glowfloor-plan"></div><div class="scene-dock" hidden><span class="dock-label">SCENE</span></div><div class="error" role="alert" hidden></div></ha-card>`;
-    const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!c.eyebrow;
-    const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!c.title;
-    if(c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
+    const eyebrow=root.querySelector('.eyebrow');eyebrow.textContent=c.eyebrow;eyebrow.hidden=!(c.show_eyebrow&&c.eyebrow);
+    const title=root.querySelector('.title');title.textContent=c.title;title.hidden=!(c.show_title&&c.title);
+    if(c.show_title&&c.title){const dot=document.createElement('span');dot.className='dot';dot.textContent='.';title.append(dot);}
     const sub=root.querySelector('.sub');sub.textContent=c.subtitle;sub.hidden=!c.subtitle;
-    root.querySelector('.intro').hidden=!(c.eyebrow||c.title||c.subtitle);
+    root.querySelector('.intro').hidden=!((c.show_eyebrow&&c.eyebrow)||(c.show_title&&c.title)||c.subtitle);
     const plan=root.querySelector('.plan');
     if(pickImage(c,this._resolvedTheme())){const img=document.createElement('img');img.className='floor-image';img.alt='Piantina';img.decoding='async';img.referrerPolicy='no-referrer';img.onload=()=>this._imageReady();img.onerror=()=>{this._imageReady(false);this._showError('Impossibile caricare la piantina. Controlla il file selezionato.');};plan.classList.add('pending');const skel=document.createElement('div');skel.className='skel';skel.setAttribute('aria-hidden','true');plan.append(skel,img);this._loadCardImage();} else {plan.insertAdjacentHTML('afterbegin',BUILTIN_FLOORPLAN);}
     this._rebuildOverlays();
@@ -848,19 +845,14 @@ class GlowFloorCardEditor extends HTMLElement {
   _renderAppearance(){
     const section=this.shadowRoot.querySelector('.section[data-tab="aspetto"]');section.replaceChildren();
     const heading=document.createElement('div');heading.className='section-title';heading.textContent='Aspetto della card';section.append(heading);
-    section.append(this._field('Titolo (facoltativo)',this._config.title,value=>this._update('title',value),{maxlength:120}));
-    section.append(this._field('Testo superiore (facoltativo)',this._config.eyebrow,value=>this._update('eyebrow',value),{maxlength:100}));
+    section.append(this._field('Titolo',String(this._config.show_title),value=>this._update('show_title',value==='true'),{options:[['true','Mostrato'],['false','Nascosto']]}));
+    section.append(this._field('Testo del titolo',this._config.title,value=>this._update('title',value),{maxlength:120}));
+    section.append(this._field('Etichetta superiore',String(this._config.show_eyebrow),value=>this._update('show_eyebrow',value==='true'),{options:[['true','Mostrata'],['false','Nascosta']]}));
+    section.append(this._field('Testo dell’etichetta',this._config.eyebrow,value=>this._update('eyebrow',value),{maxlength:100}));
     section.append(this._field('Sottotitolo (facoltativo)',this._config.subtitle,value=>this._update('subtitle',value),{maxlength:200}));
-    section.append(this._hint('Lascia vuoti tutti e tre i campi per nascondere le scritte superiori. Contatore e pulsanti restano visibili.'));
+    section.append(this._hint('Titolo ed etichetta si possono nascondere senza perdere il testo. Contatore e pulsanti restano visibili.'));
     section.append(this._field('Modalità colore',this._config.theme_mode,value=>this._update('theme_mode',value),{options:[['auto','Automatica (Home Assistant)'],['dark','Scura'],['light','Chiara']]}));
-    const style=this._config.marker_style,minPx=markerMin(style);
-    section.append(this._field('Stile dei marker',style,value=>{
-      const prev=this._config.marker_style,next=markerStyle(value);
-      const wasDefault=this._config.marker_size===STYLE_DEFAULT_SIZE[prev];
-      this._config.marker_style=next;
-      this._config.marker_size=markerSize(wasDefault?STYLE_DEFAULT_SIZE[next]:this._config.marker_size,STYLE_DEFAULT_SIZE[next],markerMin(next));
-      this._emit();this._renderAppearance();this._renderLights();
-    },{options:[['chip','Pieno (disco con bordo)'],['compact','Compatto (più discreto)'],['icon','Solo icona']]}));
+    const style='compact',minPx=markerMin(style);
     section.append(this._field('Icone delle luci',this._config.icon_mode,value=>this._update('icon_mode',value),{options:[['default','Lampadina GlowFloor'],['entity','Dall’entità Home Assistant']]}));
     const sizeBox=document.createElement('div');sizeBox.className='size-control';
     const sizeLabel=document.createElement('label');sizeLabel.textContent='Dimensione pulsanti';
